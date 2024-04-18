@@ -4,10 +4,11 @@
 3. ICSE 2024 OGO evaluation datasets
 
 ## Citation ##
-If you use OGO in your research, we request you to cite our ICSE'24 paper.
+If you use OGO in your research, please cite our ICSE'24 paper.
+The paper can be found [here](https://users.ece.utexas.edu/~gligoric/papers/ThimmaiahETAL24OGO.pdf).
 
 ```bibtex
-@inproceedings{thimmaiahOGO24,
+@inproceedings{ThimmaiahETAL24OGO,
   author    = {Thimmaiah, Aditya and Lampropoulos, Leonidas and Rossbach, Christopher and Gligoric, Milos},
   title     = {Object Graph Programming},
   year      = {2024},
