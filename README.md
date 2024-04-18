@@ -1,7 +1,3 @@
-## Coming Soon! ##
-1. OGO Code base
-2. ICSE 2024 OGO evaluation datasets
-
 ## OGO ##
 Object Graph Programming (OGO) enables reading and modifying an object graph 
 (i.e., the entire state of the JVM heap) via declarative Cypher queries.
@@ -40,6 +36,10 @@ Object Graph Programming (OGO) enables reading and modifying an object graph
    compares equality of number of elements of `n` to 0. The query is hence expected to
    return true iff the number of elements in `n` is non-zero which is true only if the
    given key is contained in `map`.
+
+## Coming Soon! ##
+1. OGO Code base
+2. ICSE 2024 OGO evaluation datasets
     
 ## Citation ##
 If you use OGO in your research, please cite our ICSE'24 paper.
