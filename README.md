@@ -39,7 +39,7 @@ Object Graph Programming (OGO) enables reading and modifying an object graph
    Finally, we use the `RETURN` clause to return the value of the expression that
    compares equality of number of elements of `n` to 0. The query is hence expected to
    return true iff the number of elements in `n` is non-zero which is true only if the
-   given key is contained in `map`
+   given key is contained in `map`.
     
 ## Citation ##
 If you use OGO in your research, please cite our ICSE'24 paper.
