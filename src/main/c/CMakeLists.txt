@@ -4,7 +4,7 @@ project(ogoAgent VERSION 1.0.0 DESCRIPTION "Native agent to query object graphs"
 
 
 # ------------------------------------------------------------
-# Find clang-format (works even in venv or weird PATHs)
+# Find clang-format
 # ------------------------------------------------------------
 set(OGO_CLANG_SEARCH_PATH
     "/usr/local/bin"
