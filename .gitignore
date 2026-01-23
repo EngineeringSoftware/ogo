@@ -1,0 +1,6 @@
+.venv/
+build/
+surefire-reports/
+target/
+.cache/
+.vscode/

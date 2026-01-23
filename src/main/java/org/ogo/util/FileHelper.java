@@ -1,0 +1,48 @@
+package org.ogo.util;
+
+import java.io.File;
+import java.io.FilenameFilter;
+
+public abstract class FileHelper {
+
+  /**
+   * @brief Searches the directory specified by 'dirName' for files with extension specified by
+   *     'endsWith'. Use this to search for *.csv files exported from native agent
+   * @author 1sand0s
+   * @param dirName Directory to search files in
+   * @param endsWith Extension of files to search for
+   * @return File[] Array of File containing the files of specified extension
+   * @since 1.0.0
+   * @version 1.0.0
+   */
+  public static File[] findFilesWithExtension(String dirName, String endsWith) {
+    File dir = new File(dirName);
+    return dir.listFiles(
+        new FilenameFilter() {
+          public boolean accept(File dir, String filename) {
+            return filename.endsWith(endsWith);
+          }
+        });
+  }
+
+  /**
+   * regular
+   *
+   * @author 1sand0s
+   * @param cQuery Cypher query String
+   * @param count Number of elements in objects
+   * @param objects The objects passed as arg to replace with their hashcodes
+   * @return modified cypher query string
+   * @since 1.0.0
+   * @version 1.0.0
+   */
+  public static String subArgWithHashCode(String cQuery, Object... objects) {
+    for (int j = 1; j <= objects.length; j++) {
+      int ex = cQuery.indexOf("$" + j);
+      //      System.out.println("Hashcodes from Java are : " + System.identityHashCode(objects[j -
+      // 1]));
+      cQuery = cQuery.replace("$" + j, "hash:" + System.identityHashCode(objects[j - 1]));
+    }
+    return cQuery;
+  }
+}
