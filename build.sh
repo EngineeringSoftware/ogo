@@ -25,7 +25,7 @@ function check_deps() {
 
 function compile_ogo() {
         # Build the project.
-        ( cd ogo
+        ( 
           mvn clean compile -Dagent.build.skip=false properties:write-project-properties || \
                   { echo "could not compile ogo"; return 1; }
         )
@@ -34,7 +34,7 @@ function compile_ogo() {
 function install_ogo() {
         # Build the project.
         compile_ogo
-        ( cd ogo
+        ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
           mvn exec:exec@serverStart install -DargLine="-agentlib:ogoAgent"|| \
                   { echo "could not install ogo"; return 1; }
@@ -43,7 +43,7 @@ function install_ogo() {
 
 function test_ogo() {
         echo "You need to build code first: ${0} compile_ogo"
-        ( cd ogo
+        ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
           mvn -e exec:exec@serverStart test -DargLine="-agentlib:ogoAgent"
         )
@@ -51,7 +51,7 @@ function test_ogo() {
 
 function exec_ogo() {
         echo "You need to build code first: ${0} compile_ogo"
-        ( cd ogo
+        ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
           mvn -e exec:exec@main
         )
