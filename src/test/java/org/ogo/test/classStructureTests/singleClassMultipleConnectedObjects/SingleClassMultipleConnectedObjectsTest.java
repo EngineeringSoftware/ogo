@@ -1,7 +1,7 @@
 package org.ogo.test.classStructureTests.singleClassMultipleConnectedObjects;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.ogo.client.OGO.query;
 import static org.ogo.client.OGO.queryBool;
 

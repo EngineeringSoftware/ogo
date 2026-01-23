@@ -1,7 +1,7 @@
 package org.ogo.test.queryJavaDataStructures;
 
-import static org.ogo.client.OGO.queryBool;
 import static org.ogo.client.OGO.query;
+import static org.ogo.client.OGO.queryBool;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
 /**

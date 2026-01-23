@@ -8,8 +8,8 @@ import java.lang.reflect.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
 /**
