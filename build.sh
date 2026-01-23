@@ -60,6 +60,10 @@ function exec_ogo() {
         )
 }
 
+function format_ogo_java() {
+        mvn fmt:format
+}
+
 function end_to_end() {
         check_deps || \
                 { echo "deps not satisfied"; exit 1; }
