@@ -4,10 +4,10 @@
 
 #pragma once
 
+#include "jni.h"
+#include <fstream>
 #include <string>
 #include <vector>
-#include <fstream>
-#include "jni.h"
 
 using namespace std;
 
@@ -20,38 +20,38 @@ namespace graph {
  */
 class MethodInfo {
 public:
-    MethodInfo();
-    ~MethodInfo();
+  MethodInfo();
+  ~MethodInfo();
 
-    void clear();
-    void getArgDescriptors(vector<string>& methodArgDescriptors);
-    bool areArgDescriptorSame(vector<string>& givenDescriptors);
+  void clear();
+  void getArgDescriptors(vector<string> &methodArgDescriptors);
+  bool areArgDescriptorSame(vector<string> &givenDescriptors);
 
-    /* Method name
-       */
-    string name;
+  /* Method name
+   */
+  string name;
 
-    /* Method signature
-     */
-    string signature;
+  /* Method signature
+   */
+  string signature;
 
-    /* Method modifiers
-     */
-    int modifier;
+  /* Method modifiers
+   */
+  int modifier;
 
-    /* Is Constructor
-     */
-    bool isConstructor;
+  /* Is Constructor
+   */
+  bool isConstructor;
 
-    /* MethodId
-     */
-    jmethodID methodID;
+  /* MethodId
+   */
+  jmethodID methodID;
 
-    /* Num Arguments
-     */
-    int nArgs;
+  /* Num Arguments
+   */
+  int nArgs;
 
-    /* Descriptors of this method arguments */
-    vector<string> argDescriptors;
+  /* Descriptors of this method arguments */
+  vector<string> argDescriptors;
 };
-}
+} // namespace graph

@@ -18,7 +18,7 @@
  *        inside heap_IterationCallback degrades performance
  *        hence this optimization
  */
-//#define OPTIMIZATION_INSTANCEINFO_REALLOC_
+// #define OPTIMIZATION_INSTANCEINFO_REALLOC_
 
 /**
  * @def define OPTIMIZATION_TRAVERSE_PASSED_OBJECTS_ONLY_
@@ -55,7 +55,8 @@
 
 /**
  * @def define OPTIMIZATION_FOLLOW_REFERENCES_TERMINATE_IRRELEVANT_PATHS_
- * @see https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#jvmtiHeapVisitControl
+ * @see
+ * https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#jvmtiHeapVisitControl
  * @brief Uncomment to follow references of all objects in the JVM's heap
  *
  *        Although we do filter out objects that are untagged/or whose
@@ -64,6 +65,6 @@
  *        irrelevant object references are reported. Use this to selectively
  *        terminates such paths using JVMTI_VISIT_OBJECTS and JVMTI_VISIT_ABORT
  */
-//#define OPTIMIZATION_FOLLOW_REFERENCES_TERMINATE_IRRELEVANT_PATHS_
+// #define OPTIMIZATION_FOLLOW_REFERENCES_TERMINATE_IRRELEVANT_PATHS_
 
 #endif

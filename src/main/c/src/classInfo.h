@@ -1,7 +1,7 @@
 #pragma once
 
-#include "instanceInfo.h"
 #include "fieldInfo.h"
+#include "instanceInfo.h"
 #include "methodInfo.h"
 
 #include <jni.h>
@@ -13,99 +13,96 @@ using namespace std;
 
 namespace graph {
 
+/**
+ * @struct  ClassInfo
+ * @brief   class for storing class/Class.java instance information
+ *
+ * @author  1sand0s
+ */
+class ClassInfo {
+public:
+  ClassInfo();
+
+  ~ClassInfo();
+
+  void clear();
+
   /**
-   * @struct  ClassInfo
-   * @brief   class for storing class/Class.java instance information
+   * @fn void sortElementAscendingTag(classInfo*)
+   * @brief   Sorts instanceTags of classInfo by ascending order
+   *          of tags value . (NOTE : this does not sort the corressponding
+   *          instanceInfos)
    *
-   * @author  1sand0s
+   * @param cInfo The classInfo whose instanceTags are to be sorted
    */
-  class ClassInfo {
-  public:
+  void sortElementAscendingTag();
 
-    ClassInfo();
+  bool containsWritableInstances();
 
-    ~ClassInfo();
+  void getInstanceInfoWithTag(long tag, InstanceInfo **iInfo);
 
-    void clear();
+  /* Fully qualified name of the Class*/
+  string name;
 
-    
-    /**
-     * @fn void sortElementAscendingTag(classInfo*)
-     * @brief   Sorts instanceTags of classInfo by ascending order
-     *          of tags value . (NOTE : this does not sort the corressponding
-     *          instanceInfos)
-     *
-     * @param cInfo The classInfo whose instanceTags are to be sorted
-     */
-    void sortElementAscendingTag();
+  string signature;
 
-    bool containsWritableInstances();
+  /* All the fields declared in the Class
+   * (Primitive and Instance types)
+   *
+   * Must be freed from the owning(this) classInfo
+   * variable
+   */
+  vector<FieldInfo *> fields;
 
-    void getInstanceInfoWithTag(long tag,
-								InstanceInfo **iInfo);
-    
-    /* Fully qualified name of the Class*/
-    string name;
+  vector<MethodInfo *> methods;
 
-	string signature;
+  MethodInfo *getMethodMatchingDescriptor(string &methodName,
+                                          vector<string> &argDescriptors);
 
-    /* All the fields declared in the Class
-     * (Primitive and Instance types)
-     *
-     * Must be freed from the owning(this) classInfo
-     * variable
-     */
-    vector<FieldInfo*> fields;
+  /* Number of elements present in fields */
+  int fieldCount;
 
-    vector<MethodInfo*> methods;
-    
-    MethodInfo* getMethodMatchingDescriptor(string& methodName,
-					    vector<string>& argDescriptors);
+  /* All instances of this Class */
+  vector<InstanceInfo *> instances;
 
-    /* Number of elements present in fields */
-    int fieldCount;
+  /* Tags corresponding to the instances
+   * of this Class.
+   *
+   * This array must be bijective w.r.t the
+   * instance array
+   *
+   * Must be sorted in ascending order of tags
+   * allows faster retrieval of instances using binary
+   * search
+   */
+  vector<long> instanceTags;
 
-    /* All instances of this Class */
-    vector<InstanceInfo*> instances;
+  /* Number of elements in instances or instanceTags */
+  int instanceCount;
 
-    /* Tags corresponding to the instances
-     * of this Class.
-     *
-     * This array must be bijective w.r.t the
-     * instance array
-     *
-     * Must be sorted in ascending order of tags
-     * allows faster retrieval of instances using binary
-     * search
-     */
-    vector<long> instanceTags;
+  /* Tag of the class */
+  long tag;
 
-    /* Number of elements in instances or instanceTags */
-    int instanceCount;
+  /* All instances of this Class and its Class.java instance
+   * will definitely be written to CSV if
+   * this flag is true
+   *
+   * Can be set by user using WhiteList
+   */
+  bool writeToGraph;
 
-    /* Tag of the class */
-    long tag;
+  /* Shallow Copy of the class's superclass if any, NULL otherwise
+   */
+  long superClassTag;
+  std::vector<long> implementedInterfaceTags;
 
-    /* All instances of this Class and its Class.java instance
-     * will definitely be written to CSV if
-     * this flag is true
-     *
-     * Can be set by user using WhiteList
-     */
-    bool writeToGraph;
+  /* If this flag is true then the instanceTags of this class
+   * has been sorted in ascending order and its instances
+   * can safetly be retrieved using getInstanceInfoWithTag
+   */
+  bool isSorted;
 
-    /* Shallow Copy of the class's superclass if any, NULL otherwise
-     */
-	long superClassTag;
-	std::vector<long> implementedInterfaceTags;
-
-    /* If this flag is true then the instanceTags of this class
-     * has been sorted in ascending order and its instances
-     * can safetly be retrieved using getInstanceInfoWithTag
-     */
-    bool isSorted;
-
-	/* The class object */
-	jclass klass;
-  };
-}
+  /* The class object */
+  jclass klass;
+};
+} // namespace graph

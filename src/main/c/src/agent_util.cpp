@@ -1,11 +1,10 @@
+#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include <time.h>
-#include <math.h>
 
 #include "agent_util.h"
-
 
 /**
  * @fn      int searchTag(int, int, long, long*, int*)
@@ -23,10 +22,10 @@
  */
 /*bool
 searchTag(int l,
-	  int h,
-	  const long value,
-	  const long* tags,
-	  int* index) {
+          int h,
+          const long value,
+          const long* tags,
+          int* index) {
   *index = (int) (ceil((l + h) / 2.0));
   if (l > h){
     return false; // Tag not found, return false
@@ -37,40 +36,36 @@ searchTag(int l,
     }
     else if (value > tags[*index]){
       return searchTag((*index) + 1,
-		       h,
-		       value,
-		       tags,
-		       index);
+                       h,
+                       value,
+                       tags,
+                       index);
     }
     else{
       return searchTag(l,
-		       (*index) - 1,
-		       value,
-		       tags,
-		       index);
+                       (*index) - 1,
+                       value,
+                       tags,
+                       index);
     }
   }
 }*/
 
-bool
-UTIL::AGENT::searchTag(int l,
-		       int h,
-		       const long value,
-		       const std::vector<long>& tags,
-		       int* index) {
+bool UTIL::AGENT::searchTag(int l, int h, const long value,
+                            const std::vector<long> &tags, int *index) {
 
-    while(l <= h) {
-        *index = (int) (ceil((l + h) / 2.0));
+  while (l <= h) {
+    *index = (int)(ceil((l + h) / 2.0));
 
-        if (value == tags[*index]) {
-            return true; /* Tag found at index mid */
-        } else if (value > tags[*index]) {
-            l = (*index) + 1;
-        } else {
-            h = (*index) - 1;
-        }
+    if (value == tags[*index]) {
+      return true; /* Tag found at index mid */
+    } else if (value > tags[*index]) {
+      l = (*index) + 1;
+    } else {
+      h = (*index) - 1;
     }
-    return false;
+  }
+  return false;
 }
 
 /**
@@ -82,39 +77,36 @@ UTIL::AGENT::searchTag(int l,
  * @param a
  * @param aux
  */
-void
-UTIL::AGENT::mergeSort(int i,
-		       int j,
-		       std::vector<long>& a,
-		       std::vector<long>& aux) {
-    if (j <= i) {
-        return;
-    }
-    int mid = (i + j) / 2;
-    mergeSort(i, mid, a, aux);
-    mergeSort(mid + 1, j, a, aux);
+void UTIL::AGENT::mergeSort(int i, int j, std::vector<long> &a,
+                            std::vector<long> &aux) {
+  if (j <= i) {
+    return;
+  }
+  int mid = (i + j) / 2;
+  mergeSort(i, mid, a, aux);
+  mergeSort(mid + 1, j, a, aux);
 
-    int pointer_left = i;
-    int pointer_right = mid + 1;
-    int k;
+  int pointer_left = i;
+  int pointer_right = mid + 1;
+  int k;
 
-    for (k = i; k <= j; k++) {
-        if (pointer_left == mid + 1) {
-            aux[k] = a[pointer_right];
-            pointer_right++;
-        } else if (pointer_right == j + 1) {
-            aux[k] = a[pointer_left];
-            pointer_left++;
-        } else if (a[pointer_left] < a[pointer_right]) {
-            aux[k] = a[pointer_left];
-            pointer_left++;
-        } else {
-            aux[k] = a[pointer_right];
-            pointer_right++;
-        }
+  for (k = i; k <= j; k++) {
+    if (pointer_left == mid + 1) {
+      aux[k] = a[pointer_right];
+      pointer_right++;
+    } else if (pointer_right == j + 1) {
+      aux[k] = a[pointer_left];
+      pointer_left++;
+    } else if (a[pointer_left] < a[pointer_right]) {
+      aux[k] = a[pointer_left];
+      pointer_left++;
+    } else {
+      aux[k] = a[pointer_right];
+      pointer_right++;
     }
+  }
 
-    for (k = i; k <= j; k++) {
-        a[k] = aux[k];
-    }
+  for (k = i; k <= j; k++) {
+    a[k] = aux[k];
+  }
 }

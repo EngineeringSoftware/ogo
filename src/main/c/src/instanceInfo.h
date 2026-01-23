@@ -4,102 +4,102 @@
 #include "jni_util.h"
 #include "referenceInfo.h"
 
-#include <string>
 #include <fstream>
+#include <string>
 
 using namespace util;
 using namespace std;
 
 namespace graph {
 
+/**
+ * @class   InstanceInfo
+ * @brief   class for storing java class instance information
+ *
+ * @author  1sand0s
+ */
+class InstanceInfo {
+public:
+  InstanceInfo();
+
+  ~InstanceInfo();
+
+  void clear();
+
   /**
-   * @class   InstanceInfo
-   * @brief   class for storing java class instance information
+   * @fn      void writeInstanceInfoToCsv(FILE*, instanceInfo*)
+   * @brief   Write struct instanceInfo to csv file
    *
    * @author  1sand0s
+   * @param   f           Pointer to the file to write to
+   * @param   info        Information of the instance to write
    */
-  class InstanceInfo {
-  public:
+  void writeToCsv(ofstream &f, string className);
 
-    InstanceInfo();
+  /**
+   * @fn      void writeInstancePropertiesToCsv(instanceInfo*)
+   * @brief   Write struct instanceInfo properties (primitive fields) to csv
+   * file
+   *
+   * @author  1sand0s
+   * @param   info        Information of the instance whose primitive fields are
+   * to be written
+   */
+  void writePropertiesToCsv(Agent *agent);
 
-    ~InstanceInfo();
+  /**
+   * @fn      void writeInstanceRelationsToCsv(instanceInfo*)
+   * @brief   Write struct instanceInfo relations to csv file
+   *
+   * @author  1sand0s
+   * @param   info        Information of the instance whose relations are to be
+   * written
+   */
+  void writeRelationsToCsv();
 
-    void clear();
+  FieldInfo *getField(string &fieldName);
 
-    /**
-     * @fn      void writeInstanceInfoToCsv(FILE*, instanceInfo*)
-     * @brief   Write struct instanceInfo to csv file
-     *
-     * @author  1sand0s
-     * @param   f           Pointer to the file to write to
-     * @param   info        Information of the instance to write
-     */
-    void
-    writeToCsv(ofstream& f,
-	       string className);
+  /* Modifier of the instance */
+  int modifier;
 
-    /**
-     * @fn      void writeInstancePropertiesToCsv(instanceInfo*)
-     * @brief   Write struct instanceInfo properties (primitive fields) to csv file
-     *
-     * @author  1sand0s
-     * @param   info        Information of the instance whose primitive fields are to be written
-     */
-    void writePropertiesToCsv(Agent* agent);
+  /* Primitive fields, String fields and
+   * Primitive Array fields owned by this
+   * instance
+   *
+   * Must be freed from the owning(this) instanceInfo
+   */
+  vector<FieldInfo *> fields;
 
-    /**
-     * @fn      void writeInstanceRelationsToCsv(instanceInfo*)
-     * @brief   Write struct instanceInfo relations to csv file
-     *
-     * @author  1sand0s
-     * @param   info        Information of the instance whose relations are to be written
-     */
-    void writeRelationsToCsv();
+  /* Tag of the instance */
+  long tag;
 
-	FieldInfo* getField(string& fieldName);
+  /* Contains information of all referee (child)
+   * instances
+   */
+  vector<ReferenceInfo *> references;
 
-    /* Modifier of the instance */
-    int modifier;
+  /* This instance will definitely be written to CSV if
+   * this flag is true
+   *
+   * Can be set by user using WhiteList
+   */
+  bool writeToGraph;
 
-    /* Primitive fields, String fields and
-     * Primitive Array fields owned by this
-     * instance
-     *
-     * Must be freed from the owning(this) instanceInfo
-     */
-    vector<FieldInfo*> fields;
+  /* Flag to indicate if this instance is a Primitive Array */
+  bool isPrimitiveArrayType;
 
-    /* Tag of the instance */
-    long tag;
+  /* Flag to indicate if this instance is an instance
+   * of java.lang.String
+   */
+  bool isStringType;
 
-    /* Contains information of all referee (child)
-     * instances
-     */
-    vector<ReferenceInfo*> references;
+  /* Hash Code of the object corresponding to this instanceInfo */
+  int hashCode;
 
-    /* This instance will definitely be written to CSV if
-     * this flag is true
-     *
-     * Can be set by user using WhiteList
-     */
-    bool writeToGraph;
+  /* Tag of this instance's class
+   */
+  long classTag;
 
-    /* Flag to indicate if this instance is a Primitive Array */
-    bool isPrimitiveArrayType;
-
-    /* Flag to indicate if this instance is an instance
-     * of java.lang.String
-     */
-    bool isStringType;
-
-    /* Hash Code of the object corresponding to this instanceInfo */
-    int hashCode;
-
-    /* Tag of this instance's class
-     */
-    long classTag;
-
-	bool isVisited;
-  };
-}
+  bool isVisited;
+};
+} // namespace graph

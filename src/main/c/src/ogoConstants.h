@@ -147,7 +147,7 @@ namespace CSV_FILES {
 const std::string REFERENCE_RELATION_FILE_SUFFIX = "_Neo4JRelations.csv";
 
 const std::string FIELD_PROPERTIES_FILE_SUFFIX = "_Neo4JProperties.csv";
-}
+} // namespace CSV_FILES
 
 namespace OGO {
 /**
@@ -181,7 +181,7 @@ const std::string CYPHER_QUERY_RESULT_FIELD = "queryResult";
  *        for graph construction
  *
  */
-const std::string CYPHER_QUERY_ROOT_OBJECT_FIELD  = "root";
+const std::string CYPHER_QUERY_ROOT_OBJECT_FIELD = "root";
 
 /**
  * @def CYPHER_QUERY_IN_MEMORY_FIELD
@@ -218,7 +218,7 @@ const std::string CYPHER_QUERY_FOLLOW_ROOT_FIELD = "followRoot";
  *
  */
 const std::string CYPHER_QUERY_WHITELIST_FIELD = "whitelist";
-  
+
 /**
  * @def WHITE_LIST_FIELD
  * @brief The Object field in GraphTriggerException class
@@ -237,7 +237,7 @@ const std::string WHITE_LIST_FIELD = "whiteLists";
  */
 const std::string BLACK_LIST_FIELD = "blackLists";
 
- /**
+/**
  * @def BLACK_LIST_FIELD
  * @brief The Object field in GraphTriggerException class
  *        which will contxain the user supplied root object
@@ -245,4 +245,4 @@ const std::string BLACK_LIST_FIELD = "blackLists";
  *
  */
 const std::string EXCLUDE_FROM_BLACK_LIST_FIELD = "excludeBlackListing";
-}
+} // namespace OGO

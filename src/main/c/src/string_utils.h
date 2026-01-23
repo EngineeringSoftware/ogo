@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <algorithm>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -61,16 +61,14 @@ string classToCypherLabel(string klass);
  */
 string classToCypherLabel2(string klass);
 
-  
 /**
-* @fn      string classToCypherLabel(string klass)
-* @brief   Removes 'L','[' and ';' from java class signatures
-*
-* @author  1sand0s
-* @param   klass    string instance containing java class signature
-* @return  string   The updated string instance
-*/
-bool isStringPresentInList(string& str,
-                           vector<string>& list);
-}
-}
+ * @fn      string classToCypherLabel(string klass)
+ * @brief   Removes 'L','[' and ';' from java class signatures
+ *
+ * @author  1sand0s
+ * @param   klass    string instance containing java class signature
+ * @return  string   The updated string instance
+ */
+bool isStringPresentInList(string &str, vector<string> &list);
+} // namespace STRING
+} // namespace util

@@ -1,12 +1,11 @@
 #pragma once
 
-#include <stdbool.h>
 #include <fstream>
+#include <stdbool.h>
 #include <vector>
 
-
 namespace UTIL {
-  namespace AGENT {
+namespace AGENT {
 /**
  * @def STRINGIFY_MACRO_
  * @brief Adds quoatation to macro value
@@ -28,11 +27,8 @@ namespace UTIL {
  *                      tag if present
  * @return              true if found
  */
-bool searchTag(int l,
-               int h,
-               const long value,
-               const std::vector<long>& tags,
-               int* index);
+bool searchTag(int l, int h, const long value, const std::vector<long> &tags,
+               int *index);
 
 /**
  * @fn void mergeSort(int, int, long*, long*)
@@ -43,6 +39,6 @@ bool searchTag(int l,
  * @param a
  * @param aux
  */
-    void mergeSort(int i, int j, std::vector<long>& a, std::vector<long>& aux);
-  }
-}
+void mergeSort(int i, int j, std::vector<long> &a, std::vector<long> &aux);
+} // namespace AGENT
+} // namespace UTIL

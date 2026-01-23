@@ -5,39 +5,33 @@
 using namespace graph;
 using namespace std;
 
-ReferenceInfo::ReferenceInfo() {
-    clear();
+ReferenceInfo::ReferenceInfo() { clear(); }
+
+ReferenceInfo::ReferenceInfo(int referenceKind, long referrerTag,
+                             long referrerClassTag, bool writeToGraph) {
+  clear();
+  this->referenceKind = referenceKind;
+  this->referrerTag = referrerTag;
+  this->referrerClassTag = referrerClassTag;
+  this->writeToGraph = writeToGraph;
 }
 
-ReferenceInfo::ReferenceInfo(int referenceKind,
-                             long referrerTag,
-                             long referrerClassTag,
-                             bool writeToGraph) {
-    clear();
-    this->referenceKind = referenceKind;
-    this->referrerTag = referrerTag;
-    this->referrerClassTag = referrerClassTag;
-    this->writeToGraph = writeToGraph;
-}
-
-ReferenceInfo::~ReferenceInfo() {
-    clear();
-}
+ReferenceInfo::~ReferenceInfo() { clear(); }
 
 void ReferenceInfo::clear() {
-    referrerTag = 0;
-    referrerClassTag = 0;
-    referrerRelation = "";
-    writeToGraph = false;
-    fieldIndex = -1;
+  referrerTag = 0;
+  referrerClassTag = 0;
+  referrerRelation = "";
+  writeToGraph = false;
+  fieldIndex = -1;
 }
 
 string ReferenceInfo::toString() {
-    stringstream sstream;
-    if(referrerRelation.size() > 0) {
-        sstream << referrerTag << "," << referenceKind << "," << referrerRelation;
-		return sstream.str();
-    } else {
-        return "";
-    }
+  stringstream sstream;
+  if (referrerRelation.size() > 0) {
+    sstream << referrerTag << "," << referenceKind << "," << referrerRelation;
+    return sstream.str();
+  } else {
+    return "";
+  }
 }
