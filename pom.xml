@@ -232,6 +232,20 @@
         </configuration>
         <executions>
           <execution>
+            <id>read-properties</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <files>
+                <file>${project.basedir}/src/main/resources/ogo.properties</file>
+              </files>
+            </configuration>
+          </execution>
+          <!-- Write properties to target for runtime use -->
+          <execution>
+            <id>write-properties</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>write-project-properties</goal>
