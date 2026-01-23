@@ -2,8 +2,12 @@ package org.ogo.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public abstract class FileHelper {
+
+  private static final Logger logger = Logger.getLogger(FileHelper.class.getName());
 
   /**
    * @brief Searches the directory specified by 'dirName' for files with extension specified by
@@ -38,9 +42,7 @@ public abstract class FileHelper {
    */
   public static String subArgWithHashCode(String cQuery, Object... objects) {
     for (int j = 1; j <= objects.length; j++) {
-      int ex = cQuery.indexOf("$" + j);
-      //      System.out.println("Hashcodes from Java are : " + System.identityHashCode(objects[j -
-      // 1]));
+      logger.log(Level.FINE, "Hashcodes from Java are : " + System.identityHashCode(objects[j -1]));
       cQuery = cQuery.replace("$" + j, "hash:" + System.identityHashCode(objects[j - 1]));
     }
     return cQuery;
