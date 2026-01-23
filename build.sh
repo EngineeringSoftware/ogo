@@ -20,6 +20,9 @@ function check_deps() {
         ! hash  "cmake" && \
                 { echo "missing cmake (apt-get install cmake)"; return 1; }
 
+        ! hash "clang-format" && \
+                { echo "missing clang-format (apt-get install clang-format)"; return 1; }
+
         return 0
 }
 
