@@ -11,8 +11,8 @@ function check_deps() {
         ! hash "conan" && \
                 { echo "missing conan (pip install 'conan==1.59.0')"; return 1; }
 
-        java --version | grep '11.' >/dev/null || \
-                { echo "no java 11 available (apt-get install openjdk-11-jdk)"; return 1; }
+        java --version | grep '21.' >/dev/null || \
+                { echo "no java 21 available (apt-get install openjdk-21-jdk)"; return 1; }
 
         conan --version | grep 'version 1.' >/dev/null || \
                 { echo "no conan 1.x available"; return 1; }
@@ -29,7 +29,7 @@ function check_deps() {
 function compile_ogo() {
         # Build the project.
         ( 
-          mvn clean compile -Dagent.build.skip=false properties:write-project-properties || \
+          mvn clean test-compile -Dagent.build.skip=false properties:write-project-properties || \
                   { echo "could not compile ogo"; return 1; }
         )
 }
