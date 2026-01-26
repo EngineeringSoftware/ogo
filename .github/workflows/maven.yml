@@ -46,6 +46,11 @@ jobs:
     
     - name: Install Conan
       run: pip install 'conan==1.59.0'
+
+    - name: Configure Conan for GCC 12
+      run: |
+        conan profile update settings.compiler.version=12 default
+        conan profile update settings.compiler.libcxx=libstdc++11 default
     
     - name: Make build script executable
       run: chmod +x build.sh
@@ -55,6 +60,6 @@ jobs:
     
     - name: Compile OGO
       run: ./build.sh compile_ogo
-    
+      
     - name: Run tests
       run: ./build.sh test_ogo
