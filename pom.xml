@@ -10,8 +10,8 @@
   <!-- <url>http://www.example.com</url> -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <!-- Native agent properties -->
     <agent.path>${project.basedir}/src/main/c</agent.path>
     <agent.build.type>Release</agent.build.type>
@@ -39,17 +39,17 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.2</version>
+      <version>6.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>4.4.0</version>
+      <version>2025.12.1</version>
     </dependency>
     <dependency>
       <groupId>org.jgrapht</groupId>
       <artifactId>jgrapht-core</artifactId>
-      <version>1.5.1</version>
+      <version>1.5.2</version>
     </dependency>
     <dependency>
       <groupId>net.sf.jung</groupId>
@@ -59,17 +59,17 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>31.1-jre</version>
+      <version>33.5.0-jre</version>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
-      <version>9.5</version>
+      <version>9.9.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
-      <version>4.1</version>
+      <version>4.5.0</version>
     </dependency>
     <dependency>
       <groupId>org.antlr</groupId>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.jakewharton.fliptables</groupId>
       <artifactId>fliptables</artifactId>
-      <version>1.1.0</version>
+      <version>1.1.1</version>
     </dependency>
   </dependencies>
   <build>
@@ -88,7 +88,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.1</version>
+        <version>3.5.4</version>
 	<configuration>
 	  <!--<argLine>-agentlib:ogoAgent</argLine>-->
 	  <!--<forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>-->
@@ -102,7 +102,7 @@
       <!-- compile plugin to compile project source files (*.java) -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.14.1</version>
       </plugin>
       <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
       <plugin>
@@ -117,7 +117,7 @@
       <plugin>
           <groupId>org.antlr</groupId>
           <artifactId>antlr4-maven-plugin</artifactId>
-          <version>4.13.1</version>
+          <version>4.13.2</version>
           <configuration>  
             <outputDirectory>${basedir}/src/main/java/org/ogodb/antlr4</outputDirectory>
 	    <visitor>true</visitor>
