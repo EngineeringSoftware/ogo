@@ -10,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.Policy;
 import java.util.*;
 import java.util.Map.Entry;
 import org.neo4j.dbms.api.DatabaseManagementService;
@@ -447,10 +446,6 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
   public static void main(String[] args)
       throws RemoteException, IOException, AlreadyBoundException {
     int rmiPort = OGOProperties.getRmiPort();
-    if (System.getSecurityManager() == null) {
-      Policy.setPolicy(new ServerPolicy(rmiPort));
-      System.setSecurityManager(new SecurityManager());
-    }
     String name = "Neo4JGraphQueryEngine";
     AbstractGraphQueryInterface engine = new Neo4JGraphQueryEngine();
     AbstractGraphQueryInterface stub =
