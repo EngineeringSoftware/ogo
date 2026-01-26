@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     env:
       LD_LIBRARY_PATH: ./src/main/c/build
@@ -46,11 +46,6 @@ jobs:
     
     - name: Install Conan
       run: pip install 'conan==1.59.0'
-
-    - name: Configure Conan for GCC 12
-      run: |
-        conan profile update settings.compiler.version=12 default
-        conan profile update settings.compiler.libcxx=libstdc++11 default
     
     - name: Make build script executable
       run: chmod +x build.sh
