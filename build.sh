@@ -9,13 +9,13 @@ function check_deps() {
                 { echo "missing maven (https://maven.apache.org/download.cgi)"; return 1; }
 
         ! hash "conan" && \
-		{ echo "missing conan (pip install 'conan==2.24.0')"; return 1; }
+                { echo "missing conan (pip install 'conan==1.59.0')"; return 1; }
 
-	java --version | grep '21.' >/dev/null || \
-		{ echo "no java 21 available (apt-get install openjdk-21-jdk)"; return 1; }
+        java --version | grep '11.' >/dev/null || \
+                { echo "no java 11 available (apt-get install openjdk-11-jdk)"; return 1; }
 
-	conan --version | grep 'version 2.' >/dev/null || \
-		{ echo "no conan 2.x available"; return 1; }
+        conan --version | grep 'version 1.' >/dev/null || \
+                { echo "no conan 1.x available"; return 1; }
 
         ! hash  "cmake" && \
                 { echo "missing cmake (apt-get install cmake)"; return 1; }
@@ -23,16 +23,13 @@ function check_deps() {
         ! hash "clang-format" && \
                 { echo "missing clang-format (apt-get install clang-format)"; return 1; }
 
-        ! hash "clang-tidy" && \
-                { echo "missing clang-tidy (apt-get install clang-tidy)"; return 1; }
-
         return 0
 }
 
 function compile_ogo() {
         # Build the project.
         ( 
-          mvn clean test-compile -Dagent.build.skip=false properties:write-project-properties || \
+          mvn clean compile -Dagent.build.skip=false properties:write-project-properties || \
                   { echo "could not compile ogo"; return 1; }
         )
 }

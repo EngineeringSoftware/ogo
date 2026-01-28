@@ -1,0 +1,14 @@
+[requires]
+antlr4-cppruntime/4.12.0@#c966d692cc30a83d136c634f8aa9a271
+
+[options]
+antlr4-cppruntime:shared=True
+	
+[generators]
+cmake_find_package
+CMakeToolchain
+virtualenv
+
+[imports]
+include, *.h -> ./antlr_build/
+lib, *.so* -> ./antlr_build/lib

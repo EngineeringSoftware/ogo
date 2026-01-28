@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.MessageDigest;
+import java.security.Policy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +72,10 @@ public abstract class OGO {
     clearDatabase = OGOProperties.getClearDatabase();
     if (graphInterface == null && inMemory == false) {
       int rmiPort = OGOProperties.getRmiPort();
+      if (System.getSecurityManager() == null) {
+        Policy.setPolicy(new ClientPolicy(rmiPort));
+        System.setSecurityManager(new SecurityManager());
+      }
       Registry registry = LocateRegistry.getRegistry(rmiPort);
       graphInterface = (AbstractGraphQueryInterface) registry.lookup("Neo4JGraphQueryEngine");
     }
@@ -103,7 +108,9 @@ public abstract class OGO {
   }
 
   /**
+   * @brief API call for executing Cypher query
    * @author 1sand0s
+   * @param cQuery String in Cypher to query the database
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -325,26 +332,10 @@ public abstract class OGO {
   /**
    * 0
    *
-   * @param root Optional parameter that constrains query execution to a subgraph. When provided,
-   *     the query explores only objects reachable from this root object under transitive closure of
-   *     reference fields, rather than the entire JVM heap. This enables localized queries and
-   *     improves performance by limiting traversal scope. Can be a single object or a collection of
-   *     objects to use as multiple roots.
-   * @param cQuery the Cypher query string with optional parameter placeholders:
-   *     <ul>
-   *       <li><b>$N</b> - Embed unique id of an instance <br>
-   *           Example: <code>query("MATCH (n {$1}) RETURN n.some_field", node)</code> <br>
-   *           Expands to: <code>MATCH (n {__id__:5777203}) RETURN n.some_field</code>
-   *       <li><b>@N</b> - Embed fully qualified class name of an instance <br>
-   *           Example: <code>query("MATCH (n:@1) RETURN n", node)</code> <br>
-   *           Expands to: <code>MATCH (n:`com.package.Node`) RETURN n</code>
-   *       <li><b>[]N</b> - Embed unique ids from an Iterable collection and return union of results
-   *           <br>
-   *           Example: <code>query("MATCH (n {[]1}) RETURN n.some_field", nodes)</code>
-   *     </ul>
-   *
-   * @param objects objects varargs parameters referenced by placeholders in cQuery
-   * @return query results
+   * @param root
+   * @param cQuery
+   * @param objects
+   * @return
    * @throws RemoteException
    */
   public static Object[] query(Object root, String cQuery, Object... objects)
