@@ -8,3 +8,4 @@
 - [ ] Remove print statements with logging library
 - [ ] Clean unneccessary comments & add better comments 
 - [ ]  **ADD BETTER DOCUMENTATION**
+- [ ] Why were my changes affecting the tests ??
