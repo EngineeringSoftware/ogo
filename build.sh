@@ -23,6 +23,9 @@ function check_deps() {
         ! hash "clang-format" && \
                 { echo "missing clang-format (apt-get install clang-format)"; return 1; }
 
+        ! hash "clang-tidy" && \
+                { echo "missing clang-tidy (apt-get install clang-tidy)"; return 1; }
+
         return 0
 }
 

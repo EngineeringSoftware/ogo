@@ -61,3 +61,39 @@ if(CLANG_FORMAT_BIN)
     )
 endif()
 
+
+# ------------------------------------------------------------
+# clang-tidy
+# ------------------------------------------------------------
+find_program(CLANG_TIDY_BIN
+    NAMES clang-tidy clang-tidy-15 clang-tidy-16
+    HINTS ${OGO_CLANG_SEARCH_PATH}
+)
+
+
+if(NOT CLANG_TIDY_BIN)
+    message(WARNING "clang-tidy not found; check-lint and fix-lint disabled. Install with: apt-get install clang-tidy")
+else()
+    message(STATUS "Found clang-tidy at ${CLANG_TIDY_BIN}")
+   
+    file(GLOB_RECURSE PROJECT_LINT_FILES
+        "${CMAKE_SOURCE_DIR}/src/*.h"
+        "${CMAKE_SOURCE_DIR}/src/*.cpp"
+    )
+
+
+    add_custom_target(check-lint
+        COMMAND ${CLANG_TIDY_BIN}
+            -p ${CMAKE_BINARY_DIR}
+            ${PROJECT_LINT_FILES}
+        COMMENT "Running clang-tidy"
+    )
+   
+    add_custom_target(fix-lint
+        COMMAND ${CLANG_TIDY_BIN}
+            -p ${CMAKE_BINARY_DIR}
+            --fix
+            ${PROJECT_LINT_FILES}
+        COMMENT "Running clang-tidy with auto-fix"
+    )
+endif()
