@@ -7,4 +7,4 @@
 - [X] Update Conan
 - [ ] Remove print statements with logging library
 - [ ] Clean unneccessary comments & add better comments 
-
+- [ ]  **ADD BETTER DOCUMENTATION**
