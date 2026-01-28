@@ -10,8 +10,8 @@
   <!-- <url>http://www.example.com</url> -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <!-- Native agent properties -->
     <agent.path>${project.basedir}/src/main/c</agent.path>
     <agent.build.type>Release</agent.build.type>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>4.4.0</version>
+      <version>5.14.0</version>
     </dependency>
     <dependency>
       <groupId>org.jgrapht</groupId>

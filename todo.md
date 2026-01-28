@@ -1,6 +1,7 @@
 # TODO
 
-- [ ] Upgrade to Java 21/upgrade packages
+- [X] Upgrade to Java 21
+- [ ] Upgrade dependencies
 - [ ] Add a linter
 - [ ] Add CI runs
 - [ ] Change all package names to lowercase
