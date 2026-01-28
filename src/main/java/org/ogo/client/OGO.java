@@ -11,7 +11,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.MessageDigest;
-import java.security.Policy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,10 +71,6 @@ public abstract class OGO {
     clearDatabase = OGOProperties.getClearDatabase();
     if (graphInterface == null && inMemory == false) {
       int rmiPort = OGOProperties.getRmiPort();
-      if (System.getSecurityManager() == null) {
-        Policy.setPolicy(new ClientPolicy(rmiPort));
-        System.setSecurityManager(new SecurityManager());
-      }
       Registry registry = LocateRegistry.getRegistry(rmiPort);
       graphInterface = (AbstractGraphQueryInterface) registry.lookup("Neo4JGraphQueryEngine");
     }
