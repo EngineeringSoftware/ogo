@@ -8,24 +8,31 @@
 name: Java CI with Maven
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     env:
       LD_LIBRARY_PATH: ./src/main/c/build
     
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
     
-    - name: Set up JDK 21
+    
+    - name: Set up JDK 11
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '11'
         distribution: 'temurin'
         cache: maven
     
@@ -38,7 +45,7 @@ jobs:
         sudo apt-get install -y cmake clang-format
     
     - name: Install Conan
-      run: pip install 'conan==2.24.0'
+      run: pip install 'conan==1.59.0'
     
     - name: Make build script executable
       run: chmod +x build.sh
@@ -51,3 +58,4 @@ jobs:
       
     - name: Run tests
       run: ./build.sh test_ogo
+
