@@ -25,7 +25,7 @@ public abstract class AbstractGraphQueryEngine {
   /** Precompile pattern to match against lines in [*TAG*]_Neo4JProperties.csv files */
   private final Pattern linePattern =
       Pattern.compile(
-              "[a-zA-Z_$]+[a-zA-Z_$0-9]+(,)(string|Bstring|char|Bchar|short|Bshort|int|Bint|long|Blong|float|Bfloat|double|Bdouble)(,)(\\[[\\W|\\S]*])(\\n"
+          "[a-zA-Z_$]+[a-zA-Z_$0-9]+(,)(string|Bstring|char|Bchar|short|Bshort|int|Bint|long|Blong|float|Bfloat|double|Bdouble)(,)(\\[[\\W|\\S]*])(\\n"
               + ")");
 
   /** Precompile pattern to match against separators in [*TAG*]_Neo4JProperties.csv files */
