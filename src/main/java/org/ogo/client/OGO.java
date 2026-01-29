@@ -14,6 +14,7 @@ import java.rmi.registry.Registry;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Logger;
 import org.ogo.bridge.AbstractGraphQueryInterface;
 import org.ogo.util.FileHelper;
 import org.ogo.util.OGOProperties;
@@ -23,6 +24,8 @@ import org.ogo.util.Profile;
  * @author 1sand0s
  */
 public abstract class OGO {
+
+  private static final Logger logger = Logger.getLogger(OGO.class.getName());
 
   static long sTime;
   static long eTime;
@@ -470,7 +473,8 @@ public abstract class OGO {
       /* Dummy exception to trigger object graph construction by native agent */
       throw graphException;
     } catch (Exception | Error e) {
-
+      logger.finest("GraphTriggerException caught (expected behavior)");
+      logger.finest("JVMTI agent triggered successfully");
     }
     eTime = System.currentTimeMillis();
 
@@ -507,11 +511,15 @@ public abstract class OGO {
       if (f.getName().endsWith(".csv")) {
         /* Delete all *.csv files in the current directory */
         if (!printCSV && !inMemory) {
-          f.delete();
+          if (!f.delete()) {
+            logger.warning("Failed to delete CSV file: " + f.getAbsolutePath());
+          }
         }
       } else if (f.getName().startsWith("PROFILE_HOQ_C_")) {
         /* Delete all *PROFILE_HOQ_C_* files in the current directory */
-        f.delete();
+        if (!f.delete()) {
+          logger.warning("Failed to delete Profile File: " + f.getAbsolutePath());
+        }
       }
     }
   }
