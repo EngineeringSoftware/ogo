@@ -23,15 +23,15 @@ public final class GraphTriggerException extends Exception {
    * @param root
    */
   public GraphTriggerException(
-          boolean inMemory,
-          boolean forceGC,
-          boolean followRoot,
-          boolean whitelist,
-          String cQuery,
-          Object root,
-          Object[] whiteLists,
-          Object[] blackLists,
-          Object[] excludeBlackListing) {
+      boolean inMemory,
+      boolean forceGC,
+      boolean followRoot,
+      boolean whitelist,
+      String cQuery,
+      Object root,
+      Object[] whiteLists,
+      Object[] blackLists,
+      Object[] excludeBlackListing) {
     this.inMemory = inMemory;
     this.forceGC = forceGC;
     this.followRoot = followRoot;
@@ -50,14 +50,14 @@ public final class GraphTriggerException extends Exception {
    * @param cQuery
    */
   public GraphTriggerException(
-          boolean inMemory,
-          boolean forceGC,
-          boolean followRoot,
-          boolean whitelist,
-          String cQuery,
-          Object[] whiteLists,
-          Object[] blackLists,
-          Object[] excludeBlackListing) {
+      boolean inMemory,
+      boolean forceGC,
+      boolean followRoot,
+      boolean whitelist,
+      String cQuery,
+      Object[] whiteLists,
+      Object[] blackLists,
+      Object[] excludeBlackListing) {
     this.inMemory = inMemory;
     this.forceGC = forceGC;
     this.followRoot = followRoot;
