@@ -4,16 +4,16 @@ package org.ogo.client;
  * @author 1sand0s
  */
 public final class GraphTriggerException extends Exception {
-  private Boolean inMemory;
-  private Boolean followRoot;
-  private Boolean forceGC;
-  private Boolean whitelist;
-  private String cQuery;
-  private Object queryResult[];
-  private Object root;
-  private Object whiteLists[];
-  private Object blackLists[];
-  private Object excludeBlackListing[];
+  private final Boolean inMemory;
+  private final Boolean followRoot;
+  private final Boolean forceGC;
+  private final Boolean whitelist;
+  private final String cQuery;
+  private Object[] queryResult;
+  private final Object root;
+  private final Object[] whiteLists;
+  private final Object[] blackLists;
+  private final Object[] excludeBlackListing;
 
   /**
    * 0
@@ -23,15 +23,15 @@ public final class GraphTriggerException extends Exception {
    * @param root
    */
   public GraphTriggerException(
-      boolean inMemory,
-      boolean forceGC,
-      boolean followRoot,
-      boolean whitelist,
-      String cQuery,
-      Object root,
-      Object whiteLists[],
-      Object blackLists[],
-      Object excludeBlackListing[]) {
+          boolean inMemory,
+          boolean forceGC,
+          boolean followRoot,
+          boolean whitelist,
+          String cQuery,
+          Object root,
+          Object[] whiteLists,
+          Object[] blackLists,
+          Object[] excludeBlackListing) {
     this.inMemory = inMemory;
     this.forceGC = forceGC;
     this.followRoot = followRoot;
@@ -50,14 +50,14 @@ public final class GraphTriggerException extends Exception {
    * @param cQuery
    */
   public GraphTriggerException(
-      boolean inMemory,
-      boolean forceGC,
-      boolean followRoot,
-      boolean whitelist,
-      String cQuery,
-      Object whiteLists[],
-      Object blackLists[],
-      Object excludeBlackListing[]) {
+          boolean inMemory,
+          boolean forceGC,
+          boolean followRoot,
+          boolean whitelist,
+          String cQuery,
+          Object[] whiteLists,
+          Object[] blackLists,
+          Object[] excludeBlackListing) {
     this.inMemory = inMemory;
     this.forceGC = forceGC;
     this.followRoot = followRoot;
