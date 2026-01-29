@@ -3,7 +3,8 @@
 - [X] Upgrade to Java 21
 - [ ] Upgrade dependencies
 - [ ] Add a linter
-- [ ] Add CI runs
+- [ ] Fix simple linting issues
+- [X] Add CI runs
 - [ ] Change all package names to lowercase
 - [X] Update Conan
 - [ ] Remove print statements with logging library
