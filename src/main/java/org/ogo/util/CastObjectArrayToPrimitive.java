@@ -12,10 +12,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Boolean[] returns the casted Boolean Array
+   * @return Boolean[] returns the cast Boolean Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Boolean[] castToBoolean(String[] propertyValue) {
     Boolean[] obj2 = new Boolean[propertyValue.length];
@@ -30,10 +28,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Byte[] returns the casted Byte Array
+   * @return Byte[] returns the cast Byte Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Byte[] castToByte(String[] propertyValue) {
     Byte[] obj2 = new Byte[propertyValue.length];
@@ -48,10 +44,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Short[] returns the casted Short Array
+   * @return Short[] returns the cast Short Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Short[] castToShort(String[] propertyValue) {
     Short[] obj2 = new Short[propertyValue.length];
@@ -66,10 +60,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Integer[] returns the casted Integer Array
+   * @return Integer[] returns the cast Integer Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Integer[] castToInteger(String[] propertyValue) {
     Integer[] obj2 = new Integer[propertyValue.length];
@@ -84,10 +76,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Long[] returns the casted Long Array
+   * @return Long[] returns the cast Long Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Long[] castToLong(String[] propertyValue) {
     Long[] obj2 = new Long[propertyValue.length];
@@ -102,10 +92,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Float[] returns the casted Float Array
+   * @return Float[] returns the cast Float Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Float[] castToFloat(String[] propertyValue) {
     Float[] obj2 = new Float[propertyValue.length];
@@ -120,10 +108,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Double[] returns the casted Double Array
+   * @return Double[] returns the cast Double Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Double[] castToDouble(String[] propertyValue) {
     Double[] obj2 = new Double[propertyValue.length];
@@ -138,10 +124,8 @@ public class CastObjectArrayToPrimitive {
    *
    * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
-   * @return Character[] returns the casted Character Array
+   * @return Character[] returns the cast Character Array
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static Character[] castToCharacter(String[] propertyValue) {
     Character[] obj2 = new Character[propertyValue.length];
@@ -160,7 +144,6 @@ public class CastObjectArrayToPrimitive {
    * @param propertyType type of every element in propertyValue
    * @param node Neo4J node
    * @since 1.0.0
-   * @version 1.0.0
    */
   public static Node castToNeo4JPropertyType(
       String propertyName, String[] propertyValue, String propertyType, Node node) {
@@ -231,8 +214,6 @@ public class CastObjectArrayToPrimitive {
    * @param obj Object whose instance is to be determined
    * @return true if obj belongs to Primitive Type
    * @since 1.0.0
-   * @version 1.0.0
-   * @exception should not throw exception
    */
   public static boolean checkPrimitiveType(Object obj) {
     return (obj instanceof Byte

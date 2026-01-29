@@ -8,9 +8,8 @@ public abstract class OGOProperties {
   /**
    * @brief Gets the port number used for RMI between OGO client and Neo4J server
    * @author 1sand0s
-   * @returns int OGO port number
+   * @return int OGO port number
    * @since 1.0.0
-   * @version 1.0.0
    */
   public static int getRmiPort() throws IOException {
     Properties p = new Properties();
@@ -21,9 +20,8 @@ public abstract class OGOProperties {
   /**
    * @brief Gets the flag for inMemory or Neo4J cypher execution
    * @author 1sand0s
-   * @returns boolean inMemory
+   * @return boolean inMemory
    * @since 1.0.0
-   * @version 1.0.0
    */
   public static boolean getInMemory() throws IOException {
     Properties p = new Properties();
@@ -34,9 +32,8 @@ public abstract class OGOProperties {
   /**
    * @brief Gets the flag for clearing Neo4J database after query execution
    * @author 1sand0s
-   * @returns boolean clearDatabase
+   * @return boolean clearDatabase
    * @since 1.0.0
-   * @version 1.0.0
    */
   public static boolean getClearDatabase() throws IOException {
     Properties p = new Properties();

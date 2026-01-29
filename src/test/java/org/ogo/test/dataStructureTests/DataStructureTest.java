@@ -176,7 +176,6 @@ public class DataStructureTest {
    *
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @RepeatedTest(1)
   public void checkLinkedList() throws RemoteException, InterruptedException {

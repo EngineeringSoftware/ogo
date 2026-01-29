@@ -34,7 +34,6 @@ public abstract class FileHelper {
    *
    * @author 1sand0s
    * @param cQuery Cypher query String
-   * @param count Number of elements in objects
    * @param objects The objects passed as arg to replace with their hashcodes
    * @return modified cypher query string
    * @since 1.0.0
