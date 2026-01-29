@@ -28,7 +28,7 @@ public abstract class OGOProperties {
   public static boolean getInMemory() throws IOException {
     Properties p = new Properties();
     p.load(OGOProperties.class.getClassLoader().getResourceAsStream(Constants.OGO_PROPERTIES_FILE));
-    return p.getProperty(Constants.OGO_PROPERTY_IN_MEMORY).equals("true") ? true : false;
+    return p.getProperty(Constants.OGO_PROPERTY_IN_MEMORY).equals("true");
   }
 
   /**
@@ -41,6 +41,6 @@ public abstract class OGOProperties {
   public static boolean getClearDatabase() throws IOException {
     Properties p = new Properties();
     p.load(OGOProperties.class.getClassLoader().getResourceAsStream(Constants.OGO_PROPERTIES_FILE));
-    return p.getProperty(Constants.OGO_PROPERTY_CLEAR_DATABASE).equals("true") ? true : false;
+    return p.getProperty(Constants.OGO_PROPERTY_CLEAR_DATABASE).equals("true");
   }
 }
