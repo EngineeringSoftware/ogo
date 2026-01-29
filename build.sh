@@ -9,13 +9,13 @@ function check_deps() {
                 { echo "missing maven (https://maven.apache.org/download.cgi)"; return 1; }
 
         ! hash "conan" && \
-                { echo "missing conan (pip install 'conan==1.59.0')"; return 1; }
+                { echo "missing conan (pip install 'conan==2.24.0')"; return 1; }
 
         java --version | grep '21.' >/dev/null || \
                 { echo "no java 21 available (apt-get install openjdk-21-jdk)"; return 1; }
 
-        conan --version | grep 'version 1.' >/dev/null || \
-                { echo "no conan 1.x available"; return 1; }
+        conan --version | grep 'version 2.' >/dev/null || \
+                { echo "no conan 2.x available"; return 1; }
 
         ! hash  "cmake" && \
                 { echo "missing cmake (apt-get install cmake)"; return 1; }
