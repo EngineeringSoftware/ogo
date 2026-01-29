@@ -2,7 +2,6 @@ package org.ogo.server;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -26,7 +25,7 @@ public abstract class AbstractGraphQueryEngine {
   /** Precompile pattern to match against lines in [*TAG*]_Neo4JProperties.csv files */
   private final Pattern linePattern =
       Pattern.compile(
-          "[a-zA-Z_$]+[a-zA-Z_$0-9]+(,)(string|Bstring|char|Bchar|short|Bshort|int|Bint|long|Blong|float|Bfloat|double|Bdouble)(,)(\\[[\\W|\\S]*\\])(\\n"
+              "[a-zA-Z_$]+[a-zA-Z_$0-9]+(,)(string|Bstring|char|Bchar|short|Bshort|int|Bint|long|Blong|float|Bfloat|double|Bdouble)(,)(\\[[\\W|\\S]*])(\\n"
               + ")");
 
   /** Precompile pattern to match against separators in [*TAG*]_Neo4JProperties.csv files */
@@ -45,7 +44,6 @@ public abstract class AbstractGraphQueryEngine {
    *     function)
    * @param propertyType Types of all the properties present in the file (returned by the function)
    * @since 1.0.0
-   * @version 1.0.0
    */
   public void getPropertiesFromFile(
       String dirName,
@@ -62,7 +60,7 @@ public abstract class AbstractGraphQueryEngine {
       try {
         scan = new Scanner(file);
         while (scan.hasNext()) {
-          String tokens[] = getPropertyFileTokens(scan.nextLine());
+          String[] tokens = getPropertyFileTokens(scan.nextLine());
 
           if (tokens == null) return;
 
@@ -76,8 +74,8 @@ public abstract class AbstractGraphQueryEngine {
             StringTokenizer tokens2 =
                 new StringTokenizer(tokens[PROPERTY_FILE_INDEX.PROPERTY_VALUE.ordinal()], ",");
 
-            /* Store as string but we will use PROPERTY_TYPE to cast it appropriately later */
-            String linePropertyValue[] = new String[tokens2.countTokens()];
+            /* Store as string, but we will use PROPERTY_TYPE to cast it appropriately later */
+            String[] linePropertyValue = new String[tokens2.countTokens()];
             for (int j = 0; tokens2.hasMoreTokens(); j++)
               linePropertyValue[j] = (tokens2.nextToken());
 
@@ -93,9 +91,6 @@ public abstract class AbstractGraphQueryEngine {
         System.out.println(
             "Error : File " + file.getName() + " not found in path " + file.getPath());
         System.out.println("Unable to create properties described in " + file.getName());
-      } catch (IOException e) {
-        System.out.println("Error : File " + file.getName() + " has invalid content");
-        System.out.println("Unable to create properties described in " + file.getName());
       }
     }
   }
@@ -108,11 +103,10 @@ public abstract class AbstractGraphQueryEngine {
    * @param line String corresponding to a line in [*TAG*]_Neo4JProperties.csv file
    * @return String[] Array of tokens extracted from the line
    * @since 1.0.0
-   * @version 1.0.0
    */
   public String[] getPropertyFileTokens(String line) {
 
-    String tokens[] = lineSeparatorPattern.split(line, 3);
+    String[] tokens = lineSeparatorPattern.split(line, 3);
 
     if (tokens == null) return null;
 
@@ -122,7 +116,7 @@ public abstract class AbstractGraphQueryEngine {
 
     if (!tokens[1].equals("JSTRING")) return tokens;
 
-    String valueTokens[] = lineValueSeparatorPattern.split(tokens[2]);
+    String[] valueTokens = lineValueSeparatorPattern.split(tokens[2]);
     tokens[2] = "";
 
     /* First element of valueTokens is going to be empty*/
