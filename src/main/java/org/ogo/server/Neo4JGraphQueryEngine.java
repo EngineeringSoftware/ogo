@@ -37,7 +37,7 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
   /** Handle to the Neo4J database */
   private GraphDatabaseService graphDb;
 
-  /** Used to shutdown and clear the database */
+  /** Used to shut down and clear the database */
   private DatabaseManagementService managementService;
 
   /**
@@ -51,8 +51,8 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    *
    * <p>To maintain consistency, I have named relationship types based on JVMTI heap reference kind
    *
-   * <p>See
-   * https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#JVMTI_HEAP_REFERENCE_FIELD
+   * <p>See <a
+   * href="https://docs.oracle.com/en/java/javase/11/docs/specs/jvmti.html#JVMTI_HEAP_REFERENCE_FIELD">...</a>
    */
   protected enum REFERENCE_KIND implements RelationshipType {
     JVMTI_HEAP_REFERENCE_CLASS, // 1
@@ -68,7 +68,7 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
   }
 
   /** Use an array for quicker assigning of relationships */
-  protected final REFERENCE_KIND relationArray[] = {
+  protected final REFERENCE_KIND[] relationArray = {
     REFERENCE_KIND.JVMTI_HEAP_REFERENCE_CLASS,
     REFERENCE_KIND.JVMTI_HEAP_REFERENCE_FIELD,
     REFERENCE_KIND.JVMTI_HEAP_REFERENCE_ARRAY_ELEMENT,
@@ -85,10 +85,9 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
   public Neo4JGraphQueryEngine() throws RemoteException {}
 
   /**
-   * @brief Setup the database and register the shutdown hook
+   * @brief Set up the database and register the shutdown hook
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public void setup() throws RemoteException {
@@ -107,7 +106,7 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
       /*
        * Create nodeMap for manually creating relationships later (see importCsv())
        */
-      nodeMap = new HashMap<Long, Long>();
+      nodeMap = new HashMap<>();
     } catch (IOException e) {
       System.out.println("Failed to find directory for database creation");
     }
@@ -122,9 +121,8 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    * @param relationType type of relation interms of JVMTI_HEAP_REFERENCE_KIND
    * @param relationName name the edges/relations using appropriate field names
    * @since 1.0.0
-   * @version 1.0.0
    */
-  public void readRelationFile(
+  void readRelationFile(
       File file,
       ArrayList<Long> refNodes,
       ArrayList<REFERENCE_KIND> relationType,
@@ -165,15 +163,14 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
 
   /**
    * @brief Import object graph created by native agent into Neo4J Use CREATE instead of MERGE (see
-   *     https://neo4j.com/blog/bulk-data-import-neo4j-3-0/)
+   *     <a href="https://neo4j.com/blog/bulk-data-import-neo4j-3-0/">...</a>)
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public void createNodes() throws RemoteException {
     /* For storing *.csv files exported from native agent */
-    File files[];
+    File[] files;
 
     /*
      * Get all *.csv files in current directory describing instances and primitives
@@ -181,12 +178,12 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
     files = FileHelper.findFilesWithExtension(CsvPath, "java.csv");
 
     /* Create nodes */
-    for (int j = 0; j < files.length; j++) {
+    for (File file : files) {
 
       /* Construct Cypher query to create nodes from Csv files */
       String cQuery =
           "LOAD CSV WITH HEADERS FROM 'file://"
-              + files[j].getAbsolutePath()
+              + file.getAbsolutePath()
               + "' As row\n"
               + "CREATE (n {signature:row.Signature, tag:toInteger(row.Tag) ,"
               + " hash:toInteger(row.HashCode)})\n"
@@ -200,7 +197,7 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
           Result result = tx.execute(cQuery)) {
         while (result.hasNext()) {
 
-          /* Number of rows depends on the numebr of lines in CSV file */
+          /* Number of rows depends on the number of lines in CSV file */
           Map<String, Object> row = result.next();
 
           /* Store the returned node ID and Tag in HashMap to create relations later on */
@@ -210,21 +207,19 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
           Node node = ((Node) row.get("n"));
           node.addLabel(Label.label((String) row.get("n.signature")));
 
-          ArrayList<String> propertyName = new ArrayList<String>(0);
-          ArrayList<String[]> propertyValue = new ArrayList<String[]>(0);
-          ArrayList<String> propertyType = new ArrayList<String>(0);
+          ArrayList<String> propertyName = new ArrayList<>(0);
+          ArrayList<String[]> propertyValue = new ArrayList<>(0);
+          ArrayList<String> propertyType = new ArrayList<>(0);
 
           /* Get Properties if [*TAG*]_Neo4JProperties.csv file exists */
-          String propertiesFile =
-              String.valueOf((Long) row.get("n.tag")) + "_" + "Neo4JProperties.csv";
+          String propertiesFile = row.get("n.tag") + "_" + "Neo4JProperties.csv";
           getPropertiesFromFile(CsvPath, propertiesFile, propertyName, propertyValue, propertyType);
 
           /* Add properties to the node if any */
           for (int k = 0; k < propertyName.size(); k++) {
 
-            node =
-                CastObjectArrayToPrimitive.castToNeo4JPropertyType(
-                    propertyName.get(k), propertyValue.get(k), propertyType.get(k), node);
+            CastObjectArrayToPrimitive.castToNeo4JPropertyType(
+                propertyName.get(k), propertyValue.get(k), propertyType.get(k), node);
             /*
             		if(propertyValue.get(k).length == 1)
             		node.setProperty(propertyName.get(k), propertyValue.get(k)[0]);
@@ -238,7 +233,7 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
         tx.commit();
       } catch (QueryExecutionException e) {
         System.out.println("Error : Creation of node failed " + e.getMessage());
-        System.out.println("Unable to execute Cypher Query for CSV file " + files[j].getName());
+        System.out.println("Unable to execute Cypher Query for CSV file " + file.getName());
       } catch (NullPointerException e) {
         e.getMessage();
       }
@@ -249,12 +244,11 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    * @brief Create relations described in [*REFERRER TAG*]_Neo4JRelations.csv
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public void createRelations() throws RemoteException {
     /* For storing *.csv files exported from native agent */
-    File files[];
+    File[] files;
 
     /*
      * Get all [*TAG*]_Neo4JRelation.csv files in current directory describing
@@ -263,18 +257,18 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
     files = FileHelper.findFilesWithExtension(CsvPath, "Neo4JRelations.csv");
 
     /* Create relations */
-    for (int j = 0; j < files.length; j++) {
+    for (File file : files) {
       try (Transaction tx = graphDb.beginTx()) {
-        ArrayList<Long> refereeTags = new ArrayList<Long>();
-        ArrayList<REFERENCE_KIND> relationType = new ArrayList<REFERENCE_KIND>();
-        ArrayList<String> relationName = new ArrayList<String>();
+        ArrayList<Long> refereeTags = new ArrayList<>();
+        ArrayList<REFERENCE_KIND> relationType = new ArrayList<>();
+        ArrayList<String> relationName = new ArrayList<>();
 
         /* Get referrer tag from [*REFERRER TAG*]_Neo4JRelations.csv file name */
         Long referrerTag =
-            Long.parseLong((files[j].getName()).substring(0, (files[j].getName()).indexOf("_")));
+            Long.parseLong((file.getName()).substring(0, (file.getName()).indexOf("_")));
 
         /* Read [*REFERRER TAG*]_Neo4JRelations.csv file to get 'referee tags', reference kinds and reference names*/
-        readRelationFile(files[j], refereeTags, relationType, relationName);
+        readRelationFile(file, refereeTags, relationType, relationName);
 
         /* Get 'referrer node ID', tag present in [*REFERRER TAG*]_NeoJRelations.csv file name */
         Long referrerNodeID = nodeMap.get(referrerTag);
@@ -316,8 +310,7 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
         }
       } catch (QueryExecutionException e) {
         System.out.println("Error : Creation of relationship failed");
-        System.out.println(
-            "Unable to create relation for instances in CSV file " + files[j].getName());
+        System.out.println("Unable to create relation for instances in CSV file " + file.getName());
       } catch (NullPointerException e) {
         e.getMessage();
       }
@@ -330,12 +323,11 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    * @param cQuery String in Cypher to query the database
    * @return boolean returns true if queried pattern matches any existing pattern in the database
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public ArrayList<Object> query(String cQuery) throws RemoteException {
 
-    ArrayList<Object> res = new ArrayList<Object>();
+    ArrayList<Object> res = new ArrayList<>();
 
     /* Execute the query */
     try (Transaction tx = graphDb.beginTx();
@@ -368,7 +360,6 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    *     (Possibly update the databse instead ?)
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public void clearDatabase() throws RemoteException {
@@ -394,7 +385,6 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    * @brief Shutdown database
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public void shutDown() throws RemoteException {
@@ -406,17 +396,9 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    * @author 1sand0s
    * @param managementService reference to the database management service
    * @since 1.0.0
-   * @version 1.0.0
    */
   private void registerShutdownHook(final DatabaseManagementService managementService) {
-    Runtime.getRuntime()
-        .addShutdownHook(
-            new Thread() {
-              @Override
-              public void run() {
-                managementService.shutdown();
-              }
-            });
+    Runtime.getRuntime().addShutdownHook(new Thread(managementService::shutdown));
   }
 
   /**
@@ -424,7 +406,6 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
    * @author 1sand0s
    * @param path Path where the native agent writes the Csv files
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public void setPath(String path) throws RemoteException {
@@ -434,24 +415,22 @@ public class Neo4JGraphQueryEngine extends AbstractGraphQueryEngine
   /**
    * @brief Sets the path from where Csv files generated by native agent are read
    * @author 1sand0s
-   * @param path Path where the native agent writes the Csv files
+   * @return Path where the native agent writes the Csv files
    * @since 1.0.0
-   * @version 1.0.0
    */
   @Override
   public String getPath() throws RemoteException {
     return CsvPath;
   }
 
-  public static void main(String[] args)
-      throws RemoteException, IOException, AlreadyBoundException {
+  public static void main(String[] args) throws IOException, AlreadyBoundException {
     int rmiPort = OGOProperties.getRmiPort();
     String name = "Neo4JGraphQueryEngine";
-    AbstractGraphQueryInterface engine = new Neo4JGraphQueryEngine();
+    Neo4JGraphQueryEngine engine = new Neo4JGraphQueryEngine();
     AbstractGraphQueryInterface stub =
         (AbstractGraphQueryInterface) UnicastRemoteObject.exportObject(engine, 0);
     Registry registry = LocateRegistry.createRegistry(rmiPort);
     registry.bind(name, stub);
-    ((Neo4JGraphQueryEngine) engine).setup();
+    engine.setup();
   }
 }
