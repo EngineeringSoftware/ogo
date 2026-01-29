@@ -6,15 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 import org.ogo.bridge.AbstractGraphQueryInterface;
 import org.ogo.util.FileHelper;
 import org.ogo.util.OGOProperties;
@@ -46,16 +45,16 @@ public abstract class OGO {
    * Instances of Classes belonging to these packages will be definitely included in the object
    * graph
    */
-  protected static ArrayList<String> whiteList = new ArrayList<String>();
+  protected static ArrayList<String> whiteList = new ArrayList<>();
 
   /** Instances of Classes belonging to these packages will be excluded from being blacklisted */
-  protected static ArrayList<String> excludeBlackListing = new ArrayList<String>();
+  protected static ArrayList<String> excludeBlackListing = new ArrayList<>();
 
   /**
    * Instances of Classes belonging to these packages will be definitely excluded from the object
    * graph
    */
-  protected static ArrayList<String> blackList = new ArrayList<String>();
+  protected static ArrayList<String> blackList = new ArrayList<>();
 
   private static AbstractGraphQueryInterface graphInterface = null;
 
@@ -64,12 +63,11 @@ public abstract class OGO {
    * @author 1sand0s
    * @param cQuery String in Cypher to query the database
    * @since 1.0.0
-   * @version 1.0.0
    */
-  public static void init() throws RemoteException, IOException, NotBoundException {
+  public static void init() throws IOException, NotBoundException {
     inMemory = OGOProperties.getInMemory();
     clearDatabase = OGOProperties.getClearDatabase();
-    if (graphInterface == null && inMemory == false) {
+    if (graphInterface == null && !inMemory) {
       int rmiPort = OGOProperties.getRmiPort();
       Registry registry = LocateRegistry.getRegistry(rmiPort);
       graphInterface = (AbstractGraphQueryInterface) registry.lookup("Neo4JGraphQueryEngine");
@@ -82,16 +80,15 @@ public abstract class OGO {
    * @param className user given class name in CREATE query
    * @param fieldDescriptors field descriptors of user specified fields
    * @since 1.0.0
-   * @version 1.0.0
    */
   private static String getDynamicClassName(String className, String[] fieldDescriptors)
       throws Exception {
     MessageDigest md = MessageDigest.getInstance("SHA-256");
-    String inputString = className;
-    for (int j = 0; j < fieldDescriptors.length; j++) {
-      inputString += fieldDescriptors[j];
+    StringBuilder inputString = new StringBuilder(className);
+    for (String fieldDescriptor : fieldDescriptors) {
+      inputString.append(fieldDescriptor);
     }
-    md.update(inputString.getBytes("UTF-8"));
+    md.update(inputString.toString().getBytes(StandardCharsets.UTF_8));
     byte[] byteArray = md.digest();
     StringBuilder hexString = new StringBuilder(2 * byteArray.length);
     for (byte b : byteArray) {
@@ -107,7 +104,6 @@ public abstract class OGO {
    * @author 1sand0s
    * @param cQuery String in Cypher to query the database
    * @since 1.0.0
-   * @version 1.0.0
    */
   public static void setPath(String CsvPath) throws RemoteException {
     OGO.CsvPath = CsvPath;
@@ -121,9 +117,7 @@ public abstract class OGO {
    */
   public static boolean queryBool(String cQuery) throws RemoteException {
     Object[] result = query(cQuery);
-    return result.length > 0
-        && result[0] instanceof Boolean
-        && ((Boolean) result[0]).booleanValue();
+    return result.length > 0 && result[0] instanceof Boolean && (Boolean) result[0];
   }
 
   /**
@@ -134,9 +128,7 @@ public abstract class OGO {
    */
   public static boolean queryBool(String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(cQuery, objects);
-    return result.length > 0
-        && result[0] instanceof Boolean
-        && ((Boolean) result[0]).booleanValue();
+    return result.length > 0 && result[0] instanceof Boolean && (Boolean) result[0];
   }
 
   /**
@@ -149,9 +141,7 @@ public abstract class OGO {
    */
   public static boolean queryBool(Object root, String cQuery) throws RemoteException {
     Object[] result = query(root, cQuery);
-    return result.length > 0
-        && result[0] instanceof Boolean
-        && ((Boolean) result[0]).booleanValue();
+    return result.length > 0 && result[0] instanceof Boolean && (Boolean) result[0];
   }
 
   /**
@@ -166,9 +156,7 @@ public abstract class OGO {
   public static boolean queryBool(Object root, String cQuery, Object... objects)
       throws RemoteException {
     Object[] result = query(root, cQuery, objects);
-    return result.length > 0
-        && result[0] instanceof Boolean
-        && ((Boolean) result[0]).booleanValue();
+    return result.length > 0 && result[0] instanceof Boolean && (Boolean) result[0];
   }
 
   /**
@@ -181,7 +169,7 @@ public abstract class OGO {
   public static int queryInt(String cQuery) throws RemoteException {
     Object[] result = query(cQuery);
     if (result.length > 0) {
-      return ((Integer) result[0]).intValue();
+      return (Integer) result[0];
     }
     return -1;
   }
@@ -197,7 +185,7 @@ public abstract class OGO {
   public static int queryInt(String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(cQuery, objects);
     if (result.length > 0) {
-      return ((Integer) result[0]).intValue();
+      return (Integer) result[0];
     }
     return -1;
   }
@@ -213,7 +201,7 @@ public abstract class OGO {
   public static int queryInt(Object root, String cQuery) throws RemoteException {
     Object[] result = query(root, cQuery);
     if (result.length > 0) {
-      return ((Integer) result[0]).intValue();
+      return (Integer) result[0];
     }
     return -1;
   }
@@ -230,7 +218,7 @@ public abstract class OGO {
   public static int queryInt(Object root, String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(root, cQuery, objects);
     if (result.length > 0) {
-      return ((Integer) result[0]).intValue();
+      return (Integer) result[0];
     }
     return -1;
   }
@@ -243,9 +231,9 @@ public abstract class OGO {
    * @throws RemoteException
    */
   public static long queryLong(String cQuery) throws RemoteException {
-    Object[] result = query(null, cQuery, null);
+    Object[] result = query(cQuery);
     if (result.length > 0) {
-      return ((Long) result[0]).longValue();
+      return (Long) result[0];
     }
     return -1;
   }
@@ -259,9 +247,9 @@ public abstract class OGO {
    * @throws RemoteException
    */
   public static long queryLong(String cQuery, Object... objects) throws RemoteException {
-    Object[] result = query(null, cQuery, objects);
+    Object[] result = query(cQuery, objects);
     if (result.length > 0) {
-      return ((Long) result[0]).longValue();
+      return (Long) result[0];
     }
     return -1;
   }
@@ -277,7 +265,7 @@ public abstract class OGO {
   public static long queryLong(Object root, String cQuery) throws RemoteException {
     Object[] result = query(root, cQuery);
     if (result.length > 0) {
-      return ((Long) result[0]).longValue();
+      return (Long) result[0];
     }
     return -1;
   }
@@ -295,7 +283,7 @@ public abstract class OGO {
       throws RemoteException {
     Object[] result = query(root, cQuery, objects);
     if (result.length > 0) {
-      return ((Long) result[0]).longValue();
+      return (Long) result[0];
     }
     return -1;
   }
@@ -309,7 +297,7 @@ public abstract class OGO {
    * @throws RemoteException
    */
   public static Object[] query(Object root, String cQuery) throws RemoteException {
-    return query(root, cQuery, null);
+    return query(root, cQuery, (Object) null);
   }
 
   /**
@@ -388,11 +376,12 @@ public abstract class OGO {
       profileData.add("Cleanup, " + (eTime - sTime));
     }
 
-    if (profileMethod.length() > 0) writeProfileFile(profileData);
+    if (!profileMethod.isEmpty()) writeProfileFile(profileData);
     if (inMemory) {
       return graphException.getQueryResults();
     }
 
+    assert var != null;
     return var.toArray();
   }
 
@@ -406,7 +395,7 @@ public abstract class OGO {
      * Read the Profile Data Generated from JVMTI invocation required to create
      * object graph
      */
-    profileData = new ArrayList<String>();
+    profileData = new ArrayList<>();
 
     sTime = System.currentTimeMillis();
     try {
@@ -451,7 +440,7 @@ public abstract class OGO {
       }
     }
 
-    for (File f : new File(CsvPath).listFiles()) {
+    for (File f : Objects.requireNonNull(new File(CsvPath).listFiles())) {
       if (f.getName().endsWith(".csv")) {
         /* Delete all *.csv files in the current directory */
         if (!printCSV && !inMemory) {
@@ -482,7 +471,7 @@ public abstract class OGO {
           new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
 
       /* Write blacklist of packages to file */
-      for (int j = 0; j < profileData.size(); j++) writer.write(profileData.get(j) + "\n");
+      for (String profileDatum : profileData) writer.write(profileDatum + "\n");
 
       writer.close();
     } catch (FileNotFoundException e) {
@@ -503,7 +492,7 @@ public abstract class OGO {
    */
   private static void readJVMTIProfile(ArrayList<String> profileData) {
     profileData.clear();
-    for (File f : new File(CsvPath).listFiles()) {
+    for (File f : Objects.requireNonNull(new File(CsvPath).listFiles())) {
       if (f.getName().startsWith("PROFILE_HOQ_C_")) {
         Scanner scan;
         try {
@@ -531,7 +520,7 @@ public abstract class OGO {
     for (StackTraceElement st : Thread.currentThread().getStackTrace()) {
       try {
         if (Class.forName(st.getClassName())
-            .getMethod(st.getMethodName(), null)
+            .getMethod(st.getMethodName())
             .isAnnotationPresent(Profile.class)) {
           methodName = st.getMethodName();
           break;
@@ -567,7 +556,7 @@ public abstract class OGO {
     clearBlackList();
 
     /* Add new packages in packageNames to blacklist */
-    for (int j = 0; j < packageNames.length; j++) blackList.add(packageNames[j]);
+    blackList.addAll(Arrays.asList(packageNames));
   }
 
   /**
@@ -595,7 +584,7 @@ public abstract class OGO {
     clearWhiteList();
 
     /* Add new packages in packageNames to whitelist */
-    for (int j = 0; j < packageNames.length; j++) whiteList.add(packageNames[j]);
+    whiteList.addAll(Arrays.asList(packageNames));
   }
 
   /**
@@ -623,7 +612,7 @@ public abstract class OGO {
     clearExcludeFromBlackList();
 
     /* Add new packages in packageNames to whitelist */
-    for (int j = 0; j < packageNames.length; j++) excludeBlackListing.add(packageNames[j]);
+    excludeBlackListing.addAll(Arrays.asList(packageNames));
   }
 
   /**
