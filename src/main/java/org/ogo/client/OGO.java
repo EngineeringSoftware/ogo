@@ -59,10 +59,14 @@ public abstract class OGO {
   private static AbstractGraphQueryInterface graphInterface = null;
 
   /**
-   * @brief API call for executing Cypher query
-   * @author 1sand0s
-   * @param cQuery String in Cypher to query the database
-   * @since 1.0.0
+   * Initializes the OGO framework by configuring in-memory or Neo4j database mode.
+   *
+   * <p>This method must be called before executing any queries. It reads configuration from
+   * OGOProperties to determine whether to use the in-memory graph query engine (OGO_Mem) or connect
+   * to a Neo4j database (OGO_Neo) via RMI for query execution.
+   *
+   * @throws IOException if RMI registry connection fails
+   * @throws NotBoundException if the Neo4JGraphQueryEngine is not bound in the RMI registry
    */
   public static void init() throws IOException, NotBoundException {
     inMemory = OGOProperties.getInMemory();
@@ -100,10 +104,13 @@ public abstract class OGO {
   }
 
   /**
-   * @brief API call for executing Cypher query
-   * @author 1sand0s
-   * @param cQuery String in Cypher to query the database
-   * @since 1.0.0
+   * Sets the path for CSV file output when using Neo4j database mode.
+   *
+   * <p>In OGO_Neo mode, the object graph is serialized to CSV files at this path for batch import
+   * into Neo4j. This path is also used for profile data output when profiling is enabled.
+   *
+   * @param CsvPath the directory path where CSV files will be written
+   * @throws RemoteException if the remote graph interface is unavailable
    */
   public static void setPath(String CsvPath) throws RemoteException {
     OGO.CsvPath = CsvPath;
@@ -111,9 +118,12 @@ public abstract class OGO {
   }
 
   /**
-   * @param cQuery the Cypher query string
-   * @return If the query evaluated to true or false
-   * @throws RemoteException
+   * Executes an unbounded Cypher query and returns the first result as a boolean.
+   *
+   * @param cQuery the Cypher query string to execute on the entire object heap
+   * @return true if the query returns at least one result and the first result is a Boolean true,
+   *     false otherwise
+   * @throws RemoteException if the query execution fails
    */
   public static boolean queryBool(String cQuery) throws RemoteException {
     Object[] result = query(cQuery);
@@ -121,10 +131,15 @@ public abstract class OGO {
   }
 
   /**
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * Executes an unbounded Cypher query with positional arguments and returns the first result as a
+   * boolean.
+   *
+   * @param cQuery the Cypher query string to execute on the entire object heap
+   * @param objects variadic arguments used to expand positional arguments ($N, @N, []N) in the
+   *     query string
+   * @return true if the query returns at least one result and the first result is a Boolean true,
+   *     false otherwise
+   * @throws RemoteException if the query execution fails
    */
   public static boolean queryBool(String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(cQuery, objects);
@@ -132,12 +147,13 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query and returns the first result as a boolean.
    *
-   * @param root
-   * @param cQuery
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to the reachable subgraph
+   * @param cQuery the Cypher query string to execute on the object graph
+   * @return true if the query returns at least one result and the first result is a Boolean true,
+   *     false otherwise
+   * @throws RemoteException if the query execution fails
    */
   public static boolean queryBool(Object root, String cQuery) throws RemoteException {
     Object[] result = query(root, cQuery);
@@ -145,13 +161,16 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query with positional arguments and returns the first result as a
+   * boolean.
    *
-   * @param root
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to the reachable subgraph
+   * @param cQuery the Cypher query string to execute on the object graph
+   * @param objects variadic arguments used to expand positional arguments ($N, @N, []N) in the
+   *     query string
+   * @return true if the query returns at least one result and the first result is a Boolean true,
+   *     false otherwise
+   * @throws RemoteException if the query execution fails
    */
   public static boolean queryBool(Object root, String cQuery, Object... objects)
       throws RemoteException {
@@ -160,11 +179,11 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes an unbounded Cypher query and returns the first result as an integer.
    *
-   * @param cQuery
-   * @return
-   * @throws RemoteException
+   * @param cQuery the Cypher query string to execute on the entire object heap
+   * @return the first result as an Integer, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static int queryInt(String cQuery) throws RemoteException {
     Object[] result = query(cQuery);
@@ -175,12 +194,14 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes an unbounded Cypher query with positional arguments and returns the first result as an
+   * integer.
    *
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * @param cQuery the Cypher query string to execute on the entire object heap
+   * @param objects variadic arguments used to expand positional arguments ($N, @N, []N) in the
+   *     query string
+   * @return the first result as an Integer, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static int queryInt(String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(cQuery, objects);
@@ -191,12 +212,12 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query and returns the first result as an integer.
    *
-   * @param root
-   * @param cQuery
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to the reachable subgraph
+   * @param cQuery the Cypher query string to execute on the object graph
+   * @return the first result as an Integer, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static int queryInt(Object root, String cQuery) throws RemoteException {
     Object[] result = query(root, cQuery);
@@ -207,13 +228,15 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query with positional arguments and returns the first result as an
+   * integer.
    *
-   * @param root
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to the reachable subgraph
+   * @param cQuery the Cypher query string to execute on the object graph
+   * @param objects variadic arguments used to expand positional arguments ($N, @N, []N) in the
+   *     query string
+   * @return the first result as an Integer, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static int queryInt(Object root, String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(root, cQuery, objects);
@@ -224,11 +247,11 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes an unbounded Cypher query and returns the first result as a long.
    *
-   * @param cQuery
-   * @return
-   * @throws RemoteException
+   * @param cQuery the Cypher query string to execute on the entire object heap
+   * @return the first result as a Long, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static long queryLong(String cQuery) throws RemoteException {
     Object[] result = query(cQuery);
@@ -239,12 +262,14 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes an unbounded Cypher query with positional arguments and returns the first result as a
+   * long.
    *
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * @param cQuery the Cypher query string to execute on the entire object heap
+   * @param objects variadic arguments used to expand positional arguments ($N, @N, []N) in the
+   *     query string
+   * @return the first result as a Long, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static long queryLong(String cQuery, Object... objects) throws RemoteException {
     Object[] result = query(cQuery, objects);
@@ -255,12 +280,12 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query and returns the first result as a long.
    *
-   * @param root
-   * @param cQuery
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to the reachable subgraph
+   * @param cQuery the Cypher query string to execute on the object graph
+   * @return the first result as a Long, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static long queryLong(Object root, String cQuery) throws RemoteException {
     Object[] result = query(root, cQuery);
@@ -271,13 +296,15 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query with positional arguments and returns the first result as a
+   * long.
    *
-   * @param root
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to the reachable subgraph
+   * @param cQuery the Cypher query string to execute on the object graph
+   * @param objects variadic arguments used to expand positional arguments ($N, @N, []N) in the
+   *     query string
+   * @return the first result as a Long, or -1 if no results are returned
+   * @throws RemoteException if the query execution fails
    */
   public static long queryLong(Object root, String cQuery, Object... objects)
       throws RemoteException {
@@ -289,37 +316,83 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query on the object graph reachable from the specified root.
    *
-   * @param root
-   * @param cQuery
-   * @return
-   * @throws RemoteException
+   * @param root the root object that constrains query execution to only objects reachable (under
+   *     transitive closure of reference fields) from this root. This enables localized queries and
+   *     improves performance by focusing traversal on a subgraph of the entire object heap.
+   * @param cQuery the Cypher query string to execute on the object graph. The query treats the
+   *     object heap as a graph database where each object is a node (labeled with its fully
+   *     qualified class name), primitive/String fields are node properties, and reference fields
+   *     are relationships (labeled with the field name) between nodes.
+   * @return an array of objects matching the query results
+   * @throws RemoteException if the query execution fails
    */
   public static Object[] query(Object root, String cQuery) throws RemoteException {
     return query(root, cQuery, (Object) null);
   }
 
   /**
-   * 0
+   * Executes an unbounded Cypher query on the entire object heap.
    *
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * <p>Unlike bounded queries, unbounded queries execute on the complete available object heap
+   * without restriction to a specific subgraph. This provides access to all objects in memory but
+   * with less precise semantics due to the dynamic nature of the JVM and garbage collection.
+   *
+   * @param cQuery the Cypher query string to execute on the object graph. The query treats the
+   *     object heap as a graph database where each object is a node (labeled with its fully
+   *     qualified class name), primitive/String fields are node properties, and reference fields
+   *     are relationships (labeled with the field name) between nodes.Supports positional arguments
+   *     that will be expanded using the provided objects array.
+   * @param objects variadic arguments used to expand positional arguments in the query string:
+   *     <ul>
+   *       <li>{@code $N} expands to the unique identifier of {@code objects[N-1]}
+   *       <li>{@code @N} expands to the fully qualified class name of {@code objects[N-1]}
+   *       <li>{@code []N} unions results for each element if {@code objects[N-1]} is Iterable
+   *     </ul>
+   *
+   * @return an array of objects matching the query results
+   * @throws RemoteException if the query execution fails
    */
   public static Object[] query(String cQuery, Object... objects) throws RemoteException {
     return query(null, cQuery, objects);
   }
 
   /**
-   * 0
+   * Executes a bounded Cypher query on the object graph with positional argument expansion.
    *
-   * @param root
-   * @param cQuery
-   * @param objects
-   * @return
-   * @throws RemoteException
+   * <p>This is the most flexible query method, combining both root-bounded execution and positional
+   * argument expansion. The query is constrained to objects reachable from the root object, and the
+   * query string can reference runtime values through positional arguments.
+   *
+   * <p><b>Example usage:</b>
+   *
+   * <pre>{@code
+   * // Find all nodes reachable from bTree.root with value=1 exactly 2 hops away
+   * Object[] result = query(
+   *     bTree.root,
+   *     "MATCH (n {$1})-[:left|right*2]->(m:@1 {value:1}) RETURN m",
+   *     bTree.root, Node.class
+   * );
+   * }</pre>
+   *
+   * @param root the root object that constrains query execution to only objects reachable (under
+   *     transitive closure of reference fields) from this root. This enables localized queries and
+   *     improves performance by focusing traversal on a subgraph of the entire object heap. Can be
+   *     a collection containing multiple roots.
+   * @param cQuery the Cypher query string to execute on the object graph. The query treats the
+   *     object heap as a graph database where each object is a node (labeled with its fully
+   *     qualified class name), primitive/String fields are node properties, and reference fields
+   *     are relationships (labeled with the field name) between nodes.
+   * @param objects variadic arguments used to expand positional arguments in the query string:
+   *     <ul>
+   *       <li>{@code $N} expands to the unique identifier of {@code objects[N-1]}
+   *       <li>{@code @N} expands to the fully qualified class name of {@code objects[N-1]}
+   *       <li>{@code []N} unions results for each element if {@code objects[N-1]} is Iterable
+   *     </ul>
+   *
+   * @return an array of objects matching the query results
+   * @throws RemoteException if the query execution fails
    */
   public static Object[] query(Object root, String cQuery, Object... objects)
       throws RemoteException {
@@ -385,11 +458,6 @@ public abstract class OGO {
     return var.toArray();
   }
 
-  /**
-   * 0
-   *
-   * @throws RemoteException
-   */
   private static void setupGraph() throws RemoteException {
     /*
      * Read the Profile Data Generated from JVMTI invocation required to create
@@ -427,11 +495,6 @@ public abstract class OGO {
     }
   }
 
-  /**
-   * 0
-   *
-   * @throws RemoteException
-   */
   private static void cleanup() throws RemoteException {
     if (!inMemory) {
       if (clearDatabase) {
@@ -453,11 +516,6 @@ public abstract class OGO {
     }
   }
 
-  /**
-   * 0
-   *
-   * @param profileData
-   */
   private static void writeProfileFile(ArrayList<String> profileData) {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-z");
@@ -485,11 +543,6 @@ public abstract class OGO {
     }
   }
 
-  /**
-   * 0
-   *
-   * @param profileData
-   */
   private static void readJVMTIProfile(ArrayList<String> profileData) {
     profileData.clear();
     for (File f : Objects.requireNonNull(new File(CsvPath).listFiles())) {
@@ -509,11 +562,6 @@ public abstract class OGO {
     }
   }
 
-  /**
-   * 0
-   *
-   * @return
-   */
   private static String getTestMethodName() {
     String methodName = "";
 
@@ -546,9 +594,17 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Sets the blacklist of package names whose instances will be excluded from the object graph.
    *
-   * @param packageNames
+   * <p>The blacklist optimization helps reduce the size of the object graph by filtering out
+   * instances of classes from specified packages. This improves performance by limiting the number
+   * of objects traversed and serialized during query execution. Clears any existing blacklist
+   * entries before adding the new packages.
+   *
+   * @param packageNames package names to exclude from the object graph (e.g., "java.lang",
+   *     "sun.misc")
+   * @see #addBlackList(String)
+   * @see #clearBlackList()
    */
   public static void setBlackList(String... packageNames) {
 
@@ -560,23 +616,43 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Adds a single package name to the blacklist.
    *
-   * @param packageName
+   * <p>Instances of classes belonging to this package will be excluded from the object graph during
+   * query execution.
+   *
+   * @param packageName the package name to add to the blacklist
+   * @see #setBlackList(String...)
    */
   public static void addBlackList(String packageName) {
     blackList.add(packageName);
   }
 
-  /***/
+  /**
+   * Clears all entries from the blacklist.
+   *
+   * <p>After calling this method, no packages will be blacklisted and all instances will be
+   * considered for inclusion in the object graph (subject to whitelist constraints).
+   *
+   * @see #setBlackList(String...)
+   */
   public static void clearBlackList() {
     blackList.clear();
   }
 
   /**
-   * 0
+   * Sets the whitelist of package names whose instances will be included in the object graph.
    *
-   * @param packageNames
+   * <p>The whitelist optimization (WL) limits the object graph to only instances of classes from
+   * specified packages (and objects reachable from them under transitive closure). This
+   * dramatically reduces object graph size and improves query performance. According to the paper,
+   * +WL+FGC provides the biggest performance reduction. Clears any existing whitelist entries
+   * before adding the new packages.
+   *
+   * @param packageNames package names to include in the object graph (e.g., "org.myapp",
+   *     "com.example")
+   * @see #addWhiteList(String)
+   * @see #clearWhiteList()
    */
   public static void setWhiteList(String... packageNames) {
 
@@ -588,23 +664,41 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Adds a single package name to the whitelist.
    *
-   * @param packageName
+   * <p>Instances of classes belonging to this package will be included in the object graph during
+   * query execution.
+   *
+   * @param packageName the package name to add to the whitelist
+   * @see #setWhiteList(String...)
    */
   public static void addWhiteList(String packageName) {
     whiteList.add(packageName);
   }
 
-  /***/
+  /**
+   * Clears all entries from the whitelist.
+   *
+   * <p>After calling this method, all packages may be included in the object graph (subject to
+   * blacklist constraints and other filters).
+   *
+   * @see #setWhiteList(String...)
+   */
   public static void clearWhiteList() {
     whiteList.clear();
   }
 
   /**
-   * 0
+   * Sets packages that should be excluded from automatic blacklisting.
    *
-   * @param packageNames
+   * <p>Even if a package would normally be blacklisted by internal heuristics or other mechanisms,
+   * packages in this list will be protected from blacklisting. This provides fine-grained control
+   * over which packages are guaranteed to be included. Clears any existing entries before adding
+   * the new packages.
+   *
+   * @param packageNames package names to exclude from blacklisting
+   * @see #addExcludeFromBlackList(String)
+   * @see #clearExcludeFromBlackList()
    */
   public static void setExcludeFromBlackList(String... packageNames) {
 
@@ -616,15 +710,24 @@ public abstract class OGO {
   }
 
   /**
-   * 0
+   * Adds a single package name to the exclude-from-blacklist.
    *
-   * @param packageName
+   * <p>This package will be protected from automatic blacklisting.
+   *
+   * @param packageName the package name to exclude from blacklisting
+   * @see #setExcludeFromBlackList(String...)
    */
   public static void addExcludeFromBlackList(String packageName) {
     excludeBlackListing.add(packageName);
   }
 
-  /***/
+  /**
+   * Clears all entries from the exclude-from-blacklist.
+   *
+   * <p>After calling this method, no packages have special protection from blacklisting.
+   *
+   * @see #setExcludeFromBlackList(String...)
+   */
   public static void clearExcludeFromBlackList() {
     excludeBlackListing.clear();
   }
