@@ -2,7 +2,6 @@
 
 #include <vector>
 
-
 namespace UTIL::AGENT {
 /**
  * @def STRINGIFY_MACRO_
@@ -39,4 +38,3 @@ bool searchTag(int l, int h, long value, const std::vector<long> &tags,
  */
 void mergeSort(int i, int j, std::vector<long> &a, std::vector<long> &aux);
 } // namespace UTIL::AGENT
-

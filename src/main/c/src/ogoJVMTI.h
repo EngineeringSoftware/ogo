@@ -243,7 +243,8 @@ embedBoxedPrimitiveInstances(InstanceInfo *boxedPrimitiveInstance,
  * @param classInstance   The Class.Class.java instance of referrer instance
  */
 static void
-assignFieldNamesToReferenceFields(const InstanceInfo *referrer, int referenceIndex,
+assignFieldNamesToReferenceFields(const InstanceInfo *referrer,
+                                  int referenceIndex,
                                   map<int, FieldInfo *> &inheritedFields);
 
 /**

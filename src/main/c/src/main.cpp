@@ -254,7 +254,8 @@ static void getObjectsWithTagscInfo(jobject **objects, long **tags,
         continue;
       }
 
-      cTags = static_cast<long *>(realloc(cTags, (cTagCount + 1) * sizeof(long)));
+      cTags =
+          static_cast<long *>(realloc(cTags, (cTagCount + 1) * sizeof(long)));
       cTags[cTagCount] = cInfo->instanceTags[k];
       cTagCount++;
     }
@@ -503,8 +504,7 @@ jint JNICALL heap_referenceCallback(
 
       /* Classes of referee instances limited to tagged classes to control
          object classNameList size */
-      class_tag > 0 &&
-      class_tag <= classInfoCount &&
+      class_tag > 0 && class_tag <= classInfoCount &&
 
       /* Referee Instances must be tagged (see heap_iterationCallback) */
       *tag_ptr > 0 &&
@@ -560,8 +560,8 @@ jint JNICALL heap_referenceCallback(
     /* Variable for holding index of the references (for better readability) */
     int referenceIndex = iInfo->references.size();
 
-    auto *rInfo = new ReferenceInfo(reference_kind, *tag_ptr,
-                                             class_tag, iInfo->writeToGraph);
+    auto *rInfo = new ReferenceInfo(reference_kind, *tag_ptr, class_tag,
+                                    iInfo->writeToGraph);
 
     /* If the current instance is a reference field of the referrer instance
      * then store its fieldIndex which can be used to get the name of the
@@ -905,14 +905,12 @@ static void embedStringInstances(const InstanceInfo *stringInstance,
    */
   for (const auto reference : stringInstance->references) {
 
-    if (reference->referenceKind ==
-        JVMTI_HEAP_REFERENCE_FIELD) {
+    if (reference->referenceKind == JVMTI_HEAP_REFERENCE_FIELD) {
 
       InstanceInfo *byteArrayInstance = nullptr;
 
-      classNameList[reference->referrerClassTag - 1]
-          ->getInstanceInfoWithTag(reference->referrerTag,
-                                   &byteArrayInstance);
+      classNameList[reference->referrerClassTag - 1]->getInstanceInfoWithTag(
+          reference->referrerTag, &byteArrayInstance);
 
       if (byteArrayInstance != nullptr) {
         /* Since the expected field is of type [B we check if the retrieved
@@ -920,8 +918,7 @@ static void embedStringInstances(const InstanceInfo *stringInstance,
          */
         if (byteArrayInstance->isPrimitiveArrayType) {
           for (FieldInfo *fInfo : byteArrayInstance->fields) {
-            if (agent->isFieldArrayType(fInfo->type) &&
-                !fInfo->value.empty()) {
+            if (agent->isFieldArrayType(fInfo->type) && !fInfo->value.empty()) {
               stringFieldOwningInstance->fields.push_back(fInfo);
               if (stringFieldIndex >= 0) {
                 fInfo->name = inheritedFields[stringFieldIndex]->name;
@@ -977,7 +974,8 @@ embedBoxedPrimitiveInstances(InstanceInfo *boxedPrimitiveInstance,
  * @param classInstance   The Class.Class.java instance of referrer instance
  */
 static void
-assignFieldNamesToReferenceFields(const InstanceInfo *referrer, const int referenceIndex,
+assignFieldNamesToReferenceFields(const InstanceInfo *referrer,
+                                  const int referenceIndex,
                                   map<int, FieldInfo *> &inheritedFields) {
   int refereeFieldIndex = referrer->references[referenceIndex]->fieldIndex;
 
@@ -1165,7 +1163,7 @@ static void getInheritedFieldInfo(const ClassInfo *cInfo,
   ClassInfo *superClass = classNameList[cInfo->superClassTag - 1];
   getInheritedFieldInfo(superClass, fields, fieldCount);
   /* Populate Super Class fields */
-  for (auto & field : superClass->fields) {
+  for (auto &field : superClass->fields) {
     fields.insert({fieldCount, field});
     fieldCount++;
   }
@@ -1217,7 +1215,7 @@ static void assignWriteToClassNameListToReferences(InstanceInfo *iInfo) {
   classNameList[iInfo->classTag - 1]->writeToGraph = true;
   long tag = iInfo->tag;
 
-  for (const auto & reference : iInfo->references) {
+  for (const auto &reference : iInfo->references) {
 
     const int referenceKind = reference->referenceKind;
 
@@ -1793,8 +1791,8 @@ void JNICALL exception_thrown(jvmtiEnv *jvmti_env, JNIEnv *jni_env,
             OGO::CYPHER_QUERY_RESULT_FIELD, "[Ljava/lang/Object;");
       }
     } else {
-      writeClassNameListToCsv_Internal_ =
-          static_cast<TIMER::TimeInfo *>(calloc(6, sizeof(struct TIMER::TimeInfo)));
+      writeClassNameListToCsv_Internal_ = static_cast<TIMER::TimeInfo *>(
+          calloc(6, sizeof(struct TIMER::TimeInfo)));
       TIMER_START_(writeClassNameListToCsv_)
       writeClassNameListToCsv(&writeClassNameListToCsv_Internal_);
       TIMER_END_(writeClassNameListToCsv_)
@@ -1850,7 +1848,8 @@ void JNICALL exception_thrown(jvmtiEnv *jvmti_env, JNIEnv *jni_env,
   }
 }
 
-void acceptVisitor(const string& query, antlr4::tree::ParseTreeVisitor *visitor) {
+void acceptVisitor(const string &query,
+                   antlr4::tree::ParseTreeVisitor *visitor) {
   ANTLRInputStream input(query);
   CypherLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
@@ -1939,7 +1938,8 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
   jvmtiEnv *jvmti_env;
 
   /* Get JVMTI environment */
-  rc = vm->functions->GetEnv(vm, reinterpret_cast<void **>(&jvmti_env), jvmtiVersion);
+  rc = vm->functions->GetEnv(vm, reinterpret_cast<void **>(&jvmti_env),
+                             jvmtiVersion);
   if (rc != JNI_OK || jvmti_env == nullptr) {
     printf("ERROR: Unable to create jvmtiEnv, GetEnv failed, error=%d\n", rc);
     return -1;

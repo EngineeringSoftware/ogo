@@ -216,14 +216,18 @@ public:
   bool isFieldArrayType(MethodReturnType type);
   string getClassName(jclass klass) const;
   string getClassName(jobject object) const;
-  void getClassName(jclass klass, string &className, string &classSignature) const;
+  void getClassName(jclass klass, string &className,
+                    string &classSignature) const;
   void getLoadedClasses(vector<jclass> &classes) const;
   jclass getObjectClass(jobject object) const;
   jstring createNewString(const string &str) const;
-  jobject createObject(const string& className, const string& constructorDescriptor,
+  jobject createObject(const string &className,
+                       const string &constructorDescriptor,
                        vector<jvalue> &args) const;
-  jobject createObjectV(const string& className, const string& constructorDescriptor, ...) const;
-  jobject createObjectV(jclass klass, const string& constructorDescriptor, ...) const;
+  jobject createObjectV(const string &className,
+                        const string &constructorDescriptor, ...) const;
+  jobject createObjectV(jclass klass, const string &constructorDescriptor,
+                        ...) const;
   jobject createObject(const jvalue &value, const MethodReturnType &type);
   jobject createObjectWithoutConstructor(jclass klass) const;
   jobjectArray createObjectArray(const vector<jobject> &elements) const;
@@ -248,17 +252,18 @@ public:
   JAVA_METHOD_CALLS_
 #undef ENTRY
 
-  jobject getInstanceObjectField(jobject instance, const string& fieldName,
-                                 const string& fieldDescriptor) const;
-  jvalue getInstancePrimitiveField(jobject instance, const string& fieldName,
-                                   const string& fieldDescriptor);
-  void getInstanceObjectArrayField(jobject instance, const string& fieldName,
-                                   const string& fieldDescriptor,
+  jobject getInstanceObjectField(jobject instance, const string &fieldName,
+                                 const string &fieldDescriptor) const;
+  jvalue getInstancePrimitiveField(jobject instance, const string &fieldName,
+                                   const string &fieldDescriptor);
+  void getInstanceObjectArrayField(jobject instance, const string &fieldName,
+                                   const string &fieldDescriptor,
                                    vector<jobject> &objectArray) const;
-  void getInstanceStringArrayField(jobject instance, const string& fieldName,
-                                   const string& fieldDescriptor,
+  void getInstanceStringArrayField(jobject instance, const string &fieldName,
+                                   const string &fieldDescriptor,
                                    vector<string> &stringArray) const;
-  void getStringArrayElements(jobjectArray array, vector<string> &stringArray) const;
+  void getStringArrayElements(jobjectArray array,
+                              vector<string> &stringArray) const;
   jsize getArrayLength(jarray array) const;
   jobject getObjectArrayElement(jobjectArray objectArray, jsize index) const;
 #define ENTRY(a, b, c, d) b *get##a##ArrayElements(b##Array array);
@@ -271,27 +276,31 @@ public:
 
   void setObjectArrayElement(jobjectArray objectArray, jobject element,
                              jsize index) const;
-  jfieldID getFieldID(jclass fieldDeclaringClass, const string& fieldName,
-                      const string& fieldDescriptor) const;
-  void getClassDeclaredFields(jclass klass, vector<jfieldID> &declaredfields) const;
+  jfieldID getFieldID(jclass fieldDeclaringClass, const string &fieldName,
+                      const string &fieldDescriptor) const;
+  void getClassDeclaredFields(jclass klass,
+                              vector<jfieldID> &declaredfields) const;
   void getClassDeclaredMethods(jclass klass,
                                vector<jmethodID> &declaredMethods) const;
-  jclass getClass(const string& className) const;
-  jmethodID getMethodID(jclass methodDeclaringClass, const string& methodName,
-                        const string& methodDescriptor) const;
-  jmethodID getMethodID(const string& methodDeclaringClass, const string& methodName,
-                        const string& methodDescriptor) const;
-  jmethodID getStaticMethodID(jclass methodDeclaringClass, const string& methodName,
-                              const string& methodDescriptor) const;
-  jmethodID getStaticMethodID(const string& methodDeclaringClass, const string& methodName,
-                              const string& methodDescriptor) const;
+  jclass getClass(const string &className) const;
+  jmethodID getMethodID(jclass methodDeclaringClass, const string &methodName,
+                        const string &methodDescriptor) const;
+  jmethodID getMethodID(const string &methodDeclaringClass,
+                        const string &methodName,
+                        const string &methodDescriptor) const;
+  jmethodID getStaticMethodID(jclass methodDeclaringClass,
+                              const string &methodName,
+                              const string &methodDescriptor) const;
+  jmethodID getStaticMethodID(const string &methodDeclaringClass,
+                              const string &methodName,
+                              const string &methodDescriptor) const;
   MethodReturnType getMethodReturnType(jmethodID methodID);
-  MethodReturnType getMethodReturnType(const string& methodDescriptor);
-  void callInstanceMethod(jobject object, const string& methodName,
-                          const string& methodDescriptor, vector<jvalue> &args,
+  MethodReturnType getMethodReturnType(const string &methodDescriptor);
+  void callInstanceMethod(jobject object, const string &methodName,
+                          const string &methodDescriptor, vector<jvalue> &args,
                           jvalue &returnValue, MethodReturnType &returnType);
-  void callStaticMethod(const string& className, const string& methodName,
-                        const string& methodDescriptor, vector<jvalue> &args,
+  void callStaticMethod(const string &className, const string &methodName,
+                        const string &methodDescriptor, vector<jvalue> &args,
                         jvalue &returnValue, MethodReturnType &returnType);
 
   bool evaluateBooleanObject(jobject booleanObject);
@@ -327,11 +336,13 @@ public:
    * @param   type             Type of the primitive field to be set
    * @param   fieldValue       Value to set the primitive field to
    */
-  void setObjectPrimitiveField(const string& className, jobject object,
-                               const string& fieldName, jvmtiExtendedFieldType type,
-                               const string& fieldValue);
-  void setObjectPrimitiveField(const string& className, jobject object,
-                               const string& fieldName, const string& fieldDescriptor,
+  void setObjectPrimitiveField(const string &className, jobject object,
+                               const string &fieldName,
+                               jvmtiExtendedFieldType type,
+                               const string &fieldValue);
+  void setObjectPrimitiveField(const string &className, jobject object,
+                               const string &fieldName,
+                               const string &fieldDescriptor,
                                MethodReturnType type, jvalue fieldValue) const;
 
   /**
@@ -351,7 +362,8 @@ public:
    * @param   fieldDescriptor  Descriptor of the reference field
    */
   void setObjectReferenceField(jobject referrer, jobject referee,
-                               const string& fieldName, const string& fieldDescriptor) const;
+                               const string &fieldName,
+                               const string &fieldDescriptor) const;
 
   /**
    * @fn      string getUnboxedDescriptorForType(jvmtiExtendedFieldType type);

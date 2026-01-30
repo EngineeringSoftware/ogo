@@ -34,7 +34,7 @@ public:
    * @param   f           Pointer to the file to write to
    * @param   info        Information of the instance to write
    */
-  void writeToCsv(ofstream &f, const string& className) const;
+  void writeToCsv(ofstream &f, const string &className) const;
 
   /**
    * @fn      void writeInstancePropertiesToCsv(instanceInfo*)

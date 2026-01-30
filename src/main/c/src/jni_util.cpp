@@ -19,12 +19,10 @@ void Agent::setCapabilities(const jvmtiCapabilities &capabilities) const {
 }
 
 void Agent::setEventCallbacks(const jvmtiEventCallbacks &callbacks) const {
-  jvmti_env
-      ->functions->SetEventCallbacks(jvmti_env, &callbacks,
-                                    sizeof(jvmtiEventCallbacks));
-  jvmti_env
-      ->functions->SetEventNotificationMode(jvmti_env, JVMTI_ENABLE,
-                                           JVMTI_EVENT_EXCEPTION, nullptr);
+  jvmti_env->functions->SetEventCallbacks(jvmti_env, &callbacks,
+                                          sizeof(jvmtiEventCallbacks));
+  jvmti_env->functions->SetEventNotificationMode(
+      jvmti_env, JVMTI_ENABLE, JVMTI_EVENT_EXCEPTION, nullptr);
 }
 
 string Agent::fieldTypeToString(const enum MethodReturnType &type) {
@@ -137,8 +135,8 @@ void Agent::setTag(jobject object, jlong tag) const {
 string Agent::getMethodName(jmethodID methodID) const {
   char *methodNameC = nullptr;
   string methodName;
-  jvmti_env
-      ->functions->GetMethodName(jvmti_env, methodID, &methodNameC, nullptr, nullptr);
+  jvmti_env->functions->GetMethodName(jvmti_env, methodID, &methodNameC,
+                                      nullptr, nullptr);
   if (methodNameC != nullptr) {
     methodName.assign(methodNameC);
   }
@@ -150,9 +148,8 @@ string Agent::getMethodName(jmethodID methodID) const {
 string Agent::getMethodDescriptor(jmethodID methodID) const {
   char *methodDescriptorC = nullptr;
   string methodDescriptor;
-  jvmti_env
-      ->functions->GetMethodName(jvmti_env, methodID, nullptr, &methodDescriptorC,
-                                nullptr);
+  jvmti_env->functions->GetMethodName(jvmti_env, methodID, nullptr,
+                                      &methodDescriptorC, nullptr);
   if (methodDescriptorC != nullptr) {
     methodDescriptor.assign(methodDescriptorC);
   }
@@ -165,7 +162,7 @@ jclass Agent::getObjectClass(jobject object) const {
   return jni_env->functions->GetObjectClass(jni_env, object);
 }
 
-jclass Agent::getClass(const string& className) const {
+jclass Agent::getClass(const string &className) const {
   return jni_env->functions->FindClass(jni_env, className.c_str());
 }
 
@@ -197,15 +194,16 @@ jstring Agent::createNewString(const string &str) const {
   return jni_env->functions->NewStringUTF(jni_env, str.c_str());
 }
 
-jobject Agent::createObject(const string& className, const string& constructorDescriptor,
+jobject Agent::createObject(const string &className,
+                            const string &constructorDescriptor,
                             vector<jvalue> &args) const {
   jclass klass = getClass(className);
   jmethodID methodID = getMethodID(klass, "<init>", constructorDescriptor);
   return jni_env->functions->NewObject(jni_env, klass, methodID, args.data());
 }
 
-jobject Agent::createObjectV(const string& className, const string& constructorDescriptor,
-                             ...) const {
+jobject Agent::createObjectV(const string &className,
+                             const string &constructorDescriptor, ...) const {
   jclass klass = getClass(className);
   jmethodID methodID = getMethodID(klass, "<init>", constructorDescriptor);
   va_list args;
@@ -217,7 +215,8 @@ jobject Agent::createObjectV(const string& className, const string& constructorD
   return createdObject;
 }
 
-jobject Agent::createObjectV(jclass klass, const string& constructorDescriptor, ...) const {
+jobject Agent::createObjectV(jclass klass, const string &constructorDescriptor,
+                             ...) const {
   jmethodID methodID = getMethodID(klass, "<init>", constructorDescriptor);
   va_list args;
   jobject createdObject = nullptr;
@@ -241,7 +240,7 @@ jobjectArray Agent::createObjectArray(const vector<jobject> &elements) const {
 void Agent::setObjectArrayElement(jobjectArray objectArray, jobject element,
                                   jsize index) const {
   jni_env->functions->SetObjectArrayElement(jni_env, objectArray, index,
-                                              element);
+                                            element);
 }
 
 #define ENTRY(a, b, c, d)                                                      \
@@ -254,8 +253,8 @@ JAVA_METHOD_OBJECT_CALLS_
 string Agent::getClassName(jclass klass) const {
   char *classNameC = nullptr;
   string className;
-  jvmti_env
-      ->functions->GetClassSignature(jvmti_env, klass, &classNameC, nullptr);
+  jvmti_env->functions->GetClassSignature(jvmti_env, klass, &classNameC,
+                                          nullptr);
   if (classNameC != nullptr) {
     className.assign(classNameC);
   }
@@ -267,9 +266,8 @@ void Agent::getClassName(jclass klass, string &className,
                          string &classSignature) const {
   char *classNameC = nullptr;
   char *classSignatureC = nullptr;
-  jvmti_env
-      ->functions->GetClassSignature(jvmti_env, klass, &classNameC,
-                                    &classSignatureC);
+  jvmti_env->functions->GetClassSignature(jvmti_env, klass, &classNameC,
+                                          &classSignatureC);
   if (classNameC != nullptr) {
     className.assign(classNameC);
   }
@@ -293,8 +291,8 @@ void Agent::getLoadedClasses(vector<jclass> &classes) const {
   }
 }
 
-jfieldID Agent::getFieldID(jclass fieldDeclaringClass, const string& fieldName,
-                           const string& fieldDescriptor) const {
+jfieldID Agent::getFieldID(jclass fieldDeclaringClass, const string &fieldName,
+                           const string &fieldDescriptor) const {
   return jni_env->functions->GetFieldID(
       jni_env, fieldDeclaringClass, fieldName.c_str(), fieldDescriptor.c_str());
 }
@@ -303,8 +301,7 @@ void Agent::getClassDeclaredFields(jclass klass,
                                    vector<jfieldID> &declaredfields) const {
   jfieldID *fields = nullptr;
   jint fieldCount = 0;
-  jvmti_env
-      ->functions->GetClassFields(jvmti_env, klass, &fieldCount, &fields);
+  jvmti_env->functions->GetClassFields(jvmti_env, klass, &fieldCount, &fields);
   for (int j = 0; j < fieldCount; j++) {
     declaredfields.push_back(fields[j]);
   }
@@ -314,35 +311,39 @@ void Agent::getClassDeclaredMethods(jclass klass,
                                     vector<jmethodID> &declaredMethods) const {
   jmethodID *methods = nullptr;
   jint methodCount = 0;
-  jvmti_env
-      ->functions->GetClassMethods(jvmti_env, klass, &methodCount, &methods);
+  jvmti_env->functions->GetClassMethods(jvmti_env, klass, &methodCount,
+                                        &methods);
   for (int j = 0; j < methodCount; j++) {
     declaredMethods.push_back(methods[j]);
   }
 }
 
-jmethodID Agent::getMethodID(jclass methodDeclaringClass, const string& methodName,
-                             const string& methodDescriptor) const {
+jmethodID Agent::getMethodID(jclass methodDeclaringClass,
+                             const string &methodName,
+                             const string &methodDescriptor) const {
   return jni_env->functions->GetMethodID(jni_env, methodDeclaringClass,
-                                           methodName.c_str(),
-                                           methodDescriptor.c_str());
+                                         methodName.c_str(),
+                                         methodDescriptor.c_str());
 }
 
-jmethodID Agent::getMethodID(const string& methodDeclaringClass, const string& methodName,
-                             const string& methodDescriptor) const {
+jmethodID Agent::getMethodID(const string &methodDeclaringClass,
+                             const string &methodName,
+                             const string &methodDescriptor) const {
   return getMethodID(getClass(methodDeclaringClass), methodName,
                      methodDescriptor);
 }
 
 jmethodID Agent::getStaticMethodID(jclass methodDeclaringClass,
-                                   const string& methodName, const string& methodDescriptor) const {
+                                   const string &methodName,
+                                   const string &methodDescriptor) const {
   return jni_env->functions->GetStaticMethodID(jni_env, methodDeclaringClass,
-                                                 methodName.c_str(),
-                                                 methodDescriptor.c_str());
+                                               methodName.c_str(),
+                                               methodDescriptor.c_str());
 }
 
-jmethodID Agent::getStaticMethodID(const string& methodDeclaringClass,
-                                   const string& methodName, const string& methodDescriptor) const {
+jmethodID Agent::getStaticMethodID(const string &methodDeclaringClass,
+                                   const string &methodName,
+                                   const string &methodDescriptor) const {
   return getStaticMethodID(getClass(methodDeclaringClass), methodName,
                            methodDescriptor);
 }
@@ -351,7 +352,8 @@ Agent::MethodReturnType Agent::getMethodReturnType(jmethodID methodID) {
   return getMethodReturnType(getMethodDescriptor(methodID));
 }
 
-Agent::MethodReturnType Agent::getMethodReturnType(const string& methodDescriptor) {
+Agent::MethodReturnType
+Agent::getMethodReturnType(const string &methodDescriptor) {
   const string returnType =
       methodDescriptor.substr(methodDescriptor.find(')') + 1, 1);
   if (returnType == "Ljava/lang/String;") {
@@ -368,15 +370,16 @@ Agent::MethodReturnType Agent::getMethodReturnType(const string& methodDescripto
   }
 }
 
-jobject Agent::getInstanceObjectField(jobject instance, const string& fieldName,
-                                      const string& fieldDescriptor) const {
+jobject Agent::getInstanceObjectField(jobject instance, const string &fieldName,
+                                      const string &fieldDescriptor) const {
   jclass instanceClass = getObjectClass(instance);
   jfieldID fieldID = getFieldID(instanceClass, fieldName, fieldDescriptor);
   return jni_env->functions->GetObjectField(jni_env, instance, fieldID);
 }
 
-jvalue Agent::getInstancePrimitiveField(jobject instance, const string& fieldName,
-                                        const string& fieldDescriptor) {
+jvalue Agent::getInstancePrimitiveField(jobject instance,
+                                        const string &fieldName,
+                                        const string &fieldDescriptor) {
   jclass instanceClass = getObjectClass(instance);
   jfieldID fieldID = getFieldID(instanceClass, fieldName, fieldDescriptor);
   jvalue value;
@@ -449,8 +452,9 @@ bool Agent::isFieldArrayType(MethodReturnType type) {
   }
 }
 
-void Agent::getInstanceObjectArrayField(jobject instance, const string& fieldName,
-                                        const string& fieldDescriptor,
+void Agent::getInstanceObjectArrayField(jobject instance,
+                                        const string &fieldName,
+                                        const string &fieldDescriptor,
                                         vector<jobject> &objectArray) const {
   jobject objectArrayInstance =
       getInstanceObjectField(instance, fieldName, fieldDescriptor);
@@ -461,8 +465,9 @@ void Agent::getInstanceObjectArrayField(jobject instance, const string& fieldNam
   }
 }
 
-void Agent::getInstanceStringArrayField(jobject instance, const string& fieldName,
-                                        const string& fieldDescriptor,
+void Agent::getInstanceStringArrayField(jobject instance,
+                                        const string &fieldName,
+                                        const string &fieldDescriptor,
                                         vector<string> &stringArray) const {
   auto stringArrayInstance = (jobjectArray)getInstanceObjectField(
       instance, fieldName, fieldDescriptor);
@@ -473,8 +478,8 @@ void Agent::getStringArrayElements(jobjectArray array,
                                    vector<string> &stringArray) const {
   jsize arraySize = getArrayLength(array);
   for (jsize i = 0; i < arraySize; i++) {
-    stringArray.push_back(
-        evaluateStringObject(static_cast<jstring>(getObjectArrayElement(array, i))));
+    stringArray.push_back(evaluateStringObject(
+        static_cast<jstring>(getObjectArrayElement(array, i))));
   }
 }
 
@@ -482,9 +487,9 @@ jsize Agent::getArrayLength(jarray array) const {
   return jni_env->functions->GetArrayLength(jni_env, array);
 }
 
-jobject Agent::getObjectArrayElement(jobjectArray objectArray, const jsize index) const {
-  return jni_env->functions->GetObjectArrayElement(jni_env, objectArray,
-                                                     index);
+jobject Agent::getObjectArrayElement(jobjectArray objectArray,
+                                     const jsize index) const {
+  return jni_env->functions->GetObjectArrayElement(jni_env, objectArray, index);
 }
 
 #define ENTRY(a, b, c)                                                         \
@@ -514,9 +519,9 @@ JAVA_METHOD_CALLS_
 JAVA_METHOD_CALLS_
 #undef ENTRY
 
-void Agent::callInstanceMethod(jobject object, const string& methodName,
-                               const string& methodDescriptor, vector<jvalue> &args,
-                               jvalue &returnValue,
+void Agent::callInstanceMethod(jobject object, const string &methodName,
+                               const string &methodDescriptor,
+                               vector<jvalue> &args, jvalue &returnValue,
                                MethodReturnType &returnType) {
   jclass klass = getObjectClass(object);
   jmethodID methodID = getMethodID(klass, methodName, methodDescriptor);
@@ -542,9 +547,9 @@ void Agent::callInstanceMethod(jobject object, const string& methodName,
   }
 }
 
-void Agent::callStaticMethod(const string& className, const string& methodName,
-                             const string& methodDescriptor, vector<jvalue> &args,
-                             jvalue &returnValue,
+void Agent::callStaticMethod(const string &className, const string &methodName,
+                             const string &methodDescriptor,
+                             vector<jvalue> &args, jvalue &returnValue,
                              MethodReturnType &returnType) {
   jclass klass = getClass(className);
   jmethodID methodID = getStaticMethodID(klass, methodName, methodDescriptor);
@@ -606,9 +611,9 @@ int Agent::getObjectHashCode(jobject object) const {
 void Agent::getObjectsWithTags(const long *givenTags, int givenTagsCount,
                                jobject **objects, long **returnedTags,
                                int *returnedTagsCount) const {
-  jvmti_env
-      ->functions->GetObjectsWithTags(jvmti_env, givenTagsCount, givenTags,
-                                     returnedTagsCount, objects, returnedTags);
+  jvmti_env->functions->GetObjectsWithTags(jvmti_env, givenTagsCount, givenTags,
+                                           returnedTagsCount, objects,
+                                           returnedTags);
 }
 
 void Agent::forceGC() const {
@@ -625,16 +630,14 @@ void Agent::rawMonitorExit() const {
 
 void Agent::iterateThroughHeap(const jvmtiHeapCallbacks *heapOperationCallback,
                                int jvmtiHeapFilter) const {
-  jvmti_env
-      ->functions->IterateThroughHeap(jvmti_env, jvmtiHeapFilter, nullptr,
-                                     heapOperationCallback, nullptr);
+  jvmti_env->functions->IterateThroughHeap(jvmti_env, jvmtiHeapFilter, nullptr,
+                                           heapOperationCallback, nullptr);
 }
 
 void Agent::followReferences(const jvmtiHeapCallbacks *heapOperationCallback,
                              int jvmtiHeapFilter, jobject root) const {
-  jvmti_env
-      ->functions->FollowReferences(jvmti_env, jvmtiHeapFilter, nullptr, root,
-                                   heapOperationCallback, nullptr);
+  jvmti_env->functions->FollowReferences(jvmti_env, jvmtiHeapFilter, nullptr,
+                                         root, heapOperationCallback, nullptr);
 }
 
 void Agent::Deallocate(unsigned char **mem) const {
@@ -665,46 +668,46 @@ jobject Agent::createObjectWithoutConstructor(jclass klass) const {
  * @param   type             Type of the primitive field to be set
  * @param   fieldValue       Value to set the primitive field to
  */
-void Agent::setObjectPrimitiveField(const string& className, jobject object,
-                                    const string& fieldName,
+void Agent::setObjectPrimitiveField(const string &className, jobject object,
+                                    const string &fieldName,
                                     jvmtiExtendedFieldType type,
-                                    const string& fieldValue) {
+                                    const string &fieldValue) {
   jclass cls = jni_env->functions->FindClass(jni_env, className.c_str());
-  jfieldID fieldID = jni_env->functions->GetFieldID(
-      jni_env, cls, fieldName.c_str(),
-      getUnboxedDescriptorForType(type).c_str());
+  jfieldID fieldID =
+      jni_env->functions->GetFieldID(jni_env, cls, fieldName.c_str(),
+                                     getUnboxedDescriptorForType(type).c_str());
   switch (type) {
   case JVMTI_EXTENDED_FIELD_TYPE_BOOLEAN:
     jni_env->functions->SetBooleanField(jni_env, object, fieldID,
-                                          fieldValue == "True" ? true : false);
+                                        fieldValue == "True" ? true : false);
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_BYTE:
     jni_env->functions->SetByteField(jni_env, object, fieldID,
-                                       static_cast<jbyte>(stoi(fieldValue)));
+                                     static_cast<jbyte>(stoi(fieldValue)));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_CHAR:
     jni_env->functions->SetCharField(jni_env, object, fieldID,
-                                       static_cast<jchar>(fieldValue.c_str()[0]));
+                                     static_cast<jchar>(fieldValue.c_str()[0]));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_SHORT:
     jni_env->functions->SetShortField(jni_env, object, fieldID,
-                                        static_cast<jshort>(stoi(fieldValue)));
+                                      static_cast<jshort>(stoi(fieldValue)));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_INT:
     jni_env->functions->SetIntField(jni_env, object, fieldID,
-                                      (jint)stoi(fieldValue));
+                                    (jint)stoi(fieldValue));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_LONG:
     jni_env->functions->SetLongField(jni_env, object, fieldID,
-                                       (jlong)stol(fieldValue));
+                                     (jlong)stol(fieldValue));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_FLOAT:
     jni_env->functions->SetFloatField(jni_env, object, fieldID,
-                                        static_cast<jfloat>(stod(fieldValue)));
+                                      static_cast<jfloat>(stod(fieldValue)));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_DOUBLE:
     jni_env->functions->SetDoubleField(jni_env, object, fieldID,
-                                         (jdouble)stod(fieldValue));
+                                       (jdouble)stod(fieldValue));
     break;
   case JVMTI_EXTENDED_FIELD_TYPE_STRING:
     break;
@@ -713,15 +716,16 @@ void Agent::setObjectPrimitiveField(const string& className, jobject object,
   }
 }
 
-void Agent::setObjectPrimitiveField(const string& className, jobject object,
-                                    const string& fieldName, const string& fieldDescriptor,
-                                    MethodReturnType type, jvalue fieldValue) const {
+void Agent::setObjectPrimitiveField(const string &className, jobject object,
+                                    const string &fieldName,
+                                    const string &fieldDescriptor,
+                                    MethodReturnType type,
+                                    jvalue fieldValue) const {
   jclass cls = jni_env->functions->FindClass(jni_env, className.c_str());
   jfieldID fieldID = getFieldID(cls, fieldName, fieldDescriptor);
   switch (type) {
   case JBOOLEAN:
-    jni_env->functions->SetBooleanField(jni_env, object, fieldID,
-                                          fieldValue.z);
+    jni_env->functions->SetBooleanField(jni_env, object, fieldID, fieldValue.z);
     break;
   case JBYTE:
     jni_env->functions->SetByteField(jni_env, object, fieldID, fieldValue.b);
@@ -742,12 +746,10 @@ void Agent::setObjectPrimitiveField(const string& className, jobject object,
     jni_env->functions->SetFloatField(jni_env, object, fieldID, fieldValue.f);
     break;
   case JDOUBLE:
-    jni_env->functions->SetDoubleField(jni_env, object, fieldID,
-                                         fieldValue.d);
+    jni_env->functions->SetDoubleField(jni_env, object, fieldID, fieldValue.d);
     break;
   case JSTRING:
-    jni_env->functions->SetObjectField(jni_env, object, fieldID,
-                                         fieldValue.l);
+    jni_env->functions->SetObjectField(jni_env, object, fieldID, fieldValue.l);
     break;
   default:
     exit(0);
@@ -769,9 +771,9 @@ void Agent::setObjectPrimitiveField(const string& className, jobject object,
  * @param   fieldDescriptor  Descriptor of the reference field
  */
 void Agent::setObjectReferenceField(jobject referrer, jobject referee,
-                                    const string& fieldName, const string& fieldDescriptor) const {
-  jclass referrerClass =
-      jni_env->functions->GetObjectClass(jni_env, referrer);
+                                    const string &fieldName,
+                                    const string &fieldDescriptor) const {
+  jclass referrerClass = jni_env->functions->GetObjectClass(jni_env, referrer);
   jclass refereeClass = (*jni_env).functions->GetObjectClass(jni_env, referee);
   jfieldID fieldID = jni_env->functions->GetFieldID(
       jni_env, referrerClass, fieldName.c_str(), fieldDescriptor.c_str());
@@ -833,13 +835,11 @@ void Agent::getFieldInfo(const jfieldID field, const jclass klass, string &name,
   jint fModifiers; /* Use jint to remove warnings */
 
   /* Get field name and signature */
-  jvmti_env
-      ->functions->GetFieldName(jvmti_env, klass, field, &cName, &cSignature,
-                               nullptr);
+  jvmti_env->functions->GetFieldName(jvmti_env, klass, field, &cName,
+                                     &cSignature, nullptr);
 
   /* Get field modifiers */
-  jvmti_env
-      ->functions->GetFieldModifiers(jvmti_env, klass, field, &fModifiers);
+  jvmti_env->functions->GetFieldModifiers(jvmti_env, klass, field, &fModifiers);
 
   name.assign(cName);
   signature.assign(cSignature);
@@ -864,15 +864,15 @@ void Agent::getFieldInfo(const jfieldID field, const jclass klass, string &name,
  * @param       signature   signature of the field (allocated within function)
  * @param       modifiers   modifiers of the field (allocated within function)
  */
-void Agent::getMethodInfo(jmethodID method, string &name,
-                          string &signature, int &modifiers) const {
+void Agent::getMethodInfo(jmethodID method, string &name, string &signature,
+                          int &modifiers) const {
   char *cName = nullptr;
   char *cSignature = nullptr;
   jint fModifiers; /* Use jint to remove warnings */
 
   /* Get method name and signature */
-  jvmti_env
-      ->functions->GetMethodName(jvmti_env, method, &cName, &cSignature, nullptr);
+  jvmti_env->functions->GetMethodName(jvmti_env, method, &cName, &cSignature,
+                                      nullptr);
 
   /* Get method modifiers */
   jvmti_env->functions->GetMethodModifiers(jvmti_env, method, &fModifiers);

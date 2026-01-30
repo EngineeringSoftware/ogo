@@ -35,7 +35,7 @@ void InstanceInfo::clear() {
  * @param   f           Pointer to the file to write to
  * @param className
  */
-void InstanceInfo::writeToCsv(ofstream &f, const string& className) const {
+void InstanceInfo::writeToCsv(ofstream &f, const string &className) const {
 
   f << className << "," << tag << "," << hashCode << "\n";
 }
@@ -93,7 +93,8 @@ void InstanceInfo::writePropertiesToCsv(Agent *agent) {
   /* Do nothing if number of primitive fields is zero */
   if (!fields.empty()) {
 
-    const string fileName = to_string(tag) + CSV_FILES::FIELD_PROPERTIES_FILE_SUFFIX;
+    const string fileName =
+        to_string(tag) + CSV_FILES::FIELD_PROPERTIES_FILE_SUFFIX;
     /* Prepend File with the tag of the owner/referrer instance
      * 1. We can then use this naming convention to easily identify the file
      *    that contains this instance's primitive field information

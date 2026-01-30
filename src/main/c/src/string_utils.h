@@ -39,7 +39,7 @@ string replacePeriodWithSlash(const string &str);
  * @param   cypherLabel  string instance containing Cypher Label
  * @return  string       The updated string instance
  */
-string cypherLabelToClass(const string& cypherLabel);
+string cypherLabelToClass(const string &cypherLabel);
 
 /**
  * @fn      string classToCypherLabel(string klass)

@@ -40,7 +40,7 @@ string STRING::replacePeriodWithSlash(const string &str) {
  * @param   cypherLabel  string instance containing Cypher Label
  * @return  string       The updated string instance
  */
-string STRING::cypherLabelToClass(const string& cypherLabel) {
+string STRING::cypherLabelToClass(const string &cypherLabel) {
   return cypherLabel.substr(1, cypherLabel.size() - 2);
 }
 
@@ -114,7 +114,7 @@ string STRING::classToCypherLabel2(const string &klass) {
  * @return  string   The updated string instance
  */
 bool STRING::isStringPresentInList(string &str, vector<string> &list) {
-  for (const string& listElement : list) {
+  for (const string &listElement : list) {
     if (str.find(listElement) != string::npos) {
       return true;
     }
