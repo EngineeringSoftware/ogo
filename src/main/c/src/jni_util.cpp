@@ -605,8 +605,8 @@ int Agent::getObjectHashCode(jobject object) {
 void Agent::getObjectsWithTags(long *givenTags, int givenTagsCount,
                                jobject **objects, long **returnedTags,
                                int *returnedTagsCount) {
-  (*jvmti_env)
-      .functions->GetObjectsWithTags(jvmti_env, givenTagsCount, givenTags,
+  jvmti_env
+      ->functions->GetObjectsWithTags(jvmti_env, givenTagsCount, givenTags,
                                      returnedTagsCount, objects, returnedTags);
 }
 
