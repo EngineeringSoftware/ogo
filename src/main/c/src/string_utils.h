@@ -18,7 +18,7 @@ namespace STRING {
  *                  replaced with '.'
  * @return  string  The updated string instance
  */
-string replaceSlashWithPeriod(string str);
+string replaceSlashWithPeriod(const string &str);
 
 /**
  * @fn      string replacePeriodWithSlash(string str)
@@ -29,7 +29,7 @@ string replaceSlashWithPeriod(string str);
  *                  replaced with '/'
  * @return  string  The updated string instance
  */
-string replacePeriodWithSlash(string str);
+string replacePeriodWithSlash(const string &str);
 
 /**
  * @fn      string cypherLabelToClass(string cypherLabel)
@@ -39,7 +39,7 @@ string replacePeriodWithSlash(string str);
  * @param   cypherLabel  string instance containing Cypher Label
  * @return  string       The updated string instance
  */
-string cypherLabelToClass(string cypherLabel);
+string cypherLabelToClass(const string& cypherLabel);
 
 /**
  * @fn      string classToCypherLabel(string klass)
@@ -49,7 +49,7 @@ string cypherLabelToClass(string cypherLabel);
  * @param   klass    string instance containing java class signature
  * @return  string   The updated string instance
  */
-string classToCypherLabel(string klass);
+string classToCypherLabel(const string &klass);
 
 /**
  * @fn      string classToCypherLabel(string klass)
@@ -59,7 +59,7 @@ string classToCypherLabel(string klass);
  * @param   klass    string instance containing java class signature
  * @return  string   The updated string instance
  */
-string classToCypherLabel2(string klass);
+string classToCypherLabel2(const string &klass);
 
 /**
  * @fn      string classToCypherLabel(string klass)

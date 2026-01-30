@@ -24,7 +24,7 @@ public:
   ~MethodInfo();
 
   void clear();
-  void getArgDescriptors(vector<string> &methodArgDescriptors);
+  void getArgDescriptors(vector<string> &methodArgDescriptors) const;
   bool areArgDescriptorSame(vector<string> &givenDescriptors);
 
   /* Method name

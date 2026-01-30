@@ -26,7 +26,7 @@ public:
   void clear();
 
   /* Writes this FieldInfo to string */
-  string toString(Agent *agent);
+  string toString(Agent *agent) const;
 
   /* Field name as it appears in the declaration
    * inside the field declaring class

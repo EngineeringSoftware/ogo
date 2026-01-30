@@ -34,7 +34,7 @@ public:
    * @param   f           Pointer to the file to write to
    * @param   info        Information of the instance to write
    */
-  void writeToCsv(ofstream &f, string className);
+  void writeToCsv(ofstream &f, const string& className) const;
 
   /**
    * @fn      void writeInstancePropertiesToCsv(instanceInfo*)
@@ -42,8 +42,6 @@ public:
    * file
    *
    * @author  1sand0s
-   * @param   info        Information of the instance whose primitive fields are
-   * to be written
    */
   void writePropertiesToCsv(Agent *agent);
 
@@ -57,7 +55,7 @@ public:
    */
   void writeRelationsToCsv();
 
-  FieldInfo *getField(string &fieldName);
+  FieldInfo *getField(const string &fieldName);
 
   /* Modifier of the instance */
   int modifier;

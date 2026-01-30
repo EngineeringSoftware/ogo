@@ -146,7 +146,7 @@ public:
   const string DEFAULT_CONSTRUCTOR_DESCRIPTOR = "()V";
   const string DEFAULT_CONSTRUCTOR_NAME = "<init>";
 
-  Agent(jvmtiEnv *jvmti_env);
+  explicit Agent(jvmtiEnv *jvmti_env);
 
   static jlong getIntegerTypesAsLong(const jvalue &value,
                                      const enum MethodReturnType &type);
@@ -168,16 +168,16 @@ public:
     jvalue castedValue;
     switch (castedType) {
     case JBYTE:
-      castedValue.b = (jbyte)t;
+      castedValue.b = static_cast<jbyte>(t);
       break;
     case JSHORT:
-      castedValue.s = (jshort)t;
+      castedValue.s = static_cast<jshort>(t);
       break;
     case JINT:
-      castedValue.i = (jint)t;
+      castedValue.i = static_cast<jint>(t);
       break;
     case JLONG:
-      castedValue.j = (jlong)t;
+      castedValue.j = static_cast<jlong>(t);
       break;
     default:
       throw runtime_error("Error : Must be JBYTE, JSHORT, JINT or JLONG");
@@ -192,10 +192,10 @@ public:
     jvalue castedValue;
     switch (castedType) {
     case JFLOAT:
-      castedValue.f = (jfloat)t;
+      castedValue.f = static_cast<jfloat>(t);
       break;
     case JDOUBLE:
-      castedValue.d = (jdouble)t;
+      castedValue.d = static_cast<jdouble>(t);
       break;
     default:
       throw runtime_error("Error : Must be JFLOAT or JDOUBLE");
@@ -205,28 +205,28 @@ public:
   }
 
   void setJNIEnv(JNIEnv *jni_env);
-  void setCapabilities(const jvmtiCapabilities &capabilities);
-  void setEventCallbacks(const jvmtiEventCallbacks &callbacks);
+  void setCapabilities(const jvmtiCapabilities &capabilities) const;
+  void setEventCallbacks(const jvmtiEventCallbacks &callbacks) const;
   void createRawMonitor();
-  void setTag(jobject object, jlong tag);
-  string getMethodName(jmethodID methodID);
-  string getMethodDescriptor(jmethodID methodID);
-  MethodReturnType getFieldType(string fieldDescriptor);
+  void setTag(jobject object, jlong tag) const;
+  string getMethodName(jmethodID methodID) const;
+  string getMethodDescriptor(jmethodID methodID) const;
+  MethodReturnType getFieldType(const string &fieldDescriptor);
   MethodReturnType getFieldType(jvmtiPrimitiveType type);
   bool isFieldArrayType(MethodReturnType type);
-  string getClassName(jclass klass);
-  string getClassName(jobject object);
-  void getClassName(jclass klass, string &className, string &classSignature);
-  void getLoadedClasses(vector<jclass> &classes);
-  jclass getObjectClass(jobject object);
-  jstring createNewString(string &str);
-  jobject createObject(string className, string constructorDescriptor,
-                       vector<jvalue> &args);
-  jobject createObjectV(string className, string constructorDescriptor, ...);
-  jobject createObjectV(jclass klass, string constructorDescriptor, ...);
+  string getClassName(jclass klass) const;
+  string getClassName(jobject object) const;
+  void getClassName(jclass klass, string &className, string &classSignature) const;
+  void getLoadedClasses(vector<jclass> &classes) const;
+  jclass getObjectClass(jobject object) const;
+  jstring createNewString(const string &str) const;
+  jobject createObject(const string& className, const string& constructorDescriptor,
+                       vector<jvalue> &args) const;
+  jobject createObjectV(const string& className, const string& constructorDescriptor, ...) const;
+  jobject createObjectV(jclass klass, const string& constructorDescriptor, ...) const;
   jobject createObject(const jvalue &value, const MethodReturnType &type);
-  jobject createObjectWithoutConstructor(jclass klass);
-  jobjectArray createObjectArray(vector<jobject> &elements);
+  jobject createObjectWithoutConstructor(jclass klass) const;
+  jobjectArray createObjectArray(const vector<jobject> &elements) const;
 #define ENTRY(a, b, c, d, e) jobject create##a##Object(b value);
   JAVA_OBJECT_CREATION_TYPE_
 #undef ENTRY
@@ -248,19 +248,19 @@ public:
   JAVA_METHOD_CALLS_
 #undef ENTRY
 
-  jobject getInstanceObjectField(jobject instance, string fieldName,
-                                 string fieldDescriptor);
-  jvalue getInstancePrimitiveField(jobject instance, string fieldName,
-                                   string fieldDescriptor);
-  void getInstanceObjectArrayField(jobject instance, string fieldName,
-                                   string fieldDescriptor,
-                                   vector<jobject> &objectArray);
-  void getInstanceStringArrayField(jobject instance, string fieldName,
-                                   string fieldDescriptor,
-                                   vector<string> &stringArray);
-  void getStringArrayElements(jobjectArray array, vector<string> &stringArray);
-  jsize getArrayLength(jarray array);
-  jobject getObjectArrayElement(jobjectArray objectArray, jsize index);
+  jobject getInstanceObjectField(jobject instance, const string& fieldName,
+                                 const string& fieldDescriptor) const;
+  jvalue getInstancePrimitiveField(jobject instance, const string& fieldName,
+                                   const string& fieldDescriptor);
+  void getInstanceObjectArrayField(jobject instance, const string& fieldName,
+                                   const string& fieldDescriptor,
+                                   vector<jobject> &objectArray) const;
+  void getInstanceStringArrayField(jobject instance, const string& fieldName,
+                                   const string& fieldDescriptor,
+                                   vector<string> &stringArray) const;
+  void getStringArrayElements(jobjectArray array, vector<string> &stringArray) const;
+  jsize getArrayLength(jarray array) const;
+  jobject getObjectArrayElement(jobjectArray objectArray, jsize index) const;
 #define ENTRY(a, b, c, d) b *get##a##ArrayElements(b##Array array);
   JAVA_METHOD_OBJECT_CALLS_
 #undef ENTRY
@@ -270,45 +270,45 @@ public:
 #undef ENTRY
 
   void setObjectArrayElement(jobjectArray objectArray, jobject element,
-                             jsize index);
-  jfieldID getFieldID(jclass fieldDeclaringClass, string fieldName,
-                      string fieldDescriptor);
-  void getClassDeclaredFields(jclass klass, vector<jfieldID> &declaredfields);
+                             jsize index) const;
+  jfieldID getFieldID(jclass fieldDeclaringClass, const string& fieldName,
+                      const string& fieldDescriptor) const;
+  void getClassDeclaredFields(jclass klass, vector<jfieldID> &declaredfields) const;
   void getClassDeclaredMethods(jclass klass,
-                               vector<jmethodID> &declaredMethods);
-  jclass getClass(string className);
-  jmethodID getMethodID(jclass methodDeclaringClass, string methodName,
-                        string methodDescriptor);
-  jmethodID getMethodID(string methodDeclaringClass, string methodName,
-                        string methodDescriptor);
-  jmethodID getStaticMethodID(jclass methodDeclaringClass, string methodName,
-                              string methodDescriptor);
-  jmethodID getStaticMethodID(string methodDeclaringClass, string methodName,
-                              string methodDescriptor);
+                               vector<jmethodID> &declaredMethods) const;
+  jclass getClass(const string& className) const;
+  jmethodID getMethodID(jclass methodDeclaringClass, const string& methodName,
+                        const string& methodDescriptor) const;
+  jmethodID getMethodID(const string& methodDeclaringClass, const string& methodName,
+                        const string& methodDescriptor) const;
+  jmethodID getStaticMethodID(jclass methodDeclaringClass, const string& methodName,
+                              const string& methodDescriptor) const;
+  jmethodID getStaticMethodID(const string& methodDeclaringClass, const string& methodName,
+                              const string& methodDescriptor) const;
   MethodReturnType getMethodReturnType(jmethodID methodID);
-  MethodReturnType getMethodReturnType(string methodDescriptor);
-  void callInstanceMethod(jobject object, string methodName,
-                          string methodDescriptor, vector<jvalue> &args,
+  MethodReturnType getMethodReturnType(const string& methodDescriptor);
+  void callInstanceMethod(jobject object, const string& methodName,
+                          const string& methodDescriptor, vector<jvalue> &args,
                           jvalue &returnValue, MethodReturnType &returnType);
-  void callStaticMethod(string className, string methodName,
-                        string methodDescriptor, vector<jvalue> &args,
+  void callStaticMethod(const string& className, const string& methodName,
+                        const string& methodDescriptor, vector<jvalue> &args,
                         jvalue &returnValue, MethodReturnType &returnType);
 
   bool evaluateBooleanObject(jobject booleanObject);
-  int getObjectHashCode(jobject object);
-  void getObjectsWithTags(long *givenTags, int givenTagsCount,
+  int getObjectHashCode(jobject object) const;
+  void getObjectsWithTags(const long *givenTags, int givenTagsCount,
                           jobject **objects, long **returnedTags,
-                          int *returnedTagsCount);
-  string evaluateStringObject(jstring stringObject);
-  void Deallocate(unsigned char **mem);
-  void forceGC();
-  void rawMonitorEnter();
-  void rawMonitorExit();
-  void iterateThroughHeap(jvmtiHeapCallbacks *heapOperationCallback,
-                          int jvmtiHeapFilter);
+                          int *returnedTagsCount) const;
+  string evaluateStringObject(jstring stringObject) const;
+  void Deallocate(unsigned char **mem) const;
+  void forceGC() const;
+  void rawMonitorEnter() const;
+  void rawMonitorExit() const;
+  void iterateThroughHeap(const jvmtiHeapCallbacks *heapOperationCallback,
+                          int jvmtiHeapFilter) const;
 
-  void followReferences(jvmtiHeapCallbacks *heapOperationCallback,
-                        int jvmtiHeapFilter, jobject root);
+  void followReferences(const jvmtiHeapCallbacks *heapOperationCallback,
+                        int jvmtiHeapFilter, jobject root) const;
 
   /**
    * @fn      void setObjectPrimitiveField(JNIEnv* jniEnv,
@@ -327,12 +327,12 @@ public:
    * @param   type             Type of the primitive field to be set
    * @param   fieldValue       Value to set the primitive field to
    */
-  void setObjectPrimitiveField(string className, jobject object,
-                               string fieldName, jvmtiExtendedFieldType type,
-                               string fieldValue);
-  void setObjectPrimitiveField(string className, jobject object,
-                               string fieldName, string fieldDescriptor,
-                               MethodReturnType type, jvalue fieldValue);
+  void setObjectPrimitiveField(const string& className, jobject object,
+                               const string& fieldName, jvmtiExtendedFieldType type,
+                               const string& fieldValue);
+  void setObjectPrimitiveField(const string& className, jobject object,
+                               const string& fieldName, const string& fieldDescriptor,
+                               MethodReturnType type, jvalue fieldValue) const;
 
   /**
    * @fn      void setObjectReferenceField(JNIEnv* jniEnv,
@@ -351,7 +351,7 @@ public:
    * @param   fieldDescriptor  Descriptor of the reference field
    */
   void setObjectReferenceField(jobject referrer, jobject referee,
-                               string fieldName, string fieldDescriptor);
+                               const string& fieldName, const string& fieldDescriptor) const;
 
   /**
    * @fn      string getUnboxedDescriptorForType(jvmtiExtendedFieldType type);
@@ -369,8 +369,8 @@ public:
    * @author  1sand0s
    * @param   type     a jvmtiExtendedFieldType to get the field decriptor of
    */
-  void getFieldInfo(const jfieldID field, const jclass klass, string &name,
-                    string &signature, int &modifiers);
+  void getFieldInfo(jfieldID field, jclass klass, string &name,
+                    string &signature, int &modifiers) const;
   /**
    * @fn      string getUnboxedDescriptorForType(jvmtiExtendedFieldType type);
    * @brief   Gets the field Descriptor for jvmtiExtendedFieldType
@@ -378,8 +378,8 @@ public:
    * @author  1sand0s
    * @param   type     a jvmtiExtendedFieldType to get the field decriptor of
    */
-  void getMethodInfo(const jmethodID method, string &name, string &signature,
-                     int &modifiers);
+  void getMethodInfo(jmethodID method, string &name, string &signature,
+                     int &modifiers) const;
 
 private:
   JNIEnv *jni_env;

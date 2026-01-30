@@ -128,7 +128,7 @@ Agent *agent;
 vector<ClassInfo *> classNameList;
 map<string, ClassInfo *> className2Info;
 // map<string, string> queryClassName2dynamicClassName;
-int classInfoCount = 0;
+unsigned long classInfoCount = 0;
 vector<InstanceInfo *> writeToClassNameListInstances;
 
 /**
@@ -374,7 +374,7 @@ jint JNICALL heap_iterationCallback(jlong class_tag, jlong size, jlong *tag_ptr,
         (*tag_ptr == 0)) {
 
       /* Variable to hold the index of cInfo classNameList element */
-      const int classNameListIndex = class_tag - 1;
+      const long classNameListIndex = class_tag - 1;
 
       /* If its untagged object then its an instance of a Class rather than
        * Class's Class.java and so assign a unique tag to identify relations
@@ -630,9 +630,7 @@ return JVMTI_VISIT_ABORT;
  * Used to get values of th primitive fields.
  *
  * @author      1sand0s
- * @param       reference_kind      Enum describing the type of reference
  * between owning instance and primitive field
- * @param       reference_info
  * @param       object_class_tag    Tag of the class of the instance who owns
  * the current primitive field
  * @param       object_tag_ptr      Tag of the primitive field (by default equal
@@ -807,8 +805,6 @@ return JVMTI_VISIT_ABORT;
  * current string field
  * @param       tag_ptr      Tag of the string field (by default equal to tag of
  * the owning instance)
- * @param       value               value of the string field
- * @param       value_length  Length of the string
  * @param       user_data           Not used
  */
 jint JNICALL heap_arrayFieldCallback(jlong class_tag, jlong size,
@@ -895,7 +891,6 @@ return JVMTI_VISIT_ABORT;
  * @param stringInstance
  * @param stringFieldOwningInstance
  * @param stringFieldIndex
- * @param classInstance
  */
 static void embedStringInstances(const InstanceInfo *stringInstance,
                                  InstanceInfo *stringFieldOwningInstance,
@@ -950,7 +945,6 @@ static void embedStringInstances(const InstanceInfo *stringInstance,
  * @param boxedPrimitiveInstance
  * @param boxedPrimitiveFieldOwningInstance
  * @param boxedPrimitiveFieldIndex
- * @param classInstance
  */
 static void
 embedBoxedPrimitiveInstances(InstanceInfo *boxedPrimitiveInstance,
@@ -1084,7 +1078,7 @@ static void assignFieldNames() {
       }
 
       /* This is true for all instances not belonging to Class.java */
-      int srcClassIndex = i;
+      long srcClassIndex = i;
 
       /* If the tag of the instance is less than classInfoCount then it must
        * be an instance of Class.Class.java and so its fields are declared in
@@ -1095,7 +1089,7 @@ static void assignFieldNames() {
 
       ClassInfo *classInstance = classNameList[srcClassIndex];
       map<int, FieldInfo *> inheritedFields;
-      int fieldCount = 0;
+      unsigned long fieldCount = 0;
       unordered_set<long> allImplementedInterfaceTags;
       getAllImplementedInterfaces(classInstance, allImplementedInterfaceTags);
       for (const long interfaceTag : allImplementedInterfaceTags) {
@@ -1159,7 +1153,7 @@ static void assignFieldNames() {
  */
 static void getInheritedFieldInfo(const ClassInfo *cInfo,
                                   map<int, FieldInfo *> &fields,
-                                  int &fieldCount) {
+                                  unsigned long &fieldCount) {
   if (cInfo == nullptr) {
     return;
   }
@@ -1607,8 +1601,7 @@ static void setup() {
     }*/
 
   /* Initialize to default values */
-  classNameList.erase(classNameList.begin(),
-                      classNameList.begin() + classNameList.size());
+  classNameList.clear();
   writeToClassNameListInstances.clear();
   className2Info.clear();
 #ifdef OPTIMIZATION_CACHE_RETRIEVED_INSTANCE_INFO_
@@ -1833,7 +1826,7 @@ void JNICALL exception_thrown(jvmtiEnv *jvmti_env, JNIEnv *jni_env,
             "Assign_SuperClass_Field_Names, %f\n"
             "Assign_Field_Names, %f\n"
             "Write_ClassNameList_To_CSV, %f\n"
-            "Number_of_loaded_classes, %d\n"
+            "Number_of_loaded_classes, %lu\n"
             "Number_of_Objects_in_the_heap, %d\n"
             "Number_of_Objects_written_to_graph, %d\n"
             "Total, %f\n",

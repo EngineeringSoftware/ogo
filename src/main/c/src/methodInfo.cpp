@@ -42,42 +42,42 @@ bool MethodInfo::areArgDescriptorSame(vector<string> &givenDescriptors) {
   return isMatch;
 }
 
-void MethodInfo::getArgDescriptors(vector<string> &methodArgDescriptors) {
-  if (argDescriptors.size() != 0) {
+void MethodInfo::getArgDescriptors(vector<string> &methodArgDescriptors) const {
+  if (!argDescriptors.empty()) {
     methodArgDescriptors = argDescriptors;
     return;
   }
   string signature = this->signature.substr(1, this->signature.find(")") - 1);
-  for (int j = 0; j < signature.size(); j++) {
+  for (size_t j = 0; j < signature.size(); j++) {
     switch (signature[j]) {
     case 'Z':
-      methodArgDescriptors.push_back("Z");
+      methodArgDescriptors.emplace_back("Z");
       break;
     case 'B':
-      methodArgDescriptors.push_back("B");
+      methodArgDescriptors.emplace_back("B");
       break;
     case 'S':
-      methodArgDescriptors.push_back("S");
+      methodArgDescriptors.emplace_back("S");
       break;
     case 'C':
-      methodArgDescriptors.push_back("C");
+      methodArgDescriptors.emplace_back("C");
       break;
     case 'I':
-      methodArgDescriptors.push_back("I");
+      methodArgDescriptors.emplace_back("I");
       break;
     case 'J':
-      methodArgDescriptors.push_back("J");
+      methodArgDescriptors.emplace_back("J");
       break;
     case 'F':
-      methodArgDescriptors.push_back("F");
+      methodArgDescriptors.emplace_back("F");
       break;
     case 'D':
-      methodArgDescriptors.push_back("D");
+      methodArgDescriptors.emplace_back("D");
       break;
     case 'L':
       methodArgDescriptors.push_back(
-          signature.substr(j, signature.find(";", j) - j + 1));
-      j = signature.find(";", j);
+          signature.substr(j, signature.find(';', j) - j + 1));
+      j = signature.find(';', j);
       break;
     default:
       return;

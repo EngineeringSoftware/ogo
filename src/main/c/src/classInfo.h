@@ -37,9 +37,9 @@ public:
    */
   void sortElementAscendingTag();
 
-  bool containsWritableInstances();
+  bool containsWritableInstances() const;
 
-  void getInstanceInfoWithTag(long tag, InstanceInfo **iInfo);
+  void getInstanceInfoWithTag(long tag, InstanceInfo **iInfo) const;
 
   /* Fully qualified name of the Class*/
   string name;

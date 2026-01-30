@@ -302,7 +302,7 @@ static void getFieldInfo(const jfieldID field, const jclass klass, string &name,
  */
 static void getInheritedFieldInfo(const ClassInfo *cInfo,
                                   map<int, FieldInfo *> &fields,
-                                  int &fieldCount);
+                                  unsigned long &fieldCount);
 
 /**
  * @fn          void getLoadedClasses()

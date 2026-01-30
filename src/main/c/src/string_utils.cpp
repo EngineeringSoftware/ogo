@@ -11,7 +11,7 @@ using namespace util;
  *                  replaced with '.'
  * @return  string  The updated string instance
  */
-string STRING::replaceSlashWithPeriod(string str) {
+string STRING::replaceSlashWithPeriod(const string &str) {
   string replaced_str = str;
   replace(replaced_str.begin(), replaced_str.end(), '/', '.');
   return replaced_str;
@@ -26,7 +26,7 @@ string STRING::replaceSlashWithPeriod(string str) {
  *                  replaced with '/'
  * @return  string  The updated string instance
  */
-string STRING::replacePeriodWithSlash(string str) {
+string STRING::replacePeriodWithSlash(const string &str) {
   string replaced_str = str;
   replace(replaced_str.begin(), replaced_str.end(), '.', '/');
   return replaced_str;
@@ -40,7 +40,7 @@ string STRING::replacePeriodWithSlash(string str) {
  * @param   cypherLabel  string instance containing Cypher Label
  * @return  string       The updated string instance
  */
-string STRING::cypherLabelToClass(string cypherLabel) {
+string STRING::cypherLabelToClass(const string& cypherLabel) {
   return cypherLabel.substr(1, cypherLabel.size() - 2);
 }
 
@@ -52,11 +52,11 @@ string STRING::cypherLabelToClass(string cypherLabel) {
  * @param   klass    string instance containing java class signature
  * @return  string   The updated string instance
  */
-string STRING::classToCypherLabel(string klass) {
-  string cypherLabel = "";
+string STRING::classToCypherLabel(const string &klass) {
+  string cypherLabel;
   int j = 0;
 
-  if (klass.size() == 0) {
+  if (klass.empty()) {
     return cypherLabel;
   }
 
@@ -84,11 +84,11 @@ string STRING::classToCypherLabel(string klass) {
  * @param   klass    string instance containing java class signature
  * @return  string   The updated string instance
  */
-string STRING::classToCypherLabel2(string klass) {
-  string cypherLabel = "";
+string STRING::classToCypherLabel2(const string &klass) {
+  string cypherLabel;
   int j = 0;
 
-  if (klass.size() == 0) {
+  if (klass.empty()) {
     return cypherLabel;
   }
 
@@ -114,7 +114,7 @@ string STRING::classToCypherLabel2(string klass) {
  * @return  string   The updated string instance
  */
 bool STRING::isStringPresentInList(string &str, vector<string> &list) {
-  for (string listElement : list) {
+  for (const string& listElement : list) {
     if (str.find(listElement) != string::npos) {
       return true;
     }

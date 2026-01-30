@@ -23,12 +23,12 @@ void FieldInfo::clear() {
   type = Agent::MethodReturnType::JNULL;
 }
 
-string FieldInfo::toString(Agent *agent) {
+string FieldInfo::toString(Agent *agent) const {
   if (type == Agent::MethodReturnType::JNULL) {
     return "";
   }
   stringstream sstream;
-  string valueString = "";
+  string valueString;
   switch (type) {
 #define ENTRY(a, b, c, d)                                                      \
   case Agent::MethodReturnType::c:                                             \
@@ -66,7 +66,7 @@ case Agent::MethodReturnType::JSTRING_ARRAY: {
             }
             break;*/
   }
-  if (name.size() > 0 && valueString.size() > 0) {
+  if (!name.empty() && !valueString.empty()) {
     sstream << name << "," << Agent::fieldTypeToString(type) << ","
             << valueString;
   } else {

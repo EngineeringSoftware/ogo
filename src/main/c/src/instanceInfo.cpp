@@ -33,9 +33,9 @@ void InstanceInfo::clear() {
  *
  * @author  1sand0s
  * @param   f           Pointer to the file to write to
- * @param   info        Information of the instance to write
+ * @param className
  */
-void InstanceInfo::writeToCsv(ofstream &f, string className) {
+void InstanceInfo::writeToCsv(ofstream &f, const string& className) const {
 
   f << className << "," << tag << "," << hashCode << "\n";
 }
@@ -51,7 +51,7 @@ void InstanceInfo::writeToCsv(ofstream &f, string className) {
 void InstanceInfo::writeRelationsToCsv() {
 
   /* Do nothing if number of refereed instances is zero */
-  if (references.size() > 0) {
+  if (!references.empty()) {
 
     string fileName =
         to_string(tag) + CSV_FILES::REFERENCE_RELATION_FILE_SUFFIX;
@@ -59,21 +59,20 @@ void InstanceInfo::writeRelationsToCsv() {
      * 1. We can then use this naming convention to easily identify the file
      *    that contains this instance's refereed instances
      */
-    string relationContent = "";
+    string relationContent;
 
     /* Iterate through the referrer instance's referee list and add their tags
      * to the
      * [*Referrer_TAG*]_Neo4JRelations.csv file*/
-    for (ReferenceInfo *rInfo : this->references) {
+    for (const ReferenceInfo *rInfo : this->references) {
       if (!rInfo->writeToGraph) {
         continue;
       }
-      string relation = rInfo->toString();
-      if (relation.size() > 0) {
+      if (string relation = rInfo->toString(); !relation.empty()) {
         relationContent += relation + "\n";
       }
     }
-    if (relationContent.size() > 0) {
+    if (!relationContent.empty()) {
       ofstream f(fileName, ofstream::out);
       f << relationContent;
       f.close();
@@ -92,24 +91,23 @@ void InstanceInfo::writeRelationsToCsv() {
 void InstanceInfo::writePropertiesToCsv(Agent *agent) {
 
   /* Do nothing if number of primitive fields is zero */
-  if (fields.size() > 0) {
+  if (!fields.empty()) {
 
-    string fileName = to_string(tag) + CSV_FILES::FIELD_PROPERTIES_FILE_SUFFIX;
+    const string fileName = to_string(tag) + CSV_FILES::FIELD_PROPERTIES_FILE_SUFFIX;
     /* Prepend File with the tag of the owner/referrer instance
      * 1. We can then use this naming convention to easily identify the file
      *    that contains this instance's primitive field information
      */
-    string propertyContent = "";
+    string propertyContent;
 
     /* Iterate through the referrer instance's primitive field list and add
      * their information to the [*Referrer_TAG*]_Neo4JProperties.csv file*/
-    for (FieldInfo *fInfo : this->fields) {
-      string properties = fInfo->toString(agent);
-      if (properties.size() > 0) {
+    for (const FieldInfo *fInfo : this->fields) {
+      if (string properties = fInfo->toString(agent); !properties.empty()) {
         propertyContent += properties + "\n";
       }
     }
-    if (propertyContent.size() > 0) {
+    if (!propertyContent.empty()) {
       ofstream f(fileName, ofstream::out);
       f << propertyContent;
       f.close();
@@ -117,11 +115,11 @@ void InstanceInfo::writePropertiesToCsv(Agent *agent) {
   }
 }
 
-FieldInfo *InstanceInfo::getField(string &fieldName) {
+FieldInfo *InstanceInfo::getField(const string &fieldName) {
   for (FieldInfo *fInfo : fields) {
     if (fInfo->name == fieldName) {
       return fInfo;
     }
   }
-  return NULL;
+  return nullptr;
 }

@@ -21,7 +21,7 @@ public:
   void clear();
 
   /* Writes this ReferenceInfo to string */
-  string toString();
+  string toString() const;
 
   /* Defines the kind of reference between the referrer and
    * the referee instance

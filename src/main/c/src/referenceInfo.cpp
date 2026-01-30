@@ -26,9 +26,9 @@ void ReferenceInfo::clear() {
   fieldIndex = -1;
 }
 
-string ReferenceInfo::toString() {
-  stringstream sstream;
-  if (referrerRelation.size() > 0) {
+string ReferenceInfo::toString() const {
+  if (!referrerRelation.empty()) {
+    stringstream sstream;
     sstream << referrerTag << "," << referenceKind << "," << referrerRelation;
     return sstream.str();
   } else {

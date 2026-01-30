@@ -42,18 +42,17 @@ ClassInfo::getMethodMatchingDescriptor(string &methodName,
  * @brief   Checks if any instances belonging to cInfo have
  *          writeToGraph set to true
  *
- * @param cinfo
  * @return  true if any instance of classInfo has writeToGraph set to true
  */
-bool ClassInfo::containsWritableInstances() {
+bool ClassInfo::containsWritableInstances() const {
   bool writeToGraph = false;
 
-  if (instances.size() == 0) {
+  if (instances.empty()) {
     return writeToGraph;
   }
 
-  for (int j = 0; j < instances.size(); j++) {
-    writeToGraph |= instances[j]->writeToGraph;
+  for (auto instance : instances) {
+    writeToGraph |= instance->writeToGraph;
   }
   return writeToGraph;
 }
@@ -68,7 +67,7 @@ bool ClassInfo::containsWritableInstances() {
  * @param   iInfo       populated with the instance bearing the queried tag if
  * found
  */
-void ClassInfo::getInstanceInfoWithTag(long tag, InstanceInfo **iInfo) {
+void ClassInfo::getInstanceInfoWithTag(long tag, InstanceInfo **iInfo) const {
   int index = -1;
 
   /*Check if tag was found before retrieving corressponding instanceInfo*/
