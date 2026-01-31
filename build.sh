@@ -23,6 +23,8 @@ function check_deps() {
         ! hash "clang-format" && \
                 { echo "missing clang-format (apt-get install clang-format)"; return 1; }
 
+        echo "deps ok"
+
         return 0
 }
 
