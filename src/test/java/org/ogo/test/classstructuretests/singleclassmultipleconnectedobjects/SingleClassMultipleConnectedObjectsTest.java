@@ -48,7 +48,7 @@ public class SingleClassMultipleConnectedObjectsTest {
     assertTrue(
         queryBool(
             a,
-            "MATCH (n:`org.ogo.test.classStructureTests.singleClassMultipleConnectedObjects.A`"
+            "MATCH (n:`org.ogo.test.classstructuretests.singleclassmultipleconnectedobjects.A`"
                 + " {$1})\n"
                 + "RETURN true",
             a));

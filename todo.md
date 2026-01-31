@@ -5,7 +5,7 @@
 - [ ] Add a linter
 - [ ] Fix simple linting issues
 - [X] Add CI runs
-- [ ] Change all package names to lowercase
+- [X] Change all package names to lowercase
 - [X] Update Conan
 - [ ] Remove print statements with logging library
 - [ ] Clean unneccessary comments & add better comments 
