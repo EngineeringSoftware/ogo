@@ -5,3 +5,4 @@ target/
 .cache/
 .vscode/
 myenv/
+.ekstazi/

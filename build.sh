@@ -50,7 +50,8 @@ function test_ogo() {
         echo "You need to build code first: ${0} compile_ogo"
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
-          mvn -e exec:exec@serverStart test -DargLine="-agentlib:ogoAgent"
+          JAVA_TOOL_OPTIONS="-Djdk.attach.allowAttachSelf=true -Djava.security.manager=allow" \
+                           mvn -e exec:exec@serverStart test -DargLine="-agentlib:ogoAgent"
         )
 }
 
