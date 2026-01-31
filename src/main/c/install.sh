@@ -13,7 +13,7 @@ if ! conan profile show default &>/dev/null; then
 fi
 
 # install antlr using conan package manager
-conan install ../external/conanfile.py -of . --build=missing
+conan install ../external/conanfile.py -of . --build=missing -s:h compiler.cppstd=17
 
 # execute cmake to generate Makefile
 cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_MODULE_PATH=$(pwd) -DCMAKE_TOOLCHAIN_FILE=$(pwd)/conan_toolchain.cmake
