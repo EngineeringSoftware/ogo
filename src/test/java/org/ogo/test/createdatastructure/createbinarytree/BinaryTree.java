@@ -10,7 +10,7 @@ public class BinaryTree {
     root = null;
   }
 
-  public Node createTree(int arr[], int l, int h) {
+  public Node createTree(int[] arr, int l, int h) {
     Node node = null;
     if (l > h || h < 0 || l == arr.length) return null;
 

@@ -71,10 +71,7 @@ public class BinaryTreeTest {
                 + nodeClass
                 + " {value:40}) RETURN m.value");
 
-    assertTrue(
-        result.length == 1
-            && result[0] instanceof Integer
-            && ((Integer) result[0]).intValue() == 40);
+    assertTrue(result.length == 1 && result[0] instanceof Integer && (Integer) result[0] == 40);
   }
 
   /**
@@ -87,7 +84,7 @@ public class BinaryTreeTest {
   @Profile
   @Test
   public void testInvariant() throws RemoteException {
-    int arr[] = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int[] arr = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
     BinaryTree tree = new BinaryTree();
     Node root = tree.createTree(arr, 0, arr.length);
     String nodeClass = "`org.ogo.test.createDataStructure.createBinaryTree.Node`";

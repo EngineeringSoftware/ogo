@@ -6,7 +6,6 @@ import static org.ogo.client.OGO.query;
 import java.io.IOException;
 import java.lang.reflect.*;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -23,11 +22,9 @@ public class CreateClassWithOnlyPrimitiveFieldsTest {
    *
    * @author 1sand0s
    * @since 1.0.0
-   * @version 1.0.0
    */
   @BeforeAll
-  public static void initQueryEngine()
-      throws RemoteException, InterruptedException, IOException, NotBoundException {
+  public static void initQueryEngine() throws InterruptedException, IOException, NotBoundException {
     Thread.sleep(4000);
     OGO.inMemory = true;
     OGO.init();

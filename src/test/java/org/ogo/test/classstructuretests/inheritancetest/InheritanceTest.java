@@ -45,9 +45,9 @@ public class InheritanceTest {
   @Test
   public void getFieldaOfAtest() throws RemoteException {
     a = new A();
-    Object result[] = query("MATCH (n {$1}) RETURN n.a", a);
-    assertEquals(result.length, 1, "Expected result size must be 1");
-    assertEquals(result[0], 10, "Expected result value must be 10");
+    Object[] result = query("MATCH (n {$1}) RETURN n.a", a);
+    assertEquals(1, result.length, "Expected result size must be 1");
+    assertEquals(10, result[0], "Expected result value must be 10");
   }
 
   /**
@@ -60,8 +60,8 @@ public class InheritanceTest {
   @Test
   public void getFieldbOfAtest() throws RemoteException {
     a = new A();
-    Object result[] = query("MATCH (n {$1}) RETURN n.b", a);
-    assertEquals(result.length, 1, "Expected result size must be 1");
-    assertEquals(result[0], 20, "Expected result value must be 20");
+    Object[] result = query("MATCH (n {$1}) RETURN n.b", a);
+    assertEquals(1, result.length, "Expected result size must be 1");
+    assertEquals(20, result[0], "Expected result value must be 20");
   }
 }

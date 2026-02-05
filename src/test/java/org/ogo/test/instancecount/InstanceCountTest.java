@@ -41,7 +41,7 @@ public class InstanceCountTest {
   @Test
   public void instanceACountTest() throws RemoteException {
     A a = new A();
-    Object result[] = query("MATCH (n:`org.ogo.test.instancecount.A`) RETURN COUNT(n)");
+    Object[] result = query("MATCH (n:`org.ogo.test.instancecount.A`) RETURN COUNT(n)");
 
     assertTrue(result != null && result.length == 1 && ((Long) result[0]).longValue() == 1);
   }
@@ -57,7 +57,7 @@ public class InstanceCountTest {
   public void instanceBCountTest() throws RemoteException {
     A a = new A();
     B b = new B();
-    Object result[] = query("MATCH (n:`org.ogo.test.instancecount.B`) RETURN COUNT(n)");
+    Object[] result = query("MATCH (n:`org.ogo.test.instancecount.B`) RETURN COUNT(n)");
 
     assertTrue(result != null && result.length == 1 && ((Long) result[0]).longValue() == 2);
   }
@@ -73,7 +73,7 @@ public class InstanceCountTest {
   public void instanceEdgeCountTest() throws RemoteException {
     A a = new A();
     B b = new B();
-    Object result[] = query("MATCH (n:`org.ogo.test.instancecount.A`)-[e:b]->(m) RETURN COUNT(m)");
+    Object[] result = query("MATCH (n:`org.ogo.test.instancecount.A`)-[e:b]->(m) RETURN COUNT(m)");
 
     assertTrue(result != null && result.length == 1 && ((Long) result[0]).longValue() == 1);
   }

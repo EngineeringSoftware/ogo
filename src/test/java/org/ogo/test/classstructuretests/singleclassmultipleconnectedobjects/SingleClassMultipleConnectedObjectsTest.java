@@ -67,8 +67,8 @@ public class SingleClassMultipleConnectedObjectsTest {
 
     Object[] result = query(a, "MATCH (n {$1})-[e:c]->(m) RETURN m.var2", a);
 
-    assertEquals(result.length, 1, "Expected result size must be 1");
-    assertEquals(((Double) result[0]).doubleValue(), 25.0, "Expected result value must be 25.0");
+    assertEquals(1, result.length, "Expected result size must be 1");
+    assertEquals(25.0, ((Double) result[0]).doubleValue(), "Expected result value must be 25.0");
   }
 
   /**
@@ -89,7 +89,7 @@ public class SingleClassMultipleConnectedObjectsTest {
                 + " (n:`org.ogo.test.classStructureTests.singleClassMultipleConnectedObjects.C`)-[e:instanceof]->(m)\n"
                 + "RETURN m.var1");
 
-    assertEquals(result.length, 1, "Expected result size must be 1");
-    assertEquals(((Integer) result[0]).intValue(), 10, "Expected result value must be 10");
+    assertEquals(1, result.length, "Expected result size must be 1");
+    assertEquals(10, ((Integer) result[0]).intValue(), "Expected result value must be 10");
   }
 }
