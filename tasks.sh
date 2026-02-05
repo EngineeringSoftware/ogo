@@ -1,7 +1,7 @@
 #!/bin/bash
-
-# ----------
-# Functions.
+# OGO Development Tasks
+# Usage: ./tasks.sh [command]
+# Commands: check_deps, install_deps, compile_ogo, install_ogo, test_ogo, exec_ogo, format_ogo_java, end_to_end
 
 function check_deps() {
         # Check dependencies for this project.
