@@ -42,13 +42,13 @@ jobs:
       run: pip install 'conan==2.24.0'
     
     - name: Make build script executable
-      run: chmod +x build.sh
+      run: chmod +x tasks.sh
     
     - name: Check dependencies
-      run: ./build.sh check_deps
+      run: ./tasks.sh check_deps
     
     - name: Compile OGO
-      run: ./build.sh compile_ogo
+      run: ./tasks.sh compile_ogo
       
     - name: Run tests
-      run: ./build.sh test_ogo
+      run: ./tasks.sh test_ogo
