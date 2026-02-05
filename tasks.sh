@@ -79,22 +79,26 @@ function install_ogo() {
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
           export JAVA_TOOL_OPTIONS="-Djava.util.logging.config.file=./src/main/resources/logging.properties"
-          mvn exec:exec@serverStart install -DargLine="-agentlib:ogoAgent"|| \
+          mvn exec:exec@serverStart install -DargLine="-agentlib:ogoAgent"||
                   { echo "could not install ogo"; return 1; }
         )
 }
 
 function test_ogo() {
-        echo "You need to build code first: ${0} compile_ogo"
+        check_deps || \
+                { echo "Dependencies not satisfied. Please install with: ./tasks.sh install_deps"; return 1; }
+        echo "Please make sure you have ran ./tasks.sh compile_ogo"
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
-          export JAVA_TOOL_OPTIONS="-Djdk.attach.allowAttachSelf=true -Djava.security.manager=allow -Djava.util.logging.config.file=./src/main/resources/logging.properties"  \
-                           mvn -e exec:exec@serverStart test -DargLine="-agentlib:ogoAgent"
+          export JAVA_TOOL_OPTIONS="-Djdk.attach.allowAttachSelf=true -Djava.security.manager=allow -Djava.util.logging.config.file=./src/main/resources/logging.properties"
+          mvn -e exec:exec@serverStart test -DargLine="-agentlib:ogoAgent"
         )
 }
 
 function exec_ogo() {
-        echo "You need to build code first: ${0} compile_ogo"
+        check_deps || \
+                { echo "Dependencies not satisfied. Please install with: ./tasks.sh install_deps"; return 1; }
+        echo "Please make sure you have ran ./tasks.sh compile_ogo"
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
           export JAVA_TOOL_OPTIONS="-Djava.util.logging.config.file=./src/main/resources/logging.properties"
