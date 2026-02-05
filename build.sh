@@ -28,6 +28,43 @@ function check_deps() {
         return 0
 }
 
+function install_deps() {
+        echo "Installing dependencies..."
+
+        if ! hash "mvn" 2>/dev/null; then
+                echo "Installing Maven..."
+                apt-get update && apt-get install -y maven || \
+                        { echo "Failed to install Maven"; return 1; }
+        fi
+
+        if ! hash "java" 2>/dev/null || ! java --version 2>&1 | grep -q '21.'; then
+                echo "Installing Java 21..."
+                apt-get update && apt-get install -y openjdk-21-jdk || \
+                        { echo "Failed to install Java 21"; return 1; }
+        fi
+
+        if ! hash "conan" 2>/dev/null; then
+                echo "Installing Conan..."
+                pip install 'conan==2.24.0' || \
+                        { echo "Failed to install Conan"; return 1; }
+        fi
+
+        if ! hash "cmake" 2>/dev/null; then
+                echo "Installing CMake..."
+                apt-get update && apt-get install -y cmake || \
+                        { echo "Failed to install CMake"; return 1; }
+        fi
+
+        if ! hash "clang-format" 2>/dev/null; then
+                echo "Installing Clang Format..."
+                apt-get update && apt-get install -y clang-format || \
+                        { echo "Failed to install Clang Format"; return 1; }
+        fi
+
+        echo "Dependencies installed successfully!"
+        return 0
+}
+
 function compile_ogo() {
         # Build the project.
         ( 
