@@ -2,6 +2,76 @@
 Object Graph Programming (OGO) enables reading and modifying an object graph 
 (i.e., the entire state of the JVM heap) via declarative Cypher queries.
 
+## Getting Started ##
+
+### Prerequisites
+The project requires the following dependencies:
+- **Maven** (for Java build automation)
+- **Java 21** (JDK)
+- **Conan 2.24.0** (C/C++ dependency management)
+- **CMake** (C/C++ build system)
+- **Clang Format** (code formatting)
+
+### Installation
+
+#### 1. Install Dependencies
+Run the installation script to automatically install all required dependencies:
+
+```bash
+./build.sh install_deps
+```
+
+This will check for and install any missing dependencies on your system.
+
+Alternatively, verify your dependencies are correctly installed:
+```bash
+./build.sh check_deps
+```
+
+#### 2. Build the Project
+Compile the OGO project:
+
+```bash
+./build.sh compile_ogo
+```
+
+#### 3. Full Installation
+To compile and install the complete project:
+
+```bash
+./build.sh install_ogo
+```
+
+### Running the Project
+
+#### Run Tests
+Execute the test suite:
+
+```bash
+./build.sh test_ogo
+```
+
+#### Run the Application
+Start the OGO application:
+
+```bash
+./build.sh exec_ogo
+```
+
+#### Format Code
+Auto-format Java code according to project standards:
+
+```bash
+./build.sh format_ogo_java
+```
+
+#### End-to-End Setup
+Perform a complete setup with dependency checks and full installation:
+
+```bash
+./build.sh end_to_end
+```
+
 ## Examples ##
 
 1. Searching an `ArrayList` for a given element.
