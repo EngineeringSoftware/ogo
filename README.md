@@ -6,11 +6,11 @@ Object Graph Programming (OGO) enables reading and modifying an object graph
 
 ### Prerequisites
 The project requires the following dependencies:
-- **Maven** (for Java build automation)
-- **Java 21** (JDK)
-- **Conan 2.24.0** (C/C++ dependency management)
-- **CMake** (C/C++ build system)
-- **Clang Format** (code formatting)
+- **Maven** 
+- **Java 21** 
+- **Conan 2.24.0** 
+- **CMake** 
+- **Clang Format** 
 
 ### Installation
 
