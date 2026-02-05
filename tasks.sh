@@ -78,6 +78,7 @@ function install_ogo() {
         compile_ogo
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
+          export JAVA_TOOL_OPTIONS="-Djava.util.logging.config.file=./src/main/resources/logging.properties"
           mvn exec:exec@serverStart install -DargLine="-agentlib:ogoAgent"|| \
                   { echo "could not install ogo"; return 1; }
         )
@@ -87,7 +88,7 @@ function test_ogo() {
         echo "You need to build code first: ${0} compile_ogo"
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
-          JAVA_TOOL_OPTIONS="-Djdk.attach.allowAttachSelf=true -Djava.security.manager=allow" \
+          export JAVA_TOOL_OPTIONS="-Djdk.attach.allowAttachSelf=true -Djava.security.manager=allow -Djava.util.logging.config.file=./src/main/resources/logging.properties"  \
                            mvn -e exec:exec@serverStart test -DargLine="-agentlib:ogoAgent"
         )
 }
@@ -96,6 +97,7 @@ function exec_ogo() {
         echo "You need to build code first: ${0} compile_ogo"
         ( 
           export LD_LIBRARY_PATH="./src/main/c/build"
+          export JAVA_TOOL_OPTIONS="-Djava.util.logging.config.file=./src/main/resources/logging.properties"
           mvn -e exec:exec@main
         )
 }

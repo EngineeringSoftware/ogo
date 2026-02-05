@@ -541,13 +541,12 @@ public abstract class OGO {
 
       writer.close();
     } catch (FileNotFoundException e) {
-      System.out.println(
-          "Error : File " + file.getName() + " could not be opened " + file.getPath());
-      System.out.println("Unable to write profile data");
-      System.out.println(e.getMessage());
+      logger.severe("Error : File " + file.getName() + " could not be opened " + file.getPath());
+      logger.severe("Unable to write profile data");
+      logger.severe(e.getMessage());
     } catch (IOException e) {
-      System.out.println("Unable to write profile data " + file.getName());
-      System.out.println(e.getMessage());
+      logger.severe("Unable to write profile data " + file.getName());
+      logger.severe(e.getMessage());
     }
   }
 
@@ -562,9 +561,9 @@ public abstract class OGO {
             profileData.add(scan.nextLine());
           }
         } catch (FileNotFoundException e) {
-          System.out.println("Error : File " + f.getName() + " not found in path " + f.getPath());
-          System.out.println("Unable to read JVMTI profile file");
-          System.out.println(e.getMessage());
+          logger.severe("Error : File " + f.getName() + " not found in path " + f.getPath());
+          logger.severe("Unable to read JVMTI profile file");
+          logger.severe(e.getMessage());
         }
       }
     }
@@ -583,17 +582,17 @@ public abstract class OGO {
         }
       } catch (NoSuchMethodException e) {
         if (printProfileMethodInfo) {
-          System.out.println(
+          logger.info(
               "Method with name : "
                   + st.getMethodName()
                   + " does not exist in Class : "
                   + st.getClassName());
-          System.out.println(e.getMessage());
+          logger.info(e.getMessage());
         }
       } catch (ClassNotFoundException e) {
         if (printProfileMethodInfo) {
-          System.out.println("Class with name : " + st.getClassName() + " not found");
-          System.out.println(e.getMessage());
+          logger.info("Class with name : " + st.getClassName() + " not found");
+          logger.info(e.getMessage());
         }
       }
     }

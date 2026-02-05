@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
  * @author 1sand0s
  */
 public abstract class AbstractGraphQueryEngine {
+
+  private static final Logger logger = Logger.getLogger(AbstractGraphQueryEngine.class.getName());
 
   /** The ordinals of this enum can be used to get the correct tokens in a property csv file */
   protected enum PROPERTY_FILE_INDEX {
@@ -88,9 +91,8 @@ public abstract class AbstractGraphQueryEngine {
           propertyType.add(tokens[PROPERTY_FILE_INDEX.PROPERTY_TYPE.ordinal()]);
         }
       } catch (FileNotFoundException e) {
-        System.out.println(
-            "Error : File " + file.getName() + " not found in path " + file.getPath());
-        System.out.println("Unable to create properties described in " + file.getName());
+        logger.severe("Error : File " + file.getName() + " not found in path " + file.getPath());
+        logger.severe("Unable to create properties described in " + file.getName());
       }
     }
   }
