@@ -4,7 +4,7 @@ are written using the [Cypher Query Language](https://neo4j.com/developer/cypher
 modes, $OGO^{Neo}$ and $OGO^{Mem}$. The former serializes a sub-graph of the entire JVM heap object graph, loads
 it into a standalone Neo4J database and executes queries inside it. The latter executes queries in-memory (inside 
 the native agent) using [Antlr](https://www.antlr.org/) to parse the query and visitors to execute it Currently, 
-only $OGO^{Mem}$ is under construction and not all functionalities may work. 
+$OGO^{Mem}$ is under construction and not all functionalities may work. 
 
 The OGO API is divided primarily into two packages, `client` and `server`. The `client` classes are common to both
 the modes whereas the `server` classes are exclusive to $OGO^{Neo}$. These packages are implemented as an 
