@@ -1,6 +1,16 @@
 ## OGO ##
-Object Graph Programming (OGO) enables reading and modifying an object graph 
-(i.e., the entire state of the JVM heap) via declarative Cypher queries.
+Object Graph Programming (OGO) enables manipulating the JVM heap declaratively through queries. The queries 
+are written using the [Cypher Query Language](https://neo4j.com/developer/cypher/). OGO supports two high-level
+modes, $OGO^{Neo}$ and $OGO^{Mem}$. The former serializes a sub-graph of the entire JVM heap object graph, loads
+it into a standalone Neo4J database and executes queries inside it. The latter executes queries in-memory (inside 
+the native agent) using [Antlr](https://www.antlr.org/) to parse the query and visitors to execute it Currently, 
+only $OGO^{Mem}$ is under construction and not all functionalities may work. 
+
+The OGO API is divided primarily into two packages, `client` and `server`. The `client` classes are common to both
+the modes whereas the `server` classes are exclusive to $OGO^{Neo}$. These packages are implemented as an 
+[RMI](https://docs.oracle.com/javase/tutorial/rmi/overview.html) client server application. This prevents polluting
+the JVM heap of the test subject with Neo4J database objects.
+
 
 ## Getting Started ##
 
@@ -107,9 +117,38 @@ Perform a complete setup with dependency checks and full installation:
    return true iff the number of elements in `n` is non-zero which is true only if the
    given key is contained in `map`.
 
-## Coming Soon! ##
-1. OGO Code base
-2. ICSE 2024 OGO evaluation datasets
+
+## Using OGO in a Maven Project
+
+After packaging, OGO can be used in a third-party maven project.
+
+1. ### Include Client dependency:
+    
+	The client jar can be added as a dependency to a third-party project by adding the following to its pom.
+	```xml
+	<dependency>
+	  <groupId>org.ogo</groupId>
+      <artifactId>ogo</artifactId>
+      <version>1.0.0</version>
+      <scope>system</scope>
+      <systemPath><!-- ENTER full path to client jar including jar name --></systemPath>
+    </dependency>
+	```
+
+2. ### Include Native Agent:
+
+    The native agent can be included during execution by adding the following to the third-party pom.
+	```xml
+    <configuration>
+      <!-- for adding native agent ogoAgent -->
+	  <argLine>-agentpath:<!-- ENTER full path to native agent including native agent name --></argLine>
+    </configuration>
+	```
+    Some third-party project tend to use other plugins which may overwrite `argLine`. It may be necessary
+	to explicitly specify this argument while running the tests using maven. This can be done using:
+	```bash
+	mvn test -DargLine="-agentpath:<ENTER full path to native agent including native agent name>"
+	```
     
 ## Citation ##
 If you use OGO in your research, please cite our ICSE'24 paper.
