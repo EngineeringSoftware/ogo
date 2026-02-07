@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marks methods whose execution should be profiled.
  * @author 1sand0s
  */
 @Retention(RetentionPolicy.RUNTIME)
