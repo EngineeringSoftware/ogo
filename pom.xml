@@ -141,8 +141,8 @@
 	      <workingDirectory>${agent.path}</workingDirectory>
               <executable>bash</executable>
               <arguments>
-		<arguement>install.sh </arguement>
-                <arguement> ${agent.build.type} </arguement>
+                <argument>install.sh </argument>
+                <argument> ${agent.build.type} </argument>
               </arguments>
               <async>false</async>
 	      <skip>${agent.build.skip}</skip>

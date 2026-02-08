@@ -4,5 +4,6 @@ surefire-reports/
 target/
 .cache/
 .vscode/
-myenv/
 .ekstazi/
+.idea/
+src/main/c/generated/
