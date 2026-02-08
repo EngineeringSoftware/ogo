@@ -8,9 +8,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-/**
- * @author 1sand0s
- */
 public abstract class AbstractGraphQueryEngine {
 
   private static final Logger logger = Logger.getLogger(AbstractGraphQueryEngine.class.getName());
@@ -39,7 +36,6 @@ public abstract class AbstractGraphQueryEngine {
 
   /**
    * @brief Gets all the properties present in [*TAG*]_Neo4JProperties.csv file
-   * @author 1sand0s
    * @param dirName Directory where the file is present
    * @param fileName name of the file
    * @param propertyName Names of all the properties present in the file (returned by the function)
@@ -101,7 +97,6 @@ public abstract class AbstractGraphQueryEngine {
    * @brief Extracts tokens from a line in the [*TAG*]_Neo4JProperties.csv file
    *     <p>Example : tokens : str , [UTAUSTIN] , string lexemes : PROPERTY_NAME | PROPERTY_VALUE |
    *     PROPERTY_TYPE
-   * @author 1sand0s
    * @param line String corresponding to a line in [*TAG*]_Neo4JProperties.csv file
    * @return String[] Array of tokens extracted from the line
    * @since 1.0.0

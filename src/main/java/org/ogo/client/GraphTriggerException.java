@@ -1,8 +1,5 @@
 package org.ogo.client;
 
-/**
- * @author 1sand0s
- */
 public final class GraphTriggerException extends Exception {
   private final Boolean inMemory;
   private final Boolean followRoot;
@@ -44,8 +41,6 @@ public final class GraphTriggerException extends Exception {
   }
 
   /**
-   * 0
-   *
    * @param inMemory
    * @param cQuery
    */
@@ -70,8 +65,6 @@ public final class GraphTriggerException extends Exception {
   }
 
   /**
-   * 0
-   *
    * @return
    * @throws UnsupportedOperationException
    */

@@ -15,9 +15,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
-/**
- * @author 1sand0s
- */
+/** */
 @Disabled
 public class QueryJavaDataStructuresTest {
 
@@ -30,7 +28,6 @@ public class QueryJavaDataStructuresTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @BeforeAll
@@ -43,7 +40,6 @@ public class QueryJavaDataStructuresTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @Test
@@ -69,7 +65,6 @@ public class QueryJavaDataStructuresTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @Test
@@ -95,7 +90,6 @@ public class QueryJavaDataStructuresTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @Test
@@ -117,7 +111,6 @@ public class QueryJavaDataStructuresTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @Test
@@ -143,7 +136,6 @@ public class QueryJavaDataStructuresTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @Test

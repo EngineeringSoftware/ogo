@@ -13,15 +13,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
-/**
- * @author 1sand0s
- */
+/** */
 public class SingleClassMultipleConnectedObjectsTest {
 
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -37,7 +34,6 @@ public class SingleClassMultipleConnectedObjectsTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -57,7 +53,6 @@ public class SingleClassMultipleConnectedObjectsTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -74,7 +69,6 @@ public class SingleClassMultipleConnectedObjectsTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    * @version 1.0.0
    */

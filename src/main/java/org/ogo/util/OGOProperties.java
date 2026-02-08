@@ -7,7 +7,6 @@ public abstract class OGOProperties {
 
   /**
    * @brief Gets the port number used for RMI between OGO client and Neo4J server
-   * @author 1sand0s
    * @return int OGO port number
    * @since 1.0.0
    */
@@ -19,7 +18,6 @@ public abstract class OGOProperties {
 
   /**
    * @brief Gets the flag for inMemory or Neo4J cypher execution
-   * @author 1sand0s
    * @return boolean inMemory
    * @since 1.0.0
    */
@@ -31,7 +29,6 @@ public abstract class OGOProperties {
 
   /**
    * @brief Gets the flag for clearing Neo4J database after query execution
-   * @author 1sand0s
    * @return boolean clearDatabase
    * @since 1.0.0
    */

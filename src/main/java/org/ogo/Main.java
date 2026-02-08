@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 import org.ogo.client.OGO;
 
-
 public class Main {
 
   private static final Logger logger = Logger.getLogger(Main.class.getName());

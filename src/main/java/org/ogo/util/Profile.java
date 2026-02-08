@@ -5,10 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Marks methods whose execution should be profiled.
- * @author 1sand0s
- */
+/** Marks methods whose execution should be profiled. */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Profile {}

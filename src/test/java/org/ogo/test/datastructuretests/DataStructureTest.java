@@ -22,9 +22,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
-/**
- * @author 1sand0s
- */
+/** */
 public class DataStructureTest {
 
   LinkedList<Integer> list1;
@@ -39,7 +37,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @BeforeAll
@@ -60,7 +57,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -112,7 +108,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -137,7 +132,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -161,7 +155,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -185,7 +178,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -236,7 +228,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -269,7 +260,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -300,7 +290,6 @@ public class DataStructureTest {
   /**
    * regular
    *
-   * @author 1sand0s
    * @since 1.0.0
    */
   @RepeatedTest(1)

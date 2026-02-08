@@ -1,8 +1,5 @@
 package org.ogo.test.classstructuretests.singleclassmultipleconnectedobjects;
 
-/**
- * @author 1sand0s
- */
 public class A {
   B b;
   C c;
@@ -10,7 +7,6 @@ public class A {
   String var2;
   int[] var3;
 
-  /** class constructor */
   A() {
     b = new B();
     c = new C();

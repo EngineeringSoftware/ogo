@@ -83,7 +83,6 @@ public abstract class OGO {
 
   /**
    * @brief Gets the class name to use for the dynamically generated class.
-   * @author 1sand0s
    * @param className user given class name in CREATE query
    * @param fieldDescriptors field descriptors of user specified fields
    * @since 1.0.0

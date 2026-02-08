@@ -15,7 +15,6 @@ namespace graph {
  * @class  FieldInfo
  * @brief  class for storing primitive field information
  *
- * @author 1sand0s
  */
 class FieldInfo {
 public:

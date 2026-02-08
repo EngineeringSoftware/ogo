@@ -8,9 +8,6 @@ import org.neo4j.graphdb.Node;
 public class CastObjectArrayToPrimitive {
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Boolean[] returns the cast Boolean Array
    * @since 1.0.0
@@ -24,9 +21,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Byte[] returns the cast Byte Array
    * @since 1.0.0
@@ -40,9 +34,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Short[] returns the cast Short Array
    * @since 1.0.0
@@ -56,9 +47,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Integer[] returns the cast Integer Array
    * @since 1.0.0
@@ -72,9 +60,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Long[] returns the cast Long Array
    * @since 1.0.0
@@ -88,9 +73,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Float[] returns the cast Float Array
    * @since 1.0.0
@@ -104,9 +86,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Double[] returns the cast Double Array
    * @since 1.0.0
@@ -120,9 +99,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyValue String Array corresponding to property values
    * @return Character[] returns the cast Character Array
    * @since 1.0.0
@@ -136,9 +112,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param propertyName name of the property
    * @param propertyValue to be cast into appropriate object
    * @param propertyType type of every element in propertyValue
@@ -208,9 +181,6 @@ public class CastObjectArrayToPrimitive {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param obj Object whose instance is to be determined
    * @return true if obj belongs to Primitive Type
    * @since 1.0.0

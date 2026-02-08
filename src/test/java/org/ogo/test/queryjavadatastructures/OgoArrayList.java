@@ -6,9 +6,7 @@ import static org.ogo.client.OGO.queryBool;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-/**
- * @author 1sand0s
- */
+/** */
 public abstract class OgoArrayList {
 
   public static boolean contains(ArrayList list, Integer item, boolean defaultMode)

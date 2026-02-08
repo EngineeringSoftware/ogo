@@ -6,9 +6,7 @@ import static org.ogo.client.OGO.queryBool;
 import java.rmi.RemoteException;
 import java.util.Vector;
 
-/**
- * @author 1sand0s
- */
+/** */
 public abstract class OgoVector {
 
   public static boolean contains(Vector vector, Integer item, boolean defaultMode)

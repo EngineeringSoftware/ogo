@@ -16,7 +16,6 @@ namespace graph {
  * @class  MethodInfo
  * @brief  class for storing method information
  *
- * @author 1sand0s
  */
 class MethodInfo {
 public:

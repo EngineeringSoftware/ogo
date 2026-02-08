@@ -12,7 +12,6 @@ public abstract class FileHelper {
   /**
    * @brief Searches the directory specified by 'dirName' for files with extension specified by
    *     'endsWith'. Use this to search for *.csv files exported from native agent
-   * @author 1sand0s
    * @param dirName Directory to search files in
    * @param endsWith Extension of files to search for
    * @return File[] Array of File containing the files of specified extension
@@ -30,9 +29,6 @@ public abstract class FileHelper {
   }
 
   /**
-   * regular
-   *
-   * @author 1sand0s
    * @param cQuery Cypher query String
    * @param objects The objects passed as arg to replace with their hashcodes
    * @return modified cypher query string

@@ -21,7 +21,6 @@ public class CompositeMapCypher {
   /**
    * regular
    *
-   * @author 1sand0s
    * @version 1.0.0
    * @since 1.0.0
    */

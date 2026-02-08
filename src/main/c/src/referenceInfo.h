@@ -10,7 +10,7 @@ namespace graph {
  * @class  ReferenceInfo
  * @brief  class for storing child object/instance information
  *
- * @author 1sand0s
+
  */
 class ReferenceInfo {
 public:

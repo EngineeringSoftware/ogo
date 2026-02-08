@@ -8,7 +8,7 @@ namespace TIMER {
  *         of different stages of object graph construction
  *         Use this for profiling execution times
  *
- * @author 1sand0s
+
  */
 typedef struct TimeInfo {
   clock_t start;        /* start time */

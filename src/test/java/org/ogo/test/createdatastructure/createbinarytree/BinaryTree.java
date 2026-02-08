@@ -1,8 +1,6 @@
 package org.ogo.test.createdatastructure.createbinarytree;
 
-/**
- * @author 1sand0s
- */
+/** */
 public class BinaryTree {
   Node root;
 
