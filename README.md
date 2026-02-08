@@ -1,4 +1,7 @@
 ## OGO ##
+<p align="center">
+  <img src="images/ogo-logo.png" width="180" />
+</p>
 Object Graph Programming (OGO) enables manipulating the JVM heap declaratively through queries. The queries 
 are written using the [Cypher Query Language](https://neo4j.com/developer/cypher/). OGO supports two high-level
 modes, $OGO^{Neo}$ and $OGO^{Mem}$. The former serializes a sub-graph of the entire JVM heap object graph, loads
