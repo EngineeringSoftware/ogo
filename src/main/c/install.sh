@@ -16,7 +16,8 @@ fi
 conan install ../external/conanfile.py -of . --build=missing -s:h compiler.cppstd=17
 
 # execute cmake to generate Makefile
-cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_MODULE_PATH=$(pwd) -DCMAKE_TOOLCHAIN_FILE=$(pwd)/conan_toolchain.cmake
+cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_MODULE_PATH=$(pwd) -DCMAKE_TOOLCHAIN_FILE=$(pwd)/conan_toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
 
 # build native agent
 make
