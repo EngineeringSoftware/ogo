@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
-/** */
 @Disabled
 public class CreateClassWithOnlyPrimitiveFieldsTest {
 

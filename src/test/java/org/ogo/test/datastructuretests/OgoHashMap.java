@@ -5,7 +5,6 @@ import static org.ogo.client.OGO.queryBool;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
-/** */
 public abstract class OgoHashMap {
 
   public static boolean containsValue(HashMap map, Integer item, boolean defaultMode)

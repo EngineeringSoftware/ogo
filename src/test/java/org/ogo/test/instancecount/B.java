@@ -1,6 +1,5 @@
 package org.ogo.test.instancecount;
 
-/** */
 public class B {
 
   String var1;

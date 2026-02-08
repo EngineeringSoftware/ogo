@@ -1,6 +1,5 @@
 package org.ogo.test.createdatastructure.createbinarytree;
 
-/** */
 public class Node {
   int value;
   Node left;

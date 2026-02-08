@@ -5,7 +5,6 @@ import static org.ogo.client.OGO.queryBool;
 import java.rmi.RemoteException;
 import java.util.ArrayDeque;
 
-/** */
 public abstract class OgoArrayDeque {
 
   public static boolean contains(

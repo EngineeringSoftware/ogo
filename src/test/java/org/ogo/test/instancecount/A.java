@@ -1,6 +1,5 @@
 package org.ogo.test.instancecount;
 
-/** */
 public class A {
   B b;
   C c;

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
-/** */
 public class InstanceCountTest {
 
   /**

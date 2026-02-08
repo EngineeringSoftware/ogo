@@ -7,7 +7,6 @@ import static org.ogo.client.OGO.queryLong;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 
-/** */
 public abstract class OgoLinkedList {
 
   public static boolean contains(

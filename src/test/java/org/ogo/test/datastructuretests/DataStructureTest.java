@@ -22,7 +22,6 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 
-/** */
 public class DataStructureTest {
 
   LinkedList<Integer> list1;

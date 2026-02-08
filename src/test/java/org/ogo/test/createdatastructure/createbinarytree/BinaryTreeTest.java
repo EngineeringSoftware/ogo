@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.ogo.client.OGO;
 import org.ogo.util.Profile;
 
-/** */
 @Disabled
 public class BinaryTreeTest {
 
