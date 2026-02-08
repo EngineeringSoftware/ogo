@@ -1,5 +1,5 @@
-#include "jni_util.h"
-#include "ogoConstants.h"
+#include "jni_util.hpp"
+#include "ogo_constants.hpp"
 
 #include <cstdarg>
 #include <jni.h>

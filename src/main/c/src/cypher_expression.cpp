@@ -1,8 +1,8 @@
-#include "cypher_expression.h"
-#include "classInfo.h"
-#include "cypher_operators.h"
-#include "jni_util.h"
-#include "methodInfo.h"
+#include "cypher_expression.hpp"
+#include "class_info.hpp"
+#include "cypher_operators.hpp"
+#include "jni_util.hpp"
+#include "method_info.hpp"
 
 #include <cmath>
 #include <exception>

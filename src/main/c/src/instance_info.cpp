@@ -1,8 +1,8 @@
-#include "instanceInfo.h"
-#include "classInfo.h"
-#include "fieldInfo.h"
-#include "jni_util.h"
-#include "ogoConstants.h"
+#include "instance_info.hpp"
+#include "class_info.hpp"
+#include "field_info.hpp"
+#include "jni_util.hpp"
+#include "ogo_constants.hpp"
 #include <vector>
 
 using namespace util;

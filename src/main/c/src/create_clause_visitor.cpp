@@ -1,6 +1,6 @@
-#include "CreateClauseVisitor.h"
+#include "create_clause_visitor.hpp"
 
-#include "cypher_expression.h"
+#include "cypher_expression.hpp"
 #include <algorithm>
 
 using namespace util;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cypher_expression.h"
-#include "jni_util.h"
+#include "cypher_expression.hpp"
+#include "jni_util.hpp"
 
 #include <exception>
 #include <map>

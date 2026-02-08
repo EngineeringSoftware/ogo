@@ -1,15 +1,15 @@
-#include "ReturnClauseVisitor.h"
+#include "return_clause_visitor.hpp"
 #include "ParserRuleContext.h"
-#include "classInfo.h"
-#include "cypher_expression.h"
-#include "methodInfo.h"
-#include "string_utils.h"
+#include "class_info.hpp"
+#include "cypher_expression.hpp"
+#include "method_info.hpp"
+#include "string_utils.hpp"
 
 #include "tree/TerminalNode.h"
 #include <any>
 #include <iostream>
 #include <jni.h>
-#include <jni_util.h>
+#include <jni_util.hpp>
 #include <string>
 #include <vector>
 

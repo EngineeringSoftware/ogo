@@ -1,6 +1,6 @@
-#include "classInfo.h"
-#include "agent_util.h"
-#include "methodInfo.h"
+#include "class_info.hpp"
+#include "agent_util.hpp"
+#include "method_info.hpp"
 
 #include <iostream>
 

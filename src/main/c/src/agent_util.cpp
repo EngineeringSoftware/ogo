@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "agent_util.h"
+#include "agent_util.hpp"
 
 /**
  * @fn      int searchTag(int, int, long, long*, int*)

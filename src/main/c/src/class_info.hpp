@@ -1,8 +1,8 @@
 #pragma once
 
-#include "fieldInfo.h"
-#include "instanceInfo.h"
-#include "methodInfo.h"
+#include "field_info.hpp"
+#include "instance_info.hpp"
+#include "method_info.hpp"
 
 #include <jni.h>
 #include <string>

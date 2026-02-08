@@ -1,5 +1,5 @@
-#include "MatchClauseVisitor.h"
-#include "instanceInfo.h"
+#include "match_clause_visitor.hpp"
+#include "instance_info.hpp"
 
 #include <any>
 

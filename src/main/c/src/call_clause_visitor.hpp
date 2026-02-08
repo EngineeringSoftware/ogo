@@ -1,20 +1,19 @@
 #pragma once
 
 #include "CypherBaseVisitor.h"
-#include "classInfo.h"
-#include "instanceInfo.h"
-#include "jni_util.h"
-#include "ogoConstants.h"
-#include "string_utils.h"
+#include "instance_info.hpp"
+#include "jni_util.hpp"
+#include "ogo_constants.hpp"
+#include "string_utils.hpp"
 
-#include <utility>
+#include <string>
 #include <vector>
 
 using namespace std;
-using namespace graph;
 using namespace util;
+using namespace graph;
 
-class MatchClauseVisitor : public CypherBaseVisitor {
+class CallClauseVisitor : public CypherBaseVisitor {
 
 #define AST_NODE_RETURN(VISIT, ASSIGN, ...)                                    \
   {                                                                            \
@@ -25,21 +24,18 @@ class MatchClauseVisitor : public CypherBaseVisitor {
   }
 
 public:
-  MatchClauseVisitor(
+  CallClauseVisitor(
       Agent *agent,
       map<string, vector<pair<InstanceInfo *, jobject>>> *nodeObjectMap);
-  ~MatchClauseVisitor();
+  ~CallClauseVisitor();
 
   any visitOC_SinglePartQuery(CypherParser::OC_SinglePartQueryContext *ctx);
   any visitOC_MultiPartQuery(CypherParser::OC_MultiPartQueryContext *ctx);
   any visitOC_ReadingClause(CypherParser::OC_ReadingClauseContext *ctx);
-  any visitOC_PatternElement(CypherParser::OC_PatternElementContext *ctx);
-  any visitOC_NodePattern(CypherParser::OC_NodePatternContext *ctx);
-  any visitOC_Variable(CypherParser::OC_VariableContext *ctx);
-  any visitOC_SymbolicName(CypherParser::OC_SymbolicNameContext *ctx);
-  any visitOC_Properties(CypherParser::OC_PropertiesContext *ctx);
-  any visitOC_MapLiteral(CypherParser::OC_MapLiteralContext *ctx);
-  any visitOC_PropertyKeyName(CypherParser::OC_PropertyKeyNameContext *ctx);
+  any visitOC_ExplicitProcedureInvocation(
+      CypherParser::OC_ExplicitProcedureInvocationContext *ctx);
+  any visitOC_InQueryCall(CypherParser::OC_InQueryCallContext *ctx);
+  any visitOC_ProcedureName(CypherParser::OC_ProcedureNameContext *ctx);
   any visitOC_Expression(CypherParser::OC_ExpressionContext *ctx);
   any visitOC_OrExpression(CypherParser::OC_OrExpressionContext *ctx);
   any visitOC_XorExpression(CypherParser::OC_XorExpressionContext *ctx);
@@ -59,11 +55,9 @@ public:
   any visitOC_PropertyOrLabelsExpression(
       CypherParser::OC_PropertyOrLabelsExpressionContext *ctx);
   any visitOC_Atom(CypherParser::OC_AtomContext *ctx);
-  any visitOC_Literal(CypherParser::OC_LiteralContext *ctx);
-  any visitOC_NumberLiteral(CypherParser::OC_NumberLiteralContext *ctx);
-  any visitOC_DoubleLiteral(CypherParser::OC_DoubleLiteralContext *ctx);
-  any visitOC_IntegerLiteral(CypherParser::OC_IntegerLiteralContext *ctx);
-  any visitOC_BooleanLiteral(CypherParser::OC_BooleanLiteralContext *ctx);
+  any visitOC_Namespace(CypherParser::OC_NamespaceContext *ctx);
+  any visitOC_SymbolicName(CypherParser::OC_SymbolicNameContext *ctx);
+  any visitOC_Variable(CypherParser::OC_VariableContext *ctx);
   map<string, vector<pair<InstanceInfo *, jobject>>> *nodeObjectMap;
 
 private:

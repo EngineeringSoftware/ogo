@@ -1,6 +1,6 @@
-#include "MergeClauseVisitor.h"
-#include "classInfo.h"
-#include "cypher_expression.h"
+#include "merge_clause_visitor.hpp"
+#include "class_info.hpp"
+#include "cypher_expression.hpp"
 
 using namespace std;
 using namespace util;

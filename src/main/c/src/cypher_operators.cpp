@@ -1,6 +1,6 @@
 
-#include "cypher_operators.h"
-#include "jni_util.h"
+#include "cypher_operators.hpp"
+#include "jni_util.hpp"
 
 #include <cmath>
 #include <jni.h>

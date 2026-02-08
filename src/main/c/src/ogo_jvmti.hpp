@@ -8,19 +8,19 @@
 #include <string>
 #include <time.h>
 
-#include "Timer.h"
-#include "agent_util.h"
+#include "agent_util.hpp"
 #include "jni.h"
-#include "jni_util.h"
-#include "ogoConstants.h"
-#include "optimizations.h"
-#include "string_utils.h"
+#include "jni_util.hpp"
+#include "ogo_constants.hpp"
+#include "optimizations.hpp"
+#include "string_utils.hpp"
+#include "timer.hpp"
 
-#include "classInfo.h"
-#include "fieldInfo.h"
-#include "instanceInfo.h"
-#include "methodInfo.h"
-#include "referenceInfo.h"
+#include "class_info.hpp"
+#include "field_info.hpp"
+#include "instance_info.hpp"
+#include "method_info.hpp"
+#include "reference_info.hpp"
 
 using namespace graph;
 using namespace std;

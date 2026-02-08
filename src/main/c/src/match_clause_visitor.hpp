@@ -1,20 +1,20 @@
 #pragma once
 
 #include "CypherBaseVisitor.h"
-#include "classInfo.h"
-#include "instanceInfo.h"
-#include "jni_util.h"
-#include "ogoConstants.h"
-#include "string_utils.h"
+#include "class_info.hpp"
+#include "instance_info.hpp"
+#include "jni_util.hpp"
+#include "ogo_constants.hpp"
+#include "string_utils.hpp"
 
-#include <jni.h>
+#include <utility>
 #include <vector>
 
 using namespace std;
-using namespace util;
 using namespace graph;
+using namespace util;
 
-class CreateClauseVisitor : public CypherBaseVisitor {
+class MatchClauseVisitor : public CypherBaseVisitor {
 
 #define AST_NODE_RETURN(VISIT, ASSIGN, ...)                                    \
   {                                                                            \
@@ -24,35 +24,15 @@ class CreateClauseVisitor : public CypherBaseVisitor {
     }                                                                          \
   }
 
-#define AST_MAKE_BINARY_EXPR(VISIT, OP, ASSIGN)                                \
-  {                                                                            \
-    cypher::BinaryExpr *_binaryExpr = NULL;                                    \
-    for (int j = VISIT.size() - 1; j >= 0;) {                                  \
-      cypher::Expression *left = NULL;                                         \
-      cypher::Expression *right = NULL;                                        \
-      if (_binaryExpr == NULL) {                                               \
-        AST_NODE_RETURN(VISIT[j--]->accept(this), left, cypher::Expression *); \
-        AST_NODE_RETURN(VISIT[j--]->accept(this), right,                       \
-                        cypher::Expression *);                                 \
-        _binaryExpr = new cypher::BinaryExpr(left, right, OP);                 \
-      } else {                                                                 \
-        AST_NODE_RETURN(VISIT[j--]->accept(this), left, cypher::Expression *); \
-        right = (cypher::Expression *)_binaryExpr;                             \
-        _binaryExpr = new cypher::BinaryExpr(left, right, OP);                 \
-      }                                                                        \
-    }                                                                          \
-    ASSIGN = _binaryExpr;                                                      \
-  }
-
 public:
-  CreateClauseVisitor(
+  MatchClauseVisitor(
       Agent *agent,
       map<string, vector<pair<InstanceInfo *, jobject>>> *nodeObjectMap);
-  ~CreateClauseVisitor();
+  ~MatchClauseVisitor();
 
   any visitOC_SinglePartQuery(CypherParser::OC_SinglePartQueryContext *ctx);
   any visitOC_MultiPartQuery(CypherParser::OC_MultiPartQueryContext *ctx);
-  any visitOC_UpdatingClause(CypherParser::OC_UpdatingClauseContext *ctx);
+  any visitOC_ReadingClause(CypherParser::OC_ReadingClauseContext *ctx);
   any visitOC_PatternElement(CypherParser::OC_PatternElementContext *ctx);
   any visitOC_NodePattern(CypherParser::OC_NodePatternContext *ctx);
   any visitOC_Variable(CypherParser::OC_VariableContext *ctx);

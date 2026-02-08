@@ -1,5 +1,5 @@
-#include "CallClauseVisitor.h"
-#include "classInfo.h"
+#include "call_clause_visitor.hpp"
+#include "class_info.hpp"
 
 extern vector<ClassInfo *> classNameList;
 

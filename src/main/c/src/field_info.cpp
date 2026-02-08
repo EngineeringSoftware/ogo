@@ -1,6 +1,6 @@
-#include "fieldInfo.h"
+#include "field_info.hpp"
 #include "jni.h"
-#include "jni_util.h"
+#include "jni_util.hpp"
 
 #include <sstream>
 #include <string>

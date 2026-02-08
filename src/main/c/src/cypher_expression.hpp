@@ -1,7 +1,7 @@
 #pragma once
 
-#include "agent_util.h"
-#include "instanceInfo.h"
+#include "agent_util.hpp"
+#include "instance_info.hpp"
 
 #include <jni.h>
 #include <map>

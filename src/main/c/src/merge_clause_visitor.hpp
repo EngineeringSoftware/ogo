@@ -1,10 +1,10 @@
 #pragma once
 
 #include "CypherBaseVisitor.h"
-#include "instanceInfo.h"
-#include "jni_util.h"
-#include "ogoConstants.h"
-#include "string_utils.h"
+#include "instance_info.hpp"
+#include "jni_util.hpp"
+#include "ogo_constants.hpp"
+#include "string_utils.hpp"
 
 #include <string>
 #include <vector>
