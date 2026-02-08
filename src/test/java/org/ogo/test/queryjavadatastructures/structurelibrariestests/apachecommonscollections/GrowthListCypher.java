@@ -16,8 +16,6 @@ public class GrowthListCypher {
   GrowthList<Integer> list1;
 
   /**
-   * regular
-   *
    * @version 1.0.0
    * @since 1.0.0
    */

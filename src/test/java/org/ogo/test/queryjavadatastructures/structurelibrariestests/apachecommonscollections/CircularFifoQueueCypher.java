@@ -16,8 +16,6 @@ public class CircularFifoQueueCypher {
   CircularFifoQueue<Integer> queue1;
 
   /**
-   * regular
-   *
    * @version 1.0.0
    * @since 1.0.0
    */

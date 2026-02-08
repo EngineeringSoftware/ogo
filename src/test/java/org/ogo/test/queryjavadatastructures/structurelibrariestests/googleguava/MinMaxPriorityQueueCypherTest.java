@@ -17,8 +17,6 @@ public class MinMaxPriorityQueueCypherTest {
   MinMaxPriorityQueue<Integer> queue1;
 
   /**
-   * regular
-   *
    * @version 1.0.0
    * @since 1.0.0
    */

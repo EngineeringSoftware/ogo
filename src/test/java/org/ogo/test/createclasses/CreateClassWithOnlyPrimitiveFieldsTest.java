@@ -15,8 +15,6 @@ import org.ogo.client.OGO;
 public class CreateClassWithOnlyPrimitiveFieldsTest {
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @BeforeAll

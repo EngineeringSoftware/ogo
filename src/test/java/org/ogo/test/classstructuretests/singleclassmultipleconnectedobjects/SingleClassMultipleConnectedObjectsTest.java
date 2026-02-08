@@ -16,8 +16,6 @@ import org.ogo.client.OGO;
 public class SingleClassMultipleConnectedObjectsTest {
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -31,8 +29,6 @@ public class SingleClassMultipleConnectedObjectsTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -50,8 +46,6 @@ public class SingleClassMultipleConnectedObjectsTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -66,8 +60,6 @@ public class SingleClassMultipleConnectedObjectsTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */

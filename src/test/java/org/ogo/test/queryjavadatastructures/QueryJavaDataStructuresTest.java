@@ -25,8 +25,6 @@ public class QueryJavaDataStructuresTest {
   HashMap<Integer, Integer> map1;
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @BeforeAll
@@ -37,8 +35,6 @@ public class QueryJavaDataStructuresTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @Test
@@ -52,18 +48,14 @@ public class QueryJavaDataStructuresTest {
     Integer a = 20;
     Integer b = 40;
 
-    // check contains
     assertEquals(OgoLinkedList.contains(list1, a, false), OgoLinkedList.contains(list1, a, true));
     assertEquals(OgoLinkedList.contains(list1, b, false), OgoLinkedList.contains(list1, b, true));
 
-    // check indexOf
     assertEquals(OgoLinkedList.indexOf(list1, a, false), OgoLinkedList.indexOf(list1, a, true));
     assertEquals(OgoLinkedList.indexOf(list1, b, false), OgoLinkedList.indexOf(list1, b, true));
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @Test
@@ -77,18 +69,14 @@ public class QueryJavaDataStructuresTest {
     Integer a = 20;
     Integer b = 40;
 
-    // check contains
     assertEquals(OgoArrayList.contains(list2, a, false), OgoArrayList.contains(list2, a, true));
     assertEquals(OgoArrayList.contains(list2, b, false), OgoArrayList.contains(list2, b, true));
 
-    // check indexOf
     assertEquals(OgoArrayList.indexOf(list2, a, false), OgoArrayList.indexOf(list2, a, true));
     assertEquals(OgoArrayList.indexOf(list2, b, false), OgoArrayList.indexOf(list2, b, true));
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @Test
@@ -102,14 +90,11 @@ public class QueryJavaDataStructuresTest {
     Integer a = 20;
     Integer b = 40;
 
-    // check contains
     assertEquals(OgoArrayDeque.contains(dque1, a, false), OgoArrayDeque.contains(dque1, a, true));
     assertEquals(OgoArrayDeque.contains(dque1, b, false), OgoArrayDeque.contains(dque1, b, true));
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @Test
@@ -123,18 +108,14 @@ public class QueryJavaDataStructuresTest {
     Integer a = 20;
     Integer b = 40;
 
-    // check contains
     assertEquals(OgoVector.contains(vector1, a, false), OgoVector.contains(vector1, a, true));
     assertEquals(OgoVector.contains(vector1, b, false), OgoVector.contains(vector1, b, true));
 
-    // check indexOf
     assertEquals(OgoVector.indexOf(vector1, a, false), OgoVector.indexOf(vector1, a, true));
     assertEquals(OgoVector.indexOf(vector1, b, false), OgoVector.indexOf(vector1, b, true));
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @Test
@@ -148,11 +129,9 @@ public class QueryJavaDataStructuresTest {
     Integer a = 20;
     Integer b = 200;
 
-    // check containsKey
     assertEquals(OgoHashMap.containsKey(map1, a, false), OgoHashMap.containsKey(map1, a, true));
     assertEquals(OgoHashMap.containsKey(map1, b, false), OgoHashMap.containsKey(map1, b, true));
 
-    // check containsValue
     assertEquals(OgoHashMap.containsValue(map1, a, false), OgoHashMap.containsValue(map1, a, true));
     assertEquals(OgoHashMap.containsValue(map1, b, false), OgoHashMap.containsValue(map1, b, true));
   }

@@ -17,8 +17,6 @@ import org.ogo.util.Profile;
 public class BinaryTreeTest {
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -31,8 +29,6 @@ public class BinaryTreeTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */
@@ -70,8 +66,6 @@ public class BinaryTreeTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    * @version 1.0.0
    */

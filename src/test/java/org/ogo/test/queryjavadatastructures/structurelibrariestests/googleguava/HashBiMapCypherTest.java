@@ -17,8 +17,6 @@ public class HashBiMapCypherTest {
   HashBiMap<Integer, Integer> map1;
 
   /**
-   * regular
-   *
    * @version 1.0.0
    * @since 1.0.0
    */

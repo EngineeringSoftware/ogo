@@ -34,8 +34,6 @@ public class DataStructureTest {
   UndirectedSparseGraph<Integer, Integer> jungudSparseGraph;
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @BeforeAll
@@ -54,8 +52,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -105,8 +101,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -129,8 +123,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -152,8 +144,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -175,8 +165,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -225,8 +213,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -257,8 +243,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)
@@ -287,8 +271,6 @@ public class DataStructureTest {
   }
 
   /**
-   * regular
-   *
    * @since 1.0.0
    */
   @RepeatedTest(1)

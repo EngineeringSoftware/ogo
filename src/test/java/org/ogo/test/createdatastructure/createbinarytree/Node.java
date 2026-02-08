@@ -5,7 +5,6 @@ public class Node {
   Node left;
   Node right;
 
-  /** class constructor */
   Node() {
     value = 0;
     left = null;
