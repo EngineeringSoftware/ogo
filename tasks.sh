@@ -117,10 +117,4 @@ function end_to_end() {
                 { echo "could not install ogo"; exit 1; } 
 }
 
-# ----------
-# Main.
-
-check_deps || \
-        { echo "No sufficient dependencies"; exit 1; }
-
 "$@"
