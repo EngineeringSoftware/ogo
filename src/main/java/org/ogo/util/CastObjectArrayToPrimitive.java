@@ -120,62 +120,83 @@ public class CastObjectArrayToPrimitive {
    */
   public static Node castToNeo4JPropertyType(
       String propertyName, String[] propertyValue, String propertyType, Node node) {
-    if (propertyType.compareTo("JBOOLEAN_ARRAY") == 0) {
-      node.setProperty(propertyName, castToBoolean(propertyValue));
-    } else if (propertyType.compareTo("JBYTE_ARRAY") == 0) {
-      node.setProperty(propertyName, castToByte(propertyValue));
-    } else if (propertyType.compareTo("JCHAR_ARRAY") == 0) {
-      node.setProperty(propertyName, castToCharacter(propertyValue));
-    } else if (propertyType.compareTo("JSHORT_ARRAY") == 0) {
-      node.setProperty(propertyName, castToShort(propertyValue));
-    } else if (propertyType.compareTo("JINT_ARRAY") == 0) {
-      node.setProperty(propertyName, castToInteger(propertyValue));
-    } else if (propertyType.compareTo("JLONG_ARRAY") == 0) {
-      node.setProperty(propertyName, castToLong(propertyValue));
-    } else if (propertyType.compareTo("JFLOAT_ARRAY") == 0) {
-      node.setProperty(propertyName, castToFloat(propertyValue));
-    } else if (propertyType.compareTo("JDOUBLE_ARRAY") == 0) {
-      node.setProperty(propertyName, castToDouble(propertyValue));
-    } else if (propertyType.compareTo("JSTRING_ARRAY") == 0) {
-      node.setProperty(propertyName, propertyValue);
-    } else {
-      if (propertyValue.length == 1) {
-        if (propertyType.compareTo("JBOOLEAN") == 0) {
-          node.setProperty(propertyName, Boolean.parseBoolean(propertyValue[0]));
-        } else if (propertyType.compareTo("JBYTE") == 0) {
-          node.setProperty(propertyName, Byte.parseByte(propertyValue[0]));
-        } else if (propertyType.compareTo("JCHAR") == 0) {
-          node.setProperty(propertyName, propertyValue[0].charAt(0));
-        } else if (propertyType.compareTo("JSHORT") == 0) {
-          node.setProperty(propertyName, Short.parseShort(propertyValue[0]));
-        } else if (propertyType.compareTo("JINT") == 0) {
-          node.setProperty(propertyName, Integer.parseInt(propertyValue[0]));
-        } else if (propertyType.compareTo("JLONG") == 0) {
-          node.setProperty(propertyName, Long.parseLong(propertyValue[0]));
-        } else if (propertyType.compareTo("JFLOAT") == 0) {
-          if (propertyValue[0].compareTo("inf") == 0) {
-            node.setProperty(propertyName, Float.POSITIVE_INFINITY);
-          } else if (propertyValue[0].compareTo("-inf") == 0) {
-            node.setProperty(propertyName, Float.NEGATIVE_INFINITY);
-          } else if (propertyValue[0].compareTo("nan") == 0) {
-            node.setProperty(propertyName, Float.NaN);
-          } else {
-            node.setProperty(propertyName, Float.parseFloat(propertyValue[0]));
+    switch (propertyType) {
+      case "JBOOLEAN_ARRAY":
+        node.setProperty(propertyName, castToBoolean(propertyValue));
+        break;
+      case "JBYTE_ARRAY":
+        node.setProperty(propertyName, castToByte(propertyValue));
+        break;
+      case "JCHAR_ARRAY":
+        node.setProperty(propertyName, castToCharacter(propertyValue));
+        break;
+      case "JSHORT_ARRAY":
+        node.setProperty(propertyName, castToShort(propertyValue));
+        break;
+      case "JINT_ARRAY":
+        node.setProperty(propertyName, castToInteger(propertyValue));
+        break;
+      case "JLONG_ARRAY":
+        node.setProperty(propertyName, castToLong(propertyValue));
+        break;
+      case "JFLOAT_ARRAY":
+        node.setProperty(propertyName, castToFloat(propertyValue));
+        break;
+      case "JDOUBLE_ARRAY":
+        node.setProperty(propertyName, castToDouble(propertyValue));
+        break;
+      case "JSTRING_ARRAY":
+        node.setProperty(propertyName, propertyValue);
+        break;
+      default:
+        if (propertyValue.length == 1) {
+          switch (propertyType) {
+            case "JBOOLEAN":
+              node.setProperty(propertyName, Boolean.parseBoolean(propertyValue[0]));
+              break;
+            case "JBYTE":
+              node.setProperty(propertyName, Byte.parseByte(propertyValue[0]));
+              break;
+            case "JCHAR":
+              node.setProperty(propertyName, propertyValue[0].charAt(0));
+              break;
+            case "JSHORT":
+              node.setProperty(propertyName, Short.parseShort(propertyValue[0]));
+              break;
+            case "JINT":
+              node.setProperty(propertyName, Integer.parseInt(propertyValue[0]));
+              break;
+            case "JLONG":
+              node.setProperty(propertyName, Long.parseLong(propertyValue[0]));
+              break;
+            case "JFLOAT":
+              if ("inf".equals(propertyValue[0])) {
+                node.setProperty(propertyName, Float.POSITIVE_INFINITY);
+              } else if ("-inf".equals(propertyValue[0])) {
+                node.setProperty(propertyName, Float.NEGATIVE_INFINITY);
+              } else if ("nan".equals(propertyValue[0])) {
+                node.setProperty(propertyName, Float.NaN);
+              } else {
+                node.setProperty(propertyName, Float.parseFloat(propertyValue[0]));
+              }
+              break;
+            case "JDOUBLE":
+              if ("inf".equals(propertyValue[0])) {
+                node.setProperty(propertyName, Double.POSITIVE_INFINITY);
+              } else if ("-inf".equals(propertyValue[0])) {
+                node.setProperty(propertyName, Double.NEGATIVE_INFINITY);
+              } else if ("nan".equals(propertyValue[0])) {
+                node.setProperty(propertyName, Double.NaN);
+              } else {
+                node.setProperty(propertyName, Double.parseDouble(propertyValue[0]));
+              }
+              break;
+            case "JSTRING":
+              node.setProperty(propertyName, propertyValue[0]);
+              break;
           }
-        } else if (propertyType.compareTo("JDOUBLE") == 0) {
-          if (propertyValue[0].compareTo("inf") == 0) {
-            node.setProperty(propertyName, Double.POSITIVE_INFINITY);
-          } else if (propertyValue[0].compareTo("-inf") == 0) {
-            node.setProperty(propertyName, Double.NEGATIVE_INFINITY);
-          } else if (propertyValue[0].compareTo("nan") == 0) {
-            node.setProperty(propertyName, Double.NaN);
-          } else {
-            node.setProperty(propertyName, Double.parseDouble(propertyValue[0]));
-          }
-        } else if (propertyType.compareTo("JSTRING") == 0) {
-          node.setProperty(propertyName, propertyValue[0]);
         }
-      }
+        break;
     }
     return node;
   }
