@@ -25,7 +25,7 @@ public abstract class ClassHelper {
       Object[] fieldValues) {
     String fullyQualifiedName = packageName != null ? (packageName + "/" + className) : className;
     ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-    cw.visit(Opcodes.V11, Opcodes.ACC_PUBLIC, fullyQualifiedName, null, "java/lang/Object", null);
+    cw.visit(Opcodes.V21, Opcodes.ACC_PUBLIC, fullyQualifiedName, null, "java/lang/Object", null);
     // NOTE : Field values are null since assigning field values are only supported for static
     // fields
     // see :
