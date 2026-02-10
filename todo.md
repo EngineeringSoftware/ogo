@@ -28,4 +28,4 @@
 ------------------------------------------------------------------------
 - [X] Check if we need to upgrade Java ASM bytecode analyzer version
 - [X] Remove profiling code from OGO source
-- [ ] Refactor to if/elif to switch case 
+- [X] Refactor to if/elif to switch case 
