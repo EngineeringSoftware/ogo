@@ -1,24 +1,18 @@
 package org.ogo.client;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Logger;
 import org.ogo.bridge.AbstractGraphQueryInterface;
 import org.ogo.util.FileHelper;
 import org.ogo.util.OGOProperties;
-import org.ogo.util.Profile;
 
 /**
  * @author 1sand0s
@@ -30,15 +24,12 @@ public abstract class OGO {
   static long sTime;
   static long eTime;
   static File profileFile;
-  static ArrayList<String> profileData;
-  static String profileMethod;
   private static String CsvPath = ".";
   private static GraphTriggerException graphException;
   public static boolean printCSV = false;
   public static boolean printWhiteList = false;
   public static boolean printBlackList = false;
   public static boolean clearDatabase = true;
-  public static boolean printProfileMethodInfo = false;
   public static boolean inMemory = false;
   public static boolean followRoot = true;
   public static boolean forceGC = true;
@@ -434,24 +425,16 @@ public abstract class OGO {
      */
     try {
       if (!inMemory) {
-        sTime = System.currentTimeMillis();
         var = graphInterface.query(cQuery);
-        eTime = System.currentTimeMillis();
-        profileData.add("Assert_Query, " + (eTime - sTime));
       }
     } finally {
-
       /*
        * Clear and delete database
        * Delete all *.csv files
        */
-      sTime = System.currentTimeMillis();
       cleanup();
-      eTime = System.currentTimeMillis();
-      profileData.add("Cleanup, " + (eTime - sTime));
     }
 
-    if (!profileMethod.isEmpty()) writeProfileFile(profileData);
     if (inMemory) {
       return graphException.getQueryResults();
     }
@@ -461,13 +444,7 @@ public abstract class OGO {
   }
 
   private static void setupGraph() throws RemoteException {
-    /*
-     * Read the Profile Data Generated from JVMTI invocation required to create
-     * object graph
-     */
-    profileData = new ArrayList<>();
 
-    sTime = System.currentTimeMillis();
     try {
       /* Dummy exception to trigger object graph construction by native agent */
       throw graphException;
@@ -475,26 +452,13 @@ public abstract class OGO {
       logger.finest("GraphTriggerException caught (expected behavior)");
       logger.finest("JVMTI agent triggered successfully");
     }
-    eTime = System.currentTimeMillis();
-
-    readJVMTIProfile(profileData);
-    profileData.add("Graph_Generation, " + (eTime - sTime));
-
-    /* Get calling test method */
-    profileMethod = getTestMethodName();
 
     if (!inMemory) {
-      sTime = System.currentTimeMillis();
       /* Create nodes from *java.csv files */
       graphInterface.createNodes();
-      eTime = System.currentTimeMillis();
-      profileData.add("Creation_of_Nodes, " + (eTime - sTime));
 
-      sTime = System.currentTimeMillis();
       /* Create relations from [*TAG*]_Neo4JRelations.csv files */
       graphInterface.createRelations();
-      eTime = System.currentTimeMillis();
-      profileData.add("Creation_of_Relations, " + (eTime - sTime));
     }
   }
 
@@ -521,82 +485,6 @@ public abstract class OGO {
         }
       }
     }
-  }
-
-  private static void writeProfileFile(ArrayList<String> profileData) {
-
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-z");
-    Date date = new Date(System.currentTimeMillis());
-    /* Open file for writing whitelist of packages */
-    File file = new File(CsvPath + "/PROFILE_JAVA_" + profileMethod + "_" + formatter.format(date));
-
-    try {
-      /* Create a buffered writer for writing to file */
-      BufferedWriter writer =
-          new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-
-      /* Write blacklist of packages to file */
-      for (String profileDatum : profileData) writer.write(profileDatum + "\n");
-
-      writer.close();
-    } catch (FileNotFoundException e) {
-      logger.severe("Error : File " + file.getName() + " could not be opened " + file.getPath());
-      logger.severe("Unable to write profile data");
-      logger.severe(e.getMessage());
-    } catch (IOException e) {
-      logger.severe("Unable to write profile data " + file.getName());
-      logger.severe(e.getMessage());
-    }
-  }
-
-  private static void readJVMTIProfile(ArrayList<String> profileData) {
-    profileData.clear();
-    for (File f : Objects.requireNonNull(new File(CsvPath).listFiles())) {
-      if (f.getName().startsWith("PROFILE_HOQ_C_")) {
-        Scanner scan;
-        try {
-          scan = new Scanner(f);
-          while (scan.hasNext()) {
-            profileData.add(scan.nextLine());
-          }
-        } catch (FileNotFoundException e) {
-          logger.severe("Error : File " + f.getName() + " not found in path " + f.getPath());
-          logger.severe("Unable to read JVMTI profile file");
-          logger.severe(e.getMessage());
-        }
-      }
-    }
-  }
-
-  private static String getTestMethodName() {
-    String methodName = "";
-
-    for (StackTraceElement st : Thread.currentThread().getStackTrace()) {
-      try {
-        if (Class.forName(st.getClassName())
-            .getMethod(st.getMethodName())
-            .isAnnotationPresent(Profile.class)) {
-          methodName = st.getMethodName();
-          break;
-        }
-      } catch (NoSuchMethodException e) {
-        if (printProfileMethodInfo) {
-          logger.info(
-              "Method with name : "
-                  + st.getMethodName()
-                  + " does not exist in Class : "
-                  + st.getClassName());
-          logger.info(e.getMessage());
-        }
-      } catch (ClassNotFoundException e) {
-        if (printProfileMethodInfo) {
-          logger.info("Class with name : " + st.getClassName() + " not found");
-          logger.info(e.getMessage());
-        }
-      }
-    }
-
-    return methodName;
   }
 
   /**

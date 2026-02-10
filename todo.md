@@ -26,6 +26,6 @@
 - [X] Add OGO logo
 - [ ] No need to use italics in the README
 ------------------------------------------------------------------------
-- [ ] Check if we need to upgrade Java ASM bytecode analyzer version
-- [ ] Remove profiling code from OGO source
+- [X] Check if we need to upgrade Java ASM bytecode analyzer version
+- [X] Remove profiling code from OGO source
 - [ ] Refactor to if/elif to switch case 
