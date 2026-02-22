@@ -10,4 +10,16 @@ public class Node {
     left = null;
     right = null;
   }
+
+  Node(int val) {
+    value = val;
+    left = null;
+    right = null;
+  }
+
+  Node(Node leftNode, Node rightNode, int val) {
+    value = val;
+    left = leftNode;
+    right = rightNode;
+  }
 }
