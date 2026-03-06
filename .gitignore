@@ -1,0 +1,9 @@
+.venv/
+build/
+surefire-reports/
+target/
+.cache/
+.vscode/
+.ekstazi/
+.idea/
+src/main/c/generated/
