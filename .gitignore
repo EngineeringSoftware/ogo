@@ -7,3 +7,4 @@ target/
 .ekstazi/
 .idea/
 src/main/c/generated/
+*~
