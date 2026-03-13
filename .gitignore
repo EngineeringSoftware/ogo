@@ -7,4 +7,9 @@ target/
 .ekstazi/
 .idea/
 src/main/c/generated/
+.metals/
+.bloop/
 *~
+*.swp
+*.swo
+README_LOCAL_METALS_CHECKING.md

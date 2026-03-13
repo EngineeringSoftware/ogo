@@ -102,6 +102,35 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
+        <configuration>
+          <showWarnings>true</showWarnings>
+        </configuration>
+        <executions>
+          <execution>
+            <id>cypher-lint-main</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <proc>only</proc>
+              <annotationProcessors>
+                <annotationProcessor>org.ogo.client.processor.OgoCypherQueryProcessor</annotationProcessor>
+              </annotationProcessors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <annotationProcessors>
+                <annotationProcessor>org.ogo.client.processor.OgoCypherQueryProcessor</annotationProcessor>
+              </annotationProcessors>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
       <plugin>
@@ -117,12 +146,18 @@
           <groupId>org.antlr</groupId>
           <artifactId>antlr4-maven-plugin</artifactId>
           <version>4.13.1</version>
-          <configuration>  
-            <outputDirectory>${basedir}/src/main/java/org/ogodb/antlr4</outputDirectory>
-	    <visitor>true</visitor>
-	    <listener>false</listener>
-          </configuration>
-        </plugin>
+        <executions>
+          <execution>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <visitor>true</visitor>
+          <listener>false</listener>
+        </configuration>
+      </plugin>
       <!-- exec plugin to start a standalone Neo4J database in a separate JVM -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -285,6 +320,24 @@
             </goals>
           </execution>
         </executions>
+    </plugin>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>4.9.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scalaVersion>3.6.4</scalaVersion>
+          <compileOrder>JavaThenScala</compileOrder>
+          <sendJavaToScalac>true</sendJavaToScalac>
+        </configuration>
       </plugin>
     </plugins>
   </build>
