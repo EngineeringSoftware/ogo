@@ -104,6 +104,10 @@
         <version>3.8.0</version>
         <configuration>
           <showWarnings>true</showWarnings>
+          <proc>full</proc>
+          <annotationProcessors>
+            <annotationProcessor>org.ogo.client.processor.OgoCypherQueryProcessor</annotationProcessor>
+          </annotationProcessors>
         </configuration>
         <executions>
           <execution>
@@ -154,6 +158,14 @@
           </execution>
         </executions>
         <configuration>
+          <sourceDirectory>${project.basedir}/src/main/resources</sourceDirectory>
+          <includes>
+            <include>Cypher.g4</include>
+          </includes>
+          <arguments>
+            <argument>-package</argument>
+            <argument>org.ogodb.antlr4</argument>
+          </arguments>
           <visitor>true</visitor>
           <listener>false</listener>
         </configuration>

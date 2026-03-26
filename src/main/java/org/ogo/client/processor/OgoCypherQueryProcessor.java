@@ -34,7 +34,12 @@ public final class OgoCypherQueryProcessor extends AbstractProcessor {
 
     private static final Set<String> QUERY_METHODS = Set.of("query", "queryInt", "queryLong", "queryBool");
     private static final String OGO_FQCN = "org.ogo.client.OGO";
+    private static final String STRING_FQCN = "java.lang.String";
+    private static final String FORMAT_METHOD = "format";
+    private static final String CONCAT_PLACEHOLDER = "ogoTmp";
     private static final Pattern DOLLAR_ARG = Pattern.compile("\\$\\d+");
+    private static final Pattern FORMAT_SPECIFIER = Pattern
+            .compile("%(?!%)(?:\\d+\\$)?[-#+ 0,(<]*(?:\\d+)?(?:\\.\\d+)?(?:[tT])?[a-zA-Z]");
 
     private Trees trees;
 
@@ -123,17 +128,90 @@ public final class OgoCypherQueryProcessor extends AbstractProcessor {
             case MEMBER_SELECT -> constantValueFromElement((MemberSelectTree) expr);
             case PARENTHESIZED -> resolveConstantString(((ParenthesizedTree) expr).getExpression());
             case PLUS -> resolvePlusExpression((BinaryTree) expr);
+            case METHOD_INVOCATION -> resolveFormatInvocation((MethodInvocationTree) expr);
             default -> null;
             };
+        }
+
+        private String resolveFormatInvocation(MethodInvocationTree invocation) {
+            TreePath path = TreePath.getPath(getCurrentPath(), invocation);
+            if (path == null) {
+                return null;
+            }
+
+            Element element = trees.getElement(path);
+            if (!(element instanceof ExecutableElement method)) {
+                return null;
+            }
+
+            Element enclosing = method.getEnclosingElement();
+            if (!(enclosing instanceof TypeElement owner)) {
+                return null;
+            }
+
+            if (!STRING_FQCN.equals(owner.getQualifiedName().toString())
+                    || !FORMAT_METHOD.equals(method.getSimpleName().toString())) {
+                return null;
+            }
+
+            int formatArgIndex = findFormatStringParamIndex(method);
+            if (formatArgIndex < 0 || formatArgIndex >= invocation.getArguments().size()) {
+                return null;
+            }
+
+            String format = resolveConstantString(invocation.getArguments().get(formatArgIndex));
+            if (format == null) {
+                return null;
+            }
+
+            return normalizeFormatStringForSyntaxCheck(format);
         }
 
         private String resolvePlusExpression(BinaryTree expr) {
             String left = resolveConstantString(expr.getLeftOperand());
             String right = resolveConstantString(expr.getRightOperand());
+
+            // Keep query validation active for string concatenations with runtime values.
+            if (left == null) {
+                left = resolveConcatenationFallback(expr.getLeftOperand());
+            }
+            if (right == null) {
+                right = resolveConcatenationFallback(expr.getRightOperand());
+            }
+
             if (left == null || right == null) {
                 return null;
             }
             return left + right;
+        }
+
+        private String resolveConcatenationFallback(ExpressionTree expr) {
+            if (expr == null) {
+                return null;
+            }
+
+            return switch (expr.getKind()) {
+            case NULL_LITERAL -> "null";
+            default -> CONCAT_PLACEHOLDER;
+            };
+        }
+
+        private int findFormatStringParamIndex(ExecutableElement method) {
+            List<? extends VariableElement> params = method.getParameters();
+            if (params.isEmpty()) {
+                return -1;
+            }
+
+            // String.format(String, Object...) and String.format(Locale, String, Object...)
+            String firstType = params.get(0).asType().toString();
+            if ("java.lang.String".equals(firstType)) {
+                return 0;
+            }
+            if (params.size() > 1 && "java.util.Locale".equals(firstType)
+                    && "java.lang.String".equals(params.get(1).asType().toString())) {
+                return 1;
+            }
+            return -1;
         }
 
         private String constantValueFromElement(Tree tree) {
@@ -150,6 +228,11 @@ public final class OgoCypherQueryProcessor extends AbstractProcessor {
 
         private String normalizeForSyntaxCheck(String query) {
             return DOLLAR_ARG.matcher(query).replaceAll("hash:0");
+        }
+
+        private String normalizeFormatStringForSyntaxCheck(String format) {
+            String withTemporaryValues = FORMAT_SPECIFIER.matcher(format).replaceAll(CONCAT_PLACEHOLDER);
+            return withTemporaryValues.replace("%%", "%");
         }
     }
 }

@@ -132,9 +132,8 @@ public class BinaryTreeTest {
         BinaryTree tree = new BinaryTree();
         Node root = tree.createTree(arr, 0, arr.length);
         // String nodeClass = "`org.ogo.test.createdatastructure.createbinarytree.Node`";
-        assertEquals(2L,
-                queryLong(root,
-                        String.format("MATCH p=shortestPath((r:%s {value: 4})-[*]->(n:%s {value: 1})) RETURN length(p)",
-                                nodeClass, nodeClass)));
+        assertEquals(2L, queryLong(root, String.format(
+                "MATCH p=(r:%s {value: 4})-[*]->(n:%s {value: 1}) RETURN length(p) ORDER BY length(p) ASC LIMIT 1",
+                nodeClass, nodeClass)));
     }
 }
