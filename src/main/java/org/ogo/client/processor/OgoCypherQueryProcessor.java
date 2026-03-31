@@ -12,8 +12,10 @@ import com.sun.source.tree.Tree;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.TreePathScanner;
 import com.sun.source.util.Trees;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -32,11 +34,17 @@ import org.ogo.cypher.CypherSyntaxValidator;
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public final class OgoCypherQueryProcessor extends AbstractProcessor {
 
+    private record NormalizedQuery(String original, String normalized, int[] normalizedToOriginal) {
+    }
+
+    private record LineColumn(int line, int column) {
+    }
+
     private static final Set<String> QUERY_METHODS = Set.of("query", "queryInt", "queryLong", "queryBool");
     private static final String OGO_FQCN = "org.ogo.client.OGO";
     private static final String STRING_FQCN = "java.lang.String";
     private static final String FORMAT_METHOD = "format";
-    private static final String CONCAT_PLACEHOLDER = "ogoTmp";
+    private static final String CONCAT_PLACEHOLDER = "ogotmp";
     private static final Pattern DOLLAR_ARG = Pattern.compile("\\$\\d+");
     private static final Pattern FORMAT_SPECIFIER = Pattern
             .compile("%(?!%)(?:\\d+\\$)?[-#+ 0,(<]*(?:\\d+)?(?:\\.\\d+)?(?:[tT])?[a-zA-Z]");
@@ -93,15 +101,27 @@ public final class OgoCypherQueryProcessor extends AbstractProcessor {
             }
 
             // Match OGO runtime behavior where $N is replaced with hash:<identityHashCode>.
-            String normalizedQuery = normalizeForSyntaxCheck(query);
-            if (normalizedQuery.isBlank()) {
+            NormalizedQuery normalizedQuery = normalizeForSyntaxCheck(query);
+            if (normalizedQuery.normalized().isBlank()) {
                 return super.visitMethodInvocation(node, unused);
             }
-            List<String> errors = CypherSyntaxValidator.check(normalizedQuery);
+            List<CypherSyntaxValidator.SyntaxError> errors;
+            try {
+                errors = CypherSyntaxValidator.checkWithLocations(normalizedQuery.normalized());
+            } catch (IllegalStateException ex) {
+                // Generated parser classes may be unavailable during early build/import phases.
+                return super.visitMethodInvocation(node, unused);
+            }
             if (!errors.isEmpty()) {
-                String message = "Invalid Cypher syntax in OGO." + methodName + " call: " + String.join(" | ", errors);
                 CompilationUnitTree cu = path.getCompilationUnit();
-                trees.printMessage(Diagnostic.Kind.ERROR, message, queryArg, cu);
+                for (CypherSyntaxValidator.SyntaxError error : errors) {
+                    int originalOffset = mapNormalizedOffset(normalizedQuery, error.offset());
+                    int anchorOffset = Math.min(Math.max(0, originalOffset), Math.max(0, query.length() - 1));
+                    ExpressionTree targetTree = findDiagnosticTree(queryArg, anchorOffset);
+                    String message = renderErrorWithOriginalPosition(methodName, normalizedQuery, error,
+                            originalOffset);
+                    trees.printMessage(Diagnostic.Kind.ERROR, message, targetTree != null ? targetTree : queryArg, cu);
+                }
             }
 
             return super.visitMethodInvocation(node, unused);
@@ -226,13 +246,158 @@ public final class OgoCypherQueryProcessor extends AbstractProcessor {
             return null;
         }
 
-        private String normalizeForSyntaxCheck(String query) {
-            return DOLLAR_ARG.matcher(query).replaceAll("hash:0");
+        private String renderErrorWithOriginalPosition(String methodName, NormalizedQuery normalizedQuery,
+                CypherSyntaxValidator.SyntaxError error, int originalOffset) {
+            if (normalizedQuery.original().isEmpty()) {
+                return "Invalid Cypher syntax in OGO." + methodName + " call: " + error.message();
+            }
+
+            int safeOriginalOffset = Math.min(Math.max(0, originalOffset), normalizedQuery.original().length() - 1);
+            LineColumn originalPos = indexToLineColumn(normalizedQuery.original(), safeOriginalOffset);
+            String snippet = buildSnippet(normalizedQuery.original(), safeOriginalOffset);
+            return "Invalid Cypher syntax in OGO." + methodName + " call at query line " + originalPos.line()
+                    + ", column " + (originalPos.column() + 1) + " (offset " + safeOriginalOffset + "): "
+                    + error.message() + " | " + snippet;
+        }
+
+        private String buildSnippet(String query, int offset) {
+            int lineStart = offset;
+            while (lineStart > 0 && query.charAt(lineStart - 1) != '\n') {
+                lineStart--;
+            }
+            int lineEnd = offset;
+            while (lineEnd < query.length() && query.charAt(lineEnd) != '\n') {
+                lineEnd++;
+            }
+
+            String lineText = query.substring(lineStart, lineEnd);
+            int caret = Math.max(0, Math.min(offset - lineStart, Math.max(0, lineText.length() - 1)));
+            StringBuilder pointer = new StringBuilder();
+            for (int i = 0; i < caret; i++) {
+                char c = lineText.charAt(i);
+                pointer.append(c == '\t' ? '\t' : ' ');
+            }
+            pointer.append('^');
+            return lineText + "\\n" + pointer;
+        }
+
+        private int mapNormalizedOffset(NormalizedQuery normalizedQuery, int normalizedOffset) {
+            if (normalizedQuery.normalizedToOriginal().length == 0) {
+                return 0;
+            }
+            if (normalizedOffset >= normalizedQuery.normalizedToOriginal().length) {
+                return normalizedQuery.original().length();
+            }
+            int safeOffset = Math.max(0, normalizedOffset);
+            return normalizedQuery.normalizedToOriginal()[safeOffset];
+        }
+
+        private ExpressionTree findDiagnosticTree(ExpressionTree expression, int queryOffset) {
+            if (expression == null) {
+                return null;
+            }
+
+            return switch (expression.getKind()) {
+            case PARENTHESIZED -> findDiagnosticTree(((ParenthesizedTree) expression).getExpression(), queryOffset);
+            case PLUS -> findInPlusExpression((BinaryTree) expression, queryOffset);
+            default -> expression;
+            };
+        }
+
+        private ExpressionTree findInPlusExpression(BinaryTree plusExpression, int queryOffset) {
+            ExpressionTree left = plusExpression.getLeftOperand();
+            ExpressionTree right = plusExpression.getRightOperand();
+
+            int leftLength = estimateValidationLength(left);
+            if (leftLength < 0) {
+                return plusExpression;
+            }
+
+            if (queryOffset < leftLength) {
+                return findDiagnosticTree(left, queryOffset);
+            }
+
+            int rightOffset = Math.max(0, queryOffset - leftLength);
+            return findDiagnosticTree(right, rightOffset);
+        }
+
+        private int estimateValidationLength(ExpressionTree expression) {
+            if (expression == null) {
+                return -1;
+            }
+
+            return switch (expression.getKind()) {
+            case PARENTHESIZED -> estimateValidationLength(((ParenthesizedTree) expression).getExpression());
+            case PLUS -> {
+                BinaryTree plus = (BinaryTree) expression;
+                int left = estimateValidationLength(plus.getLeftOperand());
+                int right = estimateValidationLength(plus.getRightOperand());
+                yield left < 0 || right < 0 ? -1 : left + right;
+            }
+            default -> {
+                String resolved = resolveConstantString(expression);
+                if (resolved != null) {
+                    yield resolved.length();
+                }
+                String fallback = resolveConcatenationFallback(expression);
+                yield fallback == null ? -1 : fallback.length();
+            }
+            };
+        }
+
+        private LineColumn indexToLineColumn(String text, int index) {
+            int safeIndex = Math.max(0, Math.min(index, Math.max(0, text.length() - 1)));
+            int line = 1;
+            int lineStart = 0;
+            for (int i = 0; i < safeIndex; i++) {
+                if (text.charAt(i) == '\n') {
+                    line++;
+                    lineStart = i + 1;
+                }
+            }
+            return new LineColumn(line, safeIndex - lineStart);
+        }
+
+        private NormalizedQuery normalizeForSyntaxCheck(String query) {
+            Matcher matcher = DOLLAR_ARG.matcher(query);
+            StringBuilder normalized = new StringBuilder();
+            List<Integer> mapping = new ArrayList<>();
+            int cursor = 0;
+
+            while (matcher.find()) {
+                appendIdentitySegment(query, cursor, matcher.start(), normalized, mapping);
+                appendReplacement("hash:0", matcher.start(), normalized, mapping);
+                cursor = matcher.end();
+            }
+            appendIdentitySegment(query, cursor, query.length(), normalized, mapping);
+            return new NormalizedQuery(query, normalized.toString(), toIntArray(mapping));
         }
 
         private String normalizeFormatStringForSyntaxCheck(String format) {
             String withTemporaryValues = FORMAT_SPECIFIER.matcher(format).replaceAll(CONCAT_PLACEHOLDER);
             return withTemporaryValues.replace("%%", "%");
+        }
+
+        private void appendIdentitySegment(String source, int start, int end, StringBuilder target, List<Integer> map) {
+            for (int i = start; i < end; i++) {
+                target.append(source.charAt(i));
+                map.add(i);
+            }
+        }
+
+        private void appendReplacement(String replacement, int sourceAnchor, StringBuilder target, List<Integer> map) {
+            target.append(replacement);
+            for (int i = 0; i < replacement.length(); i++) {
+                map.add(sourceAnchor);
+            }
+        }
+
+        private int[] toIntArray(List<Integer> values) {
+            int[] result = new int[values.size()];
+            for (int i = 0; i < values.size(); i++) {
+                result[i] = values.get(i);
+            }
+            return result;
         }
     }
 }

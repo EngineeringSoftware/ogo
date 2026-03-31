@@ -11,6 +11,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
+    <cypher.annotation.processor>org.ogo.client.processor.OgoCypherQueryProcessor</cypher.annotation.processor>
     <!-- Native agent properties -->
     <agent.path>${project.basedir}/src/main/c</agent.path>
     <agent.build.type>Release</agent.build.type>
@@ -105,9 +106,6 @@
         <configuration>
           <showWarnings>true</showWarnings>
           <proc>full</proc>
-          <annotationProcessors>
-            <annotationProcessor>org.ogo.client.processor.OgoCypherQueryProcessor</annotationProcessor>
-          </annotationProcessors>
         </configuration>
         <executions>
           <execution>
@@ -119,7 +117,7 @@
             <configuration>
               <proc>only</proc>
               <annotationProcessors>
-                <annotationProcessor>org.ogo.client.processor.OgoCypherQueryProcessor</annotationProcessor>
+                <annotationProcessor>${cypher.annotation.processor}</annotationProcessor>
               </annotationProcessors>
             </configuration>
           </execution>
@@ -130,7 +128,7 @@
             </goals>
             <configuration>
               <annotationProcessors>
-                <annotationProcessor>org.ogo.client.processor.OgoCypherQueryProcessor</annotationProcessor>
+                <annotationProcessor>${cypher.annotation.processor}</annotationProcessor>
               </annotationProcessors>
             </configuration>
           </execution>
@@ -159,6 +157,8 @@
         </executions>
         <configuration>
           <sourceDirectory>${project.basedir}/src/main/resources</sourceDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources/antlr4/org/ogodb/antlr4</outputDirectory>
+          <addOutputDirectoryToSourceRoot>false</addOutputDirectoryToSourceRoot>
           <includes>
             <include>Cypher.g4</include>
           </includes>
@@ -169,6 +169,25 @@
           <visitor>true</visitor>
           <listener>false</listener>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <id>add-antlr-generated-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/antlr4</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <!-- exec plugin to start a standalone Neo4J database in a separate JVM -->
       <plugin>
@@ -333,24 +352,6 @@
           </execution>
         </executions>
     </plugin>
-      <plugin>
-        <groupId>net.alchim31.maven</groupId>
-        <artifactId>scala-maven-plugin</artifactId>
-        <version>4.9.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <scalaVersion>3.6.4</scalaVersion>
-          <compileOrder>JavaThenScala</compileOrder>
-          <sendJavaToScalac>true</sendJavaToScalac>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
